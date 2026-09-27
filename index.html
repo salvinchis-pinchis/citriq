@@ -1,0 +1,1075 @@
+<title>Citriq — Tecnología para la construcción</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     SISTEMA — negro de obra + lima de alta visibilidad.
+     El lima no es "neón tech": es el color que la industria ya usa
+     para señalizar (chalecos, pintura de marcado, niveles láser).
+     Diseño comprometido con un solo mundo visual: siempre oscuro.
+     ============================================================ */
+  :root{
+    --black:#000000;
+    --ink:#111113;
+    --ink-2:#17181b;
+    --line:#232428;
+    --line-2:#2e3035;
+
+    --lime:#c4ff0d;
+    --lime-mid:#aedd2b;
+    --lime-soft:#c0de5d;
+    --sage:#a4c972;
+
+    --text:#f2f4ef;
+    --text-muted:#9a9d94;
+    --text-faint:#6b6e67;
+
+    --r:5px;
+    --maxw:1180px;
+    --f:'Sora', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --fm:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+  body{
+    margin:0; background:var(--black); color:var(--text);
+    font-family:var(--f); font-weight:400; line-height:1.6;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  /* grilla de plano, fija y muy tenue */
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+    background-image:
+      linear-gradient(to right, rgba(196,255,13,.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(196,255,13,.035) 1px, transparent 1px);
+    background-size:64px 64px;
+  }
+  main, header.site, footer{position:relative; z-index:1}
+  a{color:inherit}
+  img{max-width:100%; display:block}
+  p{margin:0}
+  h1,h2,h3{margin:0; font-weight:700; line-height:1.05; letter-spacing:-.03em; text-wrap:balance}
+  ::selection{background:var(--lime); color:var(--black)}
+  :focus-visible{outline:2px solid var(--lime); outline-offset:3px; border-radius:2px}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 clamp(20px,4vw,44px)}
+
+  /* ---------- átomos ---------- */
+  .eyebrow{
+    font-family:var(--fm); font-size:.7rem; font-weight:500; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--lime); display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:7px; height:7px; background:var(--lime); flex:none}
+  .lead{font-size:1.05rem; color:var(--text-muted); max-width:58ch; font-weight:300}
+
+  .btn{
+    font-family:var(--f); font-weight:600; font-size:.9rem; letter-spacing:-.01em; cursor:pointer;
+    padding:12px 20px; border-radius:var(--r); border:1px solid var(--line-2);
+    background:transparent; color:var(--text); text-decoration:none;
+    display:inline-flex; align-items:center; gap:9px;
+    transition:border-color .15s ease, background .15s ease, color .15s ease;
+  }
+  .btn:hover{border-color:var(--lime); color:var(--lime)}
+  .btn.solid{background:var(--lime); border-color:var(--lime); color:#0b0c08}
+  .btn.solid:hover{background:var(--lime-mid); border-color:var(--lime-mid); color:#0b0c08}
+
+  .mono{font-family:var(--fm)}
+
+  /* ---------- nav ---------- */
+  header.site{
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    background:rgba(0,0,0,.78); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex; align-items:center; justify-content:space-between; height:66px}
+  .brand{display:flex; align-items:center; gap:9px; text-decoration:none; font-weight:700; font-size:1.15rem; letter-spacing:-.04em}
+  .brand .mark{width:11px; height:11px; background:var(--lime); border-radius:2px; flex:none}
+  .nav-inner{display:flex; align-items:center; gap:30px}
+  .navlinks{display:flex; gap:26px; list-style:none; margin:0; padding:0}
+  .navlinks a{
+    font-family:var(--fm); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--text-muted); text-decoration:none; transition:color .15s;
+  }
+  .navlinks a:hover{color:var(--lime)}
+  .nav .btn{padding:9px 16px; font-size:.82rem}
+  @media (max-width:860px){ .navlinks{display:none} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:148px 0 72px; border-bottom:1px solid var(--line); position:relative; overflow:hidden;
+  }
+  .hero::after{
+    content:""; position:absolute; top:-260px; left:50%; transform:translateX(-50%);
+    width:900px; height:520px; pointer-events:none;
+    background:radial-gradient(ellipse at center, rgba(196,255,13,.10), transparent 62%);
+  }
+  .hero-inner{position:relative; z-index:1; max-width:900px}
+  .hero h1{font-size:clamp(2.4rem,6vw,4.6rem); margin-top:20px; font-weight:700}
+  .hero h1 .lime{color:var(--lime)}
+  .hero .lead{margin-top:24px; font-size:1.15rem; max-width:60ch}
+  .cta-row{margin-top:34px; display:flex; gap:12px; flex-wrap:wrap}
+  .specbar{
+    margin-top:44px; padding-top:18px; border-top:1px solid var(--line);
+    display:flex; gap:34px; flex-wrap:wrap;
+    font-family:var(--fm); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint);
+  }
+  .specbar b{color:var(--sage); font-weight:500}
+  .hero h1 .w{display:inline-block; opacity:0; transform:translateY(.22em); animation:rise .6s cubic-bezier(.2,.8,.2,1) forwards}
+  @keyframes rise{to{opacity:1; transform:translateY(0)}}
+  @media (prefers-reduced-motion: reduce){ .hero h1 .w{opacity:1; transform:none; animation:none} }
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1; transform:translateY(0)}
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none; transition:none} }
+
+  /* ---------- secciones ---------- */
+  .section{padding:92px 0; border-bottom:1px solid var(--line)}
+  .section-head{max-width:660px; display:flex; flex-direction:column; gap:16px; margin-bottom:54px}
+  .section-head h2{font-size:clamp(1.65rem,3.4vw,2.4rem)}
+
+  /* ---------- problema (columna anclada) ---------- */
+  .problem-grid{display:grid; grid-template-columns:.92fr 1.08fr; gap:64px}
+  .problem-sticky{position:sticky; top:106px; align-self:start}
+  .problem-sticky h2{font-size:clamp(1.65rem,3.2vw,2.3rem); margin-top:18px}
+  .problem-sticky .lead{margin-top:18px}
+  .problem-track{display:flex; flex-direction:column; gap:22px; padding:4vh 0 12vh}
+  .evidence{
+    background:var(--ink); border:1px solid var(--line); border-left:2px solid var(--lime);
+    border-radius:var(--r); padding:20px 22px; max-width:460px;
+  }
+  .evidence .tag{
+    font-family:var(--fm); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-faint); display:flex; justify-content:space-between; gap:14px; margin-bottom:10px;
+  }
+  .evidence .msg{font-size:.98rem; font-weight:300; color:var(--text)}
+  .evidence .msg b{color:var(--lime-soft); font-weight:500}
+  .problem-punch{
+    font-size:1.35rem; font-weight:600; letter-spacing:-.02em; color:var(--lime);
+    max-width:460px; padding-top:6px;
+  }
+  @media (max-width:880px){
+    .problem-grid{grid-template-columns:1fr; gap:30px}
+    .problem-sticky{position:static}
+  }
+
+  /* ---------- herramientas ---------- */
+  .tool{display:grid; grid-template-columns:.82fr 1.18fr; gap:46px; align-items:start; padding:54px 0; border-top:1px solid var(--line)}
+  .tool:first-of-type{border-top:none; padding-top:0}
+  .tool-copy .eyebrow{margin-bottom:16px}
+  .tool-copy h3{font-size:1.55rem; margin-bottom:14px; font-weight:600}
+  .tool-copy p{color:var(--text-muted); font-weight:300; margin-bottom:10px}
+  .tool-copy ul{margin:18px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px}
+  .tool-copy li{font-size:.88rem; color:var(--text-muted); font-weight:300; display:flex; gap:11px; line-height:1.5}
+  .tool-copy li::before{content:"·"; color:var(--lime); font-weight:700; flex:none}
+  .tool-demo{min-width:0}
+  .demo-frame{background:var(--ink); border:1px solid var(--line); border-radius:8px; overflow:hidden}
+  .demo-label{
+    display:flex; justify-content:space-between; align-items:center; gap:12px; padding:11px 16px;
+    font-family:var(--fm); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-faint); border-bottom:1px solid var(--line); background:var(--black);
+  }
+  .demo-label .live{display:flex; align-items:center; gap:7px; color:var(--lime)}
+  .demo-label .live::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--lime)}
+  @media (max-width:920px){ .tool{grid-template-columns:1fr; gap:28px} }
+
+  /* ---------- antes/después ---------- */
+  .ba-tabs{display:flex; gap:7px; padding:14px 16px 0; flex-wrap:wrap}
+  .ba-tab{
+    font-family:var(--fm); font-size:.7rem; letter-spacing:.06em; padding:7px 12px; border-radius:3px;
+    border:1px solid var(--line-2); background:transparent; color:var(--text-muted); cursor:pointer;
+    transition:all .15s ease;
+  }
+  .ba-tab:hover{color:var(--lime); border-color:var(--lime)}
+  .ba-tab.on{background:var(--lime); border-color:var(--lime); color:#0b0c08}
+  .ba-stage{position:relative; margin:14px 16px 0; border-radius:4px; overflow:hidden; aspect-ratio:4/3; background:var(--ink-2)}
+  .ba-stage img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; user-select:none}
+  .ba-stage .ba-before{clip-path:inset(0 var(--clip,50%) 0 0)}
+  .ba-line{position:absolute; top:0; bottom:0; left:calc(100% - var(--clip,50%)); width:2px; background:var(--lime); pointer-events:none}
+  .ba-handle{
+    position:absolute; top:50%; left:calc(100% - var(--clip,50%)); transform:translate(-50%,-50%);
+    width:34px; height:34px; border-radius:50%; background:var(--lime); color:#0b0c08;
+    display:flex; align-items:center; justify-content:center; font-size:.85rem; font-weight:700;
+    pointer-events:none;
+  }
+  .ba-badge{
+    position:absolute; top:11px; font-family:var(--fm); font-size:.64rem; letter-spacing:.12em; text-transform:uppercase;
+    background:rgba(0,0,0,.72); color:var(--text); padding:5px 9px; border-radius:3px; border:1px solid var(--line-2);
+  }
+  .ba-badge.before{left:11px} .ba-badge.after{right:11px; color:var(--lime); border-color:rgba(196,255,13,.35)}
+  .ba-foot{padding:14px 16px 18px}
+  .ba-range{width:100%; margin:0; accent-color:var(--lime); cursor:ew-resize}
+
+  /* ---------- cotizador ---------- */
+  .quote-body{padding:22px}
+  .quote-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px}
+  @media (max-width:520px){ .quote-row{grid-template-columns:1fr} }
+  .field{display:flex; flex-direction:column; gap:7px}
+  .field label{font-family:var(--fm); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-faint)}
+  .field select, .field input, .field textarea{
+    font-family:var(--f); font-size:.92rem; font-weight:400; padding:11px 12px; border-radius:var(--r);
+    border:1px solid var(--line-2); background:var(--black); color:var(--text);
+  }
+  .field select:focus, .field input:focus, .field textarea:focus{border-color:var(--lime); outline:none}
+  .quote-result{
+    margin-top:6px; padding:16px 18px; border-radius:var(--r); background:var(--black); border:1px solid var(--line-2);
+    display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .quote-result .label{font-family:var(--fm); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-faint)}
+  .quote-result .amount{font-family:var(--fm); font-size:1.1rem; font-weight:500; color:var(--lime); font-variant-numeric:tabular-nums; display:block; margin-top:4px}
+  .quote-note{font-size:.76rem; color:var(--text-faint); margin-top:12px; font-weight:300; line-height:1.5}
+
+  /* ---------- caso real ---------- */
+  .case{display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:center}
+  .case-media{position:relative; border-radius:8px; overflow:hidden; border:1px solid var(--line)}
+  .case-media img{aspect-ratio:4/3; object-fit:cover}
+  .case-logo{
+    position:absolute; left:16px; bottom:16px; background:rgba(0,0,0,.8); border:1px solid var(--line-2);
+    padding:9px 13px; border-radius:4px;
+  }
+  .case-logo img{height:24px; width:auto}
+  .case-copy h2{font-size:clamp(1.6rem,3.2vw,2.3rem); margin-top:16px}
+  .case-copy .role{font-family:var(--fm); font-size:.74rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-faint); margin:10px 0 20px}
+  .case-copy p{color:var(--text-muted); font-weight:300}
+  .case-list{list-style:none; margin:24px 0 0; padding:0; display:flex; flex-direction:column; gap:0}
+  .case-list li{display:flex; gap:14px; font-size:.9rem; font-weight:300; color:var(--text-muted); padding:13px 0; border-top:1px solid var(--line)}
+  .case-list li b{color:var(--text); font-weight:500; min-width:150px; flex:none}
+  @media (max-width:920px){ .case{grid-template-columns:1fr; gap:30px} .case-list li{flex-direction:column; gap:4px} }
+
+  /* ---------- proceso ---------- */
+  .steps{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden}
+  .step{background:var(--black); padding:28px 24px}
+  .step .num{font-family:var(--fm); color:var(--lime); font-size:.78rem; letter-spacing:.1em}
+  .step h3{font-size:1.1rem; font-weight:600; margin:14px 0 10px; letter-spacing:-.02em}
+  .step p{font-size:.86rem; color:var(--text-muted); font-weight:300; line-height:1.55}
+  @media (max-width:920px){ .steps{grid-template-columns:1fr 1fr} }
+  @media (max-width:560px){ .steps{grid-template-columns:1fr} }
+
+  /* ---------- para quién ---------- */
+  .fit-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  .fit-card{border:1px solid var(--line); border-radius:var(--r); padding:22px 20px; background:var(--ink); transition:border-color .15s}
+  .fit-card:hover{border-color:var(--line-2)}
+  .fit-card .k{font-family:var(--fm); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--lime); display:block; margin-bottom:12px}
+  .fit-card h3{font-size:.98rem; font-weight:500; letter-spacing:-.01em; line-height:1.35}
+  .fit-card p{font-size:.84rem; color:var(--text-faint); font-weight:300; margin-top:8px; line-height:1.5}
+  @media (max-width:920px){ .fit-grid{grid-template-columns:1fr 1fr} }
+  @media (max-width:560px){ .fit-grid{grid-template-columns:1fr} }
+  .fit-note{margin-top:26px; font-size:.88rem; color:var(--text-faint); font-weight:300}
+  .fit-note b{color:var(--sage); font-weight:500}
+
+  /* ---------- cta ---------- */
+  .cta{border-bottom:none; position:relative}
+  .cta-bg{position:relative}
+  .cta-bg::before{
+    content:""; position:absolute; inset:0;
+    background-image:linear-gradient(180deg, rgba(0,0,0,.72), rgba(0,0,0,.95)), var(--cta-img);
+    background-size:cover; background-position:center;
+  }
+  .cta-inner{position:relative; z-index:1; max-width:var(--maxw); margin:0 auto; padding:88px clamp(20px,4vw,44px)}
+  .cta-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:56px}
+  .cta-copy h2{font-size:clamp(1.8rem,3.6vw,2.6rem); margin-top:18px}
+  .cta-copy h2 .lime{color:var(--lime)}
+  .cta-form{background:var(--ink); border:1px solid var(--line); border-radius:8px; padding:26px}
+  .cta-form .field{margin-bottom:14px}
+  .cta-form textarea{resize:vertical; min-height:84px}
+  .cta-form .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  @media (max-width:920px){ .cta-grid{grid-template-columns:1fr} }
+  @media (max-width:520px){ .cta-form .row2{grid-template-columns:1fr} }
+
+  /* ---------- footer ---------- */
+  footer{padding:40px 0; border-top:1px solid var(--line)}
+  .foot-inner{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px}
+  .foot-note{font-family:var(--fm); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint)}
+</style>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="#inicio"><span class="mark"></span>Citriq</a>
+    <div class="nav-inner">
+      <nav><ul class="navlinks">
+        <li><a href="#herramientas">Herramientas</a></li>
+        <li><a href="#caso-real">Caso real</a></li>
+        <li><a href="#proceso">Proceso</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul></nav>
+      <a class="btn solid" href="#contacto">Hablemos</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="inicio">
+    <div class="wrap hero-inner">
+      <p class="eyebrow">Creando tecnología para la construcción</p>
+      <h1>
+        <span class="w" style="animation-delay:.02s">Software</span>
+        <span class="w" style="animation-delay:.07s">para</span>
+        <span class="w" style="animation-delay:.12s">una</span>
+        <span class="w" style="animation-delay:.17s">industria</span>
+        <span class="w" style="animation-delay:.22s">que</span>
+        <span class="w" style="animation-delay:.27s">todavía</span>
+        <span class="w lime" style="animation-delay:.32s">cotiza</span>
+        <span class="w lime" style="animation-delay:.37s">a</span>
+        <span class="w lime" style="animation-delay:.42s">mano.</span>
+      </h1>
+      <p class="lead">Construimos herramientas interactivas para empresas de construcción y materiales: visualizadores, comparadores de obra y cotizadores. Corren en el navegador, se integran a la web que ya tenés y hacen que tu cliente decida sin esperar tres días un presupuesto.</p>
+      <div class="cta-row">
+        <a class="btn solid" href="#herramientas">Ver las herramientas</a>
+        <a class="btn" href="#caso-real">Caso: Natural Flooring</a>
+      </div>
+      <div class="specbar">
+        <span>Sin backend · <b>corre en el navegador</b></span>
+        <span>Se embebe en <b>tu web actual</b></span>
+        <span>Sin migrar <b>nada</b></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="problema">
+    <div class="wrap problem-grid">
+      <div class="problem-sticky">
+        <p class="eyebrow">El problema</p>
+        <h2>La obra avanzó cincuenta años. La forma de venderla, no.</h2>
+        <p class="lead">Tu cliente no puede tocar el material en una web. Necesita verlo puesto en su propio espacio, comparar el antes y el después de una obra real, y saber cuánto sale — ahora, no el lunes.</p>
+      </div>
+      <div class="problem-track">
+        <div class="evidence reveal">
+          <div class="tag"><span>WhatsApp · consulta</span><span>sáb · 21:47</span></div>
+          <p class="msg">"Che, ¿el <b>roble guatambú</b> ese cómo queda en mi living?"</p>
+        </div>
+        <div class="evidence reveal">
+          <div class="tag"><span>Presupuesto pendiente</span><span>vinílico · 38 m²</span></div>
+          <p class="msg">Sin responder desde el sábado. El cálculo a mano espera al lunes — y el cliente ya está pidiendo precio en otro lado.</p>
+        </div>
+        <div class="evidence reveal">
+          <div class="tag"><span>Carrete del celular</span><span>+40 fotos</span></div>
+          <p class="msg">El antes y después de la <b>escalera que quedó impecable</b>, enterrado entre fotos de obra. Nadie lo ve en la web.</p>
+        </div>
+        <p class="problem-punch reveal">Eso es exactamente lo que construimos.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="herramientas">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Herramientas</p>
+        <h2>Tres formas de que el cliente decida más rápido.</h2>
+        <p class="lead">Cada una corre 100% en el navegador — sin servidor, sin API, sin depender de tu proveedor de hosting. Se integran como un bloque de código en la web que ya tenés.</p>
+      </div>
+
+      <div class="tool reveal">
+        <div class="tool-copy">
+          <p class="eyebrow">Herramienta 01</p>
+          <h3>Visualizador de materiales</h3>
+          <p>Tu cliente sube una foto de su ambiente, marca las cuatro esquinas de la superficie y prueba cada material del catálogo con la perspectiva y la luz reales del lugar.</p>
+          <ul>
+            <li>Homografía de perspectiva calculada en el momento, no un filtro plano</li>
+            <li>Conserva sombras y reflejos de la foto original</li>
+            <li>Termina en un botón directo a WhatsApp con el material elegido</li>
+          </ul>
+        </div>
+        <div class="tool-demo">
+          <div class="demo-frame">
+            <div class="demo-label"><span>tu-web.com · embebido</span><span class="live">En vivo</span></div>
+            <div id="nf-mount"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool reveal">
+        <div class="tool-copy">
+          <p class="eyebrow">Herramienta 02</p>
+          <h3>Comparador antes / después</h3>
+          <p>Las fotos de cada obra, una sobre la otra con un control deslizante. La prueba más simple de que el trabajo se hizo bien — con las fotos reales de tu obra, no un stock genérico.</p>
+          <ul>
+            <li>Se arrastra con el dedo o con el control: sin apps, sin plugins</li>
+            <li>Una galería por tipo de obra</li>
+            <li>Pensado para el celular tanto como para el escritorio</li>
+          </ul>
+        </div>
+        <div class="tool-demo">
+          <div class="demo-frame">
+            <div class="demo-label"><span>tu-web.com · embebido</span><span class="live">En vivo</span></div>
+            <div class="ba-tabs" id="ba-tabs"></div>
+            <div class="ba-stage" id="ba-stage">
+              <img class="ba-after" id="ba-after" alt="Después">
+              <img class="ba-before" id="ba-before" alt="Antes">
+              <div class="ba-line"></div>
+              <div class="ba-handle">↔</div>
+              <span class="ba-badge before">Antes</span>
+              <span class="ba-badge after">Después</span>
+            </div>
+            <div class="ba-foot">
+              <input type="range" class="ba-range" id="ba-range" min="0" max="100" value="50" aria-label="Comparar antes y después">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool reveal">
+        <div class="tool-copy">
+          <p class="eyebrow">Herramienta 03 · prototipo</p>
+          <h3>Cotizador automático</h3>
+          <p>Tres datos y una estimación al instante, lista para mandar por WhatsApp. Esto es un prototipo funcional del concepto: los valores son de ejemplo, no el catálogo ni los precios reales de nadie.</p>
+          <ul>
+            <li>Hoy: reglas de superficie, tipo de obra y material</li>
+            <li>Mañana: tu lista de precios real, con IA leyendo la consulta del cliente</li>
+          </ul>
+        </div>
+        <div class="tool-demo">
+          <div class="demo-frame">
+            <div class="demo-label"><span>concepto · valores de ejemplo</span><span>v0.1</span></div>
+            <div class="quote-body">
+              <div class="quote-row">
+                <div class="field">
+                  <label>Tipo de obra</label>
+                  <select id="q-amb">
+                    <option value="1.0">Vivienda</option>
+                    <option value="1.15">Local comercial</option>
+                    <option value="1.3">Escalera</option>
+                    <option value="0.95">Gimnasio / club</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Material</label>
+                  <select id="q-mat">
+                    <option value="14500">SPC / vinílico</option>
+                    <option value="21000">Roble / guatambú</option>
+                    <option value="27500">Nogal / premium</option>
+                  </select>
+                </div>
+              </div>
+              <div class="quote-row">
+                <div class="field">
+                  <label>Superficie (m²)</label>
+                  <input type="number" id="q-m2" value="32" min="1">
+                </div>
+                <div class="field" style="justify-content:flex-end">
+                  <button class="btn solid" id="q-calc" type="button" style="justify-content:center">Calcular estimado</button>
+                </div>
+              </div>
+              <div class="quote-result">
+                <span><span class="label">Estimado</span><span class="amount" id="q-range">—</span></span>
+                <a class="btn" id="q-wa" href="#" target="_blank" rel="noopener noreferrer">Mandar por WhatsApp</a>
+              </div>
+              <p class="quote-note">Ejemplo ilustrativo. En producción se conecta al catálogo y la lista de precios real de cada cliente, y aclara siempre si el valor lleva IVA.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="caso-real">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Caso real</p>
+        <h2>Natural Flooring ya lo usa.</h2>
+      </div>
+      <div class="case reveal">
+        <div class="case-media">
+          <img src="images/showroom-frente.jpg" alt="Showroom de Natural Flooring">
+          <div class="case-logo"><img src="images/logo-natural-flooring.png" alt="Natural Flooring"></div>
+        </div>
+        <div class="case-copy">
+          <p class="eyebrow">Pisos, deck y escaleras</p>
+          <h2>Natural Flooring</h2>
+          <p class="role">San Fernando · Buenos Aires</p>
+          <p>Vende pisos de madera, deck y renovación de escaleras a clientes que necesitan verlo puesto antes de decidir. Le diseñamos la identidad, el catálogo digital y el visualizador que hoy usa para mostrar cada material antes de instalarlo.</p>
+          <ul class="case-list">
+            <li><b>Manual de marca</b><span>Identidad y sistema visual del showroom</span></li>
+            <li><b>Catálogo digital</b><span>Roble, nogal, guatambú, SPC y deck con fichas técnicas</span></li>
+            <li><b>Visualizador</b><span>El mismo que probaste arriba, con su catálogo real</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="proceso">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Cómo trabajamos</p>
+        <h2>Cuatro pasos. Sabés en cuál estamos.</h2>
+      </div>
+      <div class="steps reveal">
+        <div class="step">
+          <p class="num">01</p>
+          <h3>Relevamiento</h3>
+          <p>Vemos tu catálogo, tus fotos de obra y cómo cotizás hoy — por WhatsApp, planilla o de memoria.</p>
+        </div>
+        <div class="step">
+          <p class="num">02</p>
+          <h3>Prototipo</h3>
+          <p>Armamos la herramienta con tus materiales, tus fotos y tu marca. Nada de placeholders genéricos.</p>
+        </div>
+        <div class="step">
+          <p class="num">03</p>
+          <h3>Integración</h3>
+          <p>Se pega en la web que ya tenés. No migramos hosting ni tocamos lo que funciona.</p>
+        </div>
+        <div class="step">
+          <p class="num">04</p>
+          <h3>Acompañamiento</h3>
+          <p>Sumamos materiales y ajustamos con las consultas reales que hace tu cliente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="para-quien">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Para quién es</p>
+        <h2>Negocios donde el material se decide mirando, no leyendo una lista de precios.</h2>
+      </div>
+      <div class="fit-grid reveal">
+        <div class="fit-card">
+          <span class="k">Materiales</span>
+          <h3>Corralones y distribuidores</h3>
+          <p>Pisos, revestimientos, aberturas, deck y cerámicos con catálogo amplio.</p>
+        </div>
+        <div class="fit-card">
+          <span class="k">Ejecución</span>
+          <h3>Contratistas e instaladores</h3>
+          <p>Colocación, pulido, plastificado y renovación con obras que vale la pena mostrar.</p>
+        </div>
+        <div class="fit-card">
+          <span class="k">Proyecto</span>
+          <h3>Estudios y constructoras</h3>
+          <p>Equipos que presentan opciones de terminación a clientes y comitentes.</p>
+        </div>
+      </div>
+      <p class="fit-note">Empezamos por <b>pisos y revestimientos</b>, donde ya tenemos la herramienta andando. La lógica se repite en toda la obra: si el cliente lo tiene que ver antes de comprarlo, se puede construir.</p>
+    </div>
+  </section>
+
+  <section class="cta" id="contacto">
+    <div class="cta-bg" style="--cta-img:url('images/escalera-terminada-noche.jpg')">
+      <div class="cta-inner">
+        <div class="cta-grid">
+          <div class="cta-copy reveal">
+            <p class="eyebrow">Siguiente paso</p>
+            <h2>Contanos qué querés que tu cliente pueda <span class="lime">ver</span> antes de comprar.</h2>
+            <p class="lead" style="margin-top:18px">Lo miramos y te mostramos cómo lo resolveríamos con tu propio catálogo. Sin compromiso.</p>
+          </div>
+          <form class="cta-form reveal" id="contact-form">
+            <div class="row2">
+              <div class="field"><label>Nombre</label><input type="text" id="c-name" required></div>
+              <div class="field"><label>Empresa</label><input type="text" id="c-company"></div>
+            </div>
+            <div class="row2">
+              <div class="field"><label>Email</label><input type="email" id="c-email" required></div>
+              <div class="field"><label>Teléfono (opcional)</label><input type="tel" id="c-phone"></div>
+            </div>
+            <div class="field">
+              <label>Qué necesitás</label>
+              <select id="c-need">
+                <option>Visualizador de materiales</option>
+                <option>Comparador antes / después</option>
+                <option>Cotizador</option>
+                <option>Todavía no lo sé</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Contanos tu caso</label>
+              <textarea id="c-msg" placeholder="Qué vendés y qué te gustaría que tu cliente pueda hacer en tu web"></textarea>
+            </div>
+            <button class="btn solid" type="submit" style="width:100%; justify-content:center; margin-top:6px">Hablar por WhatsApp →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <a class="brand" href="#inicio"><span class="mark"></span>Citriq</a>
+    <p class="foot-note">Tecnología para la construcción · 2026</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:.12, rootMargin:'0px 0px -5% 0px'});
+    els.forEach(function(el){ io.observe(el); });
+  } else { els.forEach(function(el){ el.classList.add('in'); }); }
+
+  var PROJECTS = [
+    {name:'Parquet espiga · pulido', before:'images/pulido-herringbone-antes.jpg', after:'images/pulido-herringbone-despues-1.jpg'},
+    {name:'Escalera · renovación', before:'images/escalera-pvc-antes.jpg', after:'images/escalera-pvc-despues-1.jpg'},
+    {name:'Piso de gimnasio', before:'images/antes-gimnasio-con-piso-deteriorado.jpg', after:'images/despues-gimnasio-renovado.jpg'}
+  ];
+  var tabsEl=document.getElementById('ba-tabs'), stage=document.getElementById('ba-stage'),
+      imgBefore=document.getElementById('ba-before'), imgAfter=document.getElementById('ba-after'),
+      range=document.getElementById('ba-range');
+  function setClip(v){ stage.style.setProperty('--clip', (100-v)+'%'); }
+  function loadProject(i){
+    imgBefore.src=PROJECTS[i].before; imgAfter.src=PROJECTS[i].after;
+    imgBefore.alt=PROJECTS[i].name+' — antes'; imgAfter.alt=PROJECTS[i].name+' — después';
+    range.value=50; setClip(50);
+    [].forEach.call(tabsEl.children,function(b,idx){ b.classList.toggle('on', idx===i); });
+  }
+  PROJECTS.forEach(function(p,i){
+    var b=document.createElement('button'); b.type='button'; b.className='ba-tab'; b.textContent=p.name;
+    b.addEventListener('click',function(){ loadProject(i); });
+    tabsEl.appendChild(b);
+  });
+  range.addEventListener('input',function(){ setClip(+range.value); });
+  loadProject(0);
+
+  var qAmb=document.getElementById('q-amb'), qMat=document.getElementById('q-mat'), qM2=document.getElementById('q-m2'),
+      qRange=document.getElementById('q-range'), qWa=document.getElementById('q-wa'), qCalc=document.getElementById('q-calc');
+  function calcQuote(){
+    var m2=Math.max(1,+qM2.value||0);
+    var base=+qMat.value * +qAmb.value;
+    var low=Math.round(m2*base*0.94/100)*100, high=Math.round(m2*base*1.08/100)*100;
+    var matName=qMat.options[qMat.selectedIndex].text, ambName=qAmb.options[qAmb.selectedIndex].text;
+    qRange.textContent='$'+low.toLocaleString('es-AR')+' – $'+high.toLocaleString('es-AR')+' +IVA';
+    var msg='Hola! Quiero cotizar '+matName+' para '+ambName.toLowerCase()+', '+m2+' m². Vi un estimado de $'+low.toLocaleString('es-AR')+' a $'+high.toLocaleString('es-AR')+' en la web.';
+    qWa.href='https://wa.me/?text='+encodeURIComponent(msg);
+  }
+  qCalc.addEventListener('click',calcQuote);
+  calcQuote();
+
+  document.getElementById('contact-form').addEventListener('submit',function(e){
+    e.preventDefault();
+    var name=document.getElementById('c-name').value, company=document.getElementById('c-company').value,
+        email=document.getElementById('c-email').value, need=document.getElementById('c-need').value,
+        msg=document.getElementById('c-msg').value;
+    var text='Hola! Soy '+name+(company?' de '+company:'')+'. Me interesa: '+need+'. '+msg+' (Email: '+email+')';
+    window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank','noopener,noreferrer');
+  });
+})();
+</script>
+
+<!-- ===================== VISUALIZADOR DE PISOS (embebido) ===================== -->
+<div id="nf-app">
+  <style>
+    #nf-app{
+      --ink:#f2f4ef; --ink-soft:#9a9d94; --line:#232428; --line-strong:#2e3035;
+      --bg:#000000; --panel:#111113; --wood:#aedd2b; --wood-deep:#c4ff0d;
+      --accent:#c4ff0d;
+      font-family:'Sora', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      color:var(--ink); background:var(--bg); line-height:1.45;
+    }
+    #nf-app *{box-sizing:border-box}
+    #nf-app .head{padding:22px 26px 18px;border-bottom:1px solid var(--line);background:var(--panel)}
+    #nf-app .kicker{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--wood-deep);font-weight:700;margin:0 0 6px}
+    #nf-app .title{font-size:21px;font-weight:600;margin:0;letter-spacing:-.03em}
+    #nf-app .sub{font-size:13.5px;color:var(--ink-soft);margin:5px 0 0;max-width:60ch}
+    #nf-app .body{display:grid;grid-template-columns:1fr 280px;gap:0}
+    @media(max-width:760px){#nf-app .body{grid-template-columns:1fr}}
+    #nf-app .stage{position:relative;background:#000000;min-height:380px;display:flex;align-items:center;justify-content:center}
+    #nf-app canvas{max-width:100%;display:block;touch-action:none;cursor:crosshair}
+    #nf-app .drop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#cbbfaf;text-align:center;padding:30px;cursor:pointer}
+    #nf-app .drop svg{opacity:.7}
+    #nf-app .drop b{color:#f3ead9;font-size:15px;font-weight:600}
+    #nf-app .drop span{font-size:12.5px;opacity:.75;max-width:34ch}
+    #nf-app .drop.hide{display:none}
+    #nf-app .panel{background:var(--panel);border-left:1px solid var(--line);padding:18px;overflow:auto}
+    @media(max-width:760px){#nf-app .panel{border-left:none;border-top:1px solid var(--line)}}
+    #nf-app .grp{margin-bottom:20px}
+    #nf-app .grp:last-child{margin-bottom:0}
+    #nf-app .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin:0 0 9px;display:flex;justify-content:space-between;align-items:baseline}
+    #nf-app .lbl span{font-weight:600;letter-spacing:0;text-transform:none;color:var(--wood-deep)}
+    #nf-app .swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    #nf-app .sw{aspect-ratio:1;border-radius:9px;border:2px solid transparent;cursor:pointer;overflow:hidden;position:relative;background:#ddd;transition:border-color .12s}
+    #nf-app .sw canvas{width:100%;height:100%;cursor:pointer}
+    #nf-app .sw.on{border-color:var(--accent)}
+    #nf-app .sw .nm{position:absolute;left:0;right:0;bottom:0;font-size:9.5px;font-weight:600;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.6));padding:8px 4px 3px;text-align:center;line-height:1.1}
+    #nf-app .row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    #nf-app .row label{font-size:12.5px;color:var(--ink);min-width:78px}
+    #nf-app input[type=range]{flex:1;accent-color:var(--accent)}
+    #nf-app .seg{display:flex;border:1px solid var(--line-strong);border-radius:8px;overflow:hidden}
+    #nf-app .seg button{flex:1;border:none;background:var(--panel);padding:7px;font-size:12px;cursor:pointer;color:var(--ink-soft);font-weight:600}
+    #nf-app .seg button.on{background:var(--accent);color:#0b0c08}
+    #nf-app .btns{display:flex;gap:8px}
+    #nf-app button.act{flex:1;border:1px solid var(--line-strong);background:var(--panel);color:var(--ink);padding:10px;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;transition:background .12s}
+    #nf-app button.act:hover{background:var(--bg)}
+    #nf-app button.act.primary{background:var(--wood-deep);color:#0b0c08;border-color:var(--wood-deep)}
+    #nf-app button.act.primary:hover{background:#aedd2b}
+    #nf-app button.act.wa{width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+    #nf-app .hint{font-size:11.5px;color:var(--ink-soft);background:var(--bg);border-radius:8px;padding:10px 12px;line-height:1.4}
+    #nf-app .hint b{color:var(--ink)}
+    #nf-app input[type=file]{display:none}
+    #nf-app .toolbar{display:flex;gap:8px;padding:10px 14px;background:var(--panel);border-top:1px solid var(--line);align-items:center;flex-wrap:wrap}
+    #nf-app .toolbar .t{font-size:11.5px;color:var(--ink-soft)}
+    #nf-app .chip{font-size:11px;border:1px solid var(--line-strong);border-radius:20px;padding:5px 11px;background:var(--panel);cursor:pointer;color:var(--ink)}
+    #nf-app .chip:hover{background:var(--bg)}
+  </style>
+
+  <div class="head">
+    <p class="kicker">Natural Flooring · Visualizador</p>
+    <h2 class="title">Probá el material en tu propio ambiente</h2>
+    <p class="sub">Ya cargamos una foto de ejemplo. Arrastrá las esquinas para ajustar el marco, o subí la tuya.</p>
+  </div>
+
+  <div class="body">
+    <div>
+      <div class="stage">
+        <canvas id="nf-canvas" width="720" height="480"></canvas>
+        <div id="nf-drop" class="drop">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+          <b>Subí una foto del ambiente</b>
+          <span>Una sala, cocina, local o gimnasio. Tocá acá o arrastrá la imagen.</span>
+        </div>
+      </div>
+      <div class="toolbar">
+        <span class="t">Esquinas:</span>
+        <span class="chip" id="nf-reset-corners">Reubicar puntos</span>
+        <span class="chip" id="nf-change">Cambiar foto</span>
+        <span class="t" id="nf-status" style="margin-left:auto"></span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="grp">
+        <p class="lbl">Material <span id="nf-mat-name">—</span></p>
+        <div class="swatches" id="nf-swatches"></div>
+      </div>
+
+      <div class="grp">
+        <p class="lbl">Dirección del tablón</p>
+        <div class="seg" id="nf-dir">
+          <button data-dir="h" class="on">Horizontal</button>
+          <button data-dir="v">Vertical</button>
+        </div>
+      </div>
+
+      <div class="grp">
+        <p class="lbl">Ajustes</p>
+        <div class="row"><label>Tamaño</label><input type="range" id="nf-scale" min="4" max="20" value="9"></div>
+        <div class="row"><label>Luz y sombra</label><input type="range" id="nf-light" min="0" max="100" value="62"></div>
+        <div class="row"><label>Opacidad</label><input type="range" id="nf-opacity" min="60" max="100" value="100"></div>
+      </div>
+
+      <div class="grp">
+        <div class="btns">
+          <button class="act" id="nf-before">Mantener para ver el original</button>
+        </div>
+      </div>
+
+      <div class="grp">
+        <button class="act primary wa" id="nf-wa">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.69 8.24-8.23 8.24Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
+          Consultar por WhatsApp
+        </button>
+      </div>
+
+      <div class="grp">
+        <div class="hint"><b>Tip:</b> para mejor resultado, marcá las esquinas justo donde el piso toca las paredes. Mantené presionado <b>“Ver original”</b> para comparar.</div>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="nf-file" accept="image/*">
+</div>
+
+<script>
+(function(){
+  var mount = document.getElementById('nf-mount');
+  var app = document.getElementById('nf-app');
+  mount.appendChild(app);
+
+  const $ = s => app.querySelector(s);
+  const canvas = $('#nf-canvas'), ctx = canvas.getContext('2d');
+  const fileInput = $('#nf-file'), drop = $('#nf-drop'), status = $('#nf-status');
+
+  let img = null;
+  let imgW = 720, imgH = 480;
+  let corners = [];
+  let dragging = -1;
+  let showOriginal = false;
+
+  const MATERIALS = [
+    {name:'Roble claro', base:'#caa46f', grain:'#a9824f', gap:'#9a7747', tint:1},
+    {name:'Roble miel',  base:'#b9853f', grain:'#996a2c', gap:'#85551f', tint:1},
+    {name:'Nogal',       base:'#7a5230', grain:'#5d3c20', gap:'#4a2e16', tint:1},
+    {name:'Guatambú',    base:'#dcc596', grain:'#c4a86f', gap:'#b39a60', tint:1},
+    {name:'SPC gris',    base:'#9a958c', grain:'#827d74', gap:'#6f6a61', tint:0},
+    {name:'Wengué',      base:'#3f342b', grain:'#2c241d', gap:'#221c16', tint:1},
+  ];
+  let matIndex = 0, dir = 'h', plankScale = 9;
+
+  function buildTexture(mat, planks, vertical){
+    const S = 600;
+    const c = document.createElement('canvas'); c.width = S; c.height = S;
+    const g = c.getContext('2d');
+    g.fillStyle = mat.base; g.fillRect(0,0,S,S);
+    const n = Math.max(3, planks|0);
+    const pw = S / n;
+    const offsets = [0, .45, .2, .7, .35, .6, .1, .8];
+    for(let i=0;i<n;i++){
+      const y0 = i*pw;
+      const v = (Math.sin(i*12.9898)*43758.5453)%1;
+      const shade = (Math.abs(v)-.5)* (mat.tint?26:14);
+      g.save();
+      g.translate(0,y0);
+      g.fillStyle = shadeColor(mat.base, shade);
+      g.fillRect(0,0,S,pw);
+      g.strokeStyle = withAlpha(mat.grain, .35);
+      const lines = mat.tint?9:5;
+      for(let k=0;k<lines;k++){
+        const yy = (k+ .5)/lines*pw;
+        g.lineWidth = .6 + Math.random()*1.1;
+        g.beginPath();
+        let x=0; g.moveTo(0,yy);
+        const amp = mat.tint? (1.2+Math.random()*2.6):(0.5+Math.random()*1);
+        const freq = .015 + Math.random()*.02;
+        const ph = Math.random()*6.28;
+        for(x=0;x<=S;x+=8){ g.lineTo(x, yy + Math.sin(x*freq+ph)*amp); }
+        g.stroke();
+      }
+      if(mat.tint && Math.random()<.5){
+        const kx=Math.random()*S, ky=pw*(.3+Math.random()*.4), kr=1.5+Math.random()*2.5;
+        const rad=g.createRadialGradient(kx,ky,0,kx,ky,kr*3);
+        rad.addColorStop(0, withAlpha(mat.gap,.55)); rad.addColorStop(1, withAlpha(mat.gap,0));
+        g.fillStyle=rad; g.beginPath(); g.arc(kx,ky,kr*3,0,6.28); g.fill();
+      }
+      g.fillStyle = withAlpha(mat.gap, .9);
+      g.fillRect(0, pw-1.5, S, 1.5);
+      const cut = (offsets[i%offsets.length])*S;
+      g.fillStyle = withAlpha(mat.gap,.7);
+      g.fillRect(cut, 0, 1.4, pw);
+      g.fillRect((cut+S*0.55)%S, 0, 1.4, pw);
+      g.restore();
+    }
+    const lg = g.createLinearGradient(0,0,S,S);
+    lg.addColorStop(0, 'rgba(255,255,255,.05)'); lg.addColorStop(1,'rgba(0,0,0,.05)');
+    g.fillStyle=lg; g.fillRect(0,0,S,S);
+
+    if(vertical){
+      const r = document.createElement('canvas'); r.width=S; r.height=S;
+      const rg = r.getContext('2d');
+      rg.translate(S/2,S/2); rg.rotate(Math.PI/2); rg.translate(-S/2,-S/2);
+      rg.drawImage(c,0,0); return r;
+    }
+    return c;
+  }
+  function shadeColor(hex, amt){
+    const {r,g,b}=hex2rgb(hex);
+    return `rgb(${clamp(r+amt)},${clamp(g+amt)},${clamp(b+amt)})`;
+  }
+  function withAlpha(hex,a){const{r,g,b}=hex2rgb(hex);return `rgba(${r},${g},${b},${a})`;}
+  function hex2rgb(h){h=h.replace('#','');return{r:parseInt(h.slice(0,2),16),g:parseInt(h.slice(2,4),16),b:parseInt(h.slice(4,6),16)};}
+  function clamp(v){return Math.max(0,Math.min(255,v|0));}
+
+  let textureCache = {};
+  function getTexture(){
+    const key = matIndex+'_'+plankScale+'_'+dir;
+    if(!textureCache[key]) textureCache[key] = buildTexture(MATERIALS[matIndex], plankScale, dir==='v');
+    return textureCache[key];
+  }
+
+  function computeHomography(src, dst){
+    const A=[], b=[];
+    for(let i=0;i<4;i++){
+      const {x:sx,y:sy}=src[i], {x:dx,y:dy}=dst[i];
+      A.push([sx,sy,1,0,0,0,-sx*dx,-sy*dx]); b.push(dx);
+      A.push([0,0,0,sx,sy,1,-sx*dy,-sy*dy]); b.push(dy);
+    }
+    const h = solve(A,b);
+    return [h[0],h[1],h[2],h[3],h[4],h[5],h[6],h[7],1];
+  }
+  function solve(A,b){
+    const n=8, M=A.map((r,i)=>[...r,b[i]]);
+    for(let col=0;col<n;col++){
+      let piv=col; for(let r=col+1;r<n;r++) if(Math.abs(M[r][col])>Math.abs(M[piv][col])) piv=r;
+      [M[col],M[piv]]=[M[piv],M[col]];
+      const d=M[col][col]||1e-9;
+      for(let k=col;k<=n;k++) M[col][k]/=d;
+      for(let r=0;r<n;r++){ if(r===col) continue; const f=M[r][col]; for(let k=col;k<=n;k++) M[r][k]-=f*M[col][k]; }
+    }
+    return M.map(r=>r[n]);
+  }
+  function applyH(H,x,y){
+    const X=H[0]*x+H[1]*y+H[2], Y=H[3]*x+H[4]*y+H[5], W=H[6]*x+H[7]*y+H[8];
+    return {x:X/W, y:Y/W};
+  }
+
+  function texTri(c, tex, s0,s1,s2, d0,d1,d2){
+    c.save();
+    c.beginPath();
+    c.moveTo(d0.x,d0.y); c.lineTo(d1.x,d1.y); c.lineTo(d2.x,d2.y); c.closePath();
+    c.clip();
+    const denom = s0.x*(s2.y-s1.y) - s1.x*s2.y + s2.x*s1.y + (s1.x-s2.x)*s0.y;
+    if(Math.abs(denom)<1e-6){c.restore();return;}
+    const a=(d0.x*(s2.y-s1.y)-d1.x*s2.y+d2.x*s1.y+(d1.x-d2.x)*s0.y)/denom;
+    const bb=(s0.x*(d1.x-d2.x)+s1.x*(d2.x-d0.x)+s2.x*(d0.x-d1.x))/denom;
+    const cc=(d0.y*(s2.y-s1.y)-d1.y*s2.y+d2.y*s1.y+(d1.y-d2.y)*s0.y)/denom;
+    const dd=(s0.x*(d1.y-d2.y)+s1.x*(d2.y-d0.y)+s2.x*(d0.y-d1.y))/denom;
+    const e=(s0.x*(s2.y*d1.x-s1.y*d2.x)+s0.y*(s1.x*d2.x-s2.x*d1.x)+(s1.x*s2.y-s2.x*s1.y)*d0.x)/denom;
+    const f=(s0.x*(s2.y*d1.y-s1.y*d2.y)+s0.y*(s1.x*d2.y-s2.x*d1.y)+(s1.x*s2.y-s2.x*s1.y)*d0.y)/denom;
+    c.transform(a,bb,cc,dd,e,f);
+    c.drawImage(tex,0,0);
+    c.restore();
+  }
+
+  function pathQuad(c, q){ c.beginPath(); c.moveTo(q[0].x,q[0].y); for(let i=1;i<4;i++) c.lineTo(q[i].x,q[i].y); c.closePath(); }
+
+  function render(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(!img){ return; }
+    ctx.drawImage(img,0,0,imgW,imgH);
+    if(showOriginal || corners.length<4){ drawHandles(); return; }
+
+    const tex = getTexture();
+    const TS = tex.width;
+
+    const buf = document.createElement('canvas'); buf.width=canvas.width; buf.height=canvas.height;
+    const bx = buf.getContext('2d');
+
+    const H = computeHomography(
+      [{x:0,y:0},{x:1,y:0},{x:1,y:1},{x:0,y:1}],
+      corners
+    );
+    const N = 14;
+    for(let i=0;i<N;i++){
+      for(let j=0;j<N;j++){
+        const u0=i/N,u1=(i+1)/N,v0=j/N,v1=(j+1)/N;
+        const s00={x:u0*TS,y:v0*TS},s10={x:u1*TS,y:v0*TS},s11={x:u1*TS,y:v1*TS},s01={x:u0*TS,y:v1*TS};
+        const d00=applyH(H,u0,v0),d10=applyH(H,u1,v0),d11=applyH(H,u1,v1),d01=applyH(H,u0,v1);
+        texTri(bx, tex, s00,s10,s11, d00,d10,d11);
+        texTri(bx, tex, s00,s11,s01, d00,d11,d01);
+      }
+    }
+
+    const lightAmt = +$('#nf-light').value/100;
+    if(lightAmt>0){
+      bx.save(); pathQuad(bx, corners); bx.clip();
+      bx.globalCompositeOperation='multiply';
+      bx.globalAlpha = lightAmt;
+      bx.drawImage(img,0,0,imgW,imgH);
+      bx.globalCompositeOperation='screen';
+      bx.globalAlpha = lightAmt*0.5;
+      bx.drawImage(img,0,0,imgW,imgH);
+      bx.restore();
+    }
+
+    ctx.save();
+    ctx.globalAlpha = +$('#nf-opacity').value/100;
+    pathQuad(ctx, corners); ctx.clip();
+    ctx.drawImage(buf,0,0);
+    ctx.restore();
+
+    drawHandles();
+  }
+
+  function drawHandles(){
+    if(corners.length<4) return;
+    ctx.save();
+    ctx.strokeStyle='rgba(196,255,13,.9)'; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
+    pathQuad(ctx,corners); ctx.stroke(); ctx.setLineDash([]);
+    corners.forEach((p,i)=>{
+      ctx.beginPath(); ctx.arc(p.x,p.y,8,0,6.28);
+      ctx.fillStyle= i===dragging?'#c4ff0d':'#ffffff'; ctx.fill();
+      ctx.lineWidth=2; ctx.strokeStyle='#c4ff0d'; ctx.stroke();
+    });
+    ctx.restore();
+  }
+
+  function defaultCorners(){
+    const w=imgW,h=imgH;
+    return [
+      {x:w*0.28,y:h*0.55},
+      {x:w*0.72,y:h*0.55},
+      {x:w*0.96,y:h*0.96},
+      {x:w*0.04,y:h*0.96},
+    ];
+  }
+
+  function loadImage(src){
+    const im = new Image();
+    im.crossOrigin = 'anonymous';
+    im.onload = ()=>{
+      img = im;
+      const maxW=720, maxH=520;
+      let r = Math.min(maxW/im.width, maxH/im.height, 1);
+      imgW = Math.round(im.width*r); imgH = Math.round(im.height*r);
+      canvas.width = imgW; canvas.height = imgH;
+      corners = defaultCorners();
+      drop.classList.add('hide');
+      status.textContent = 'Arrastrá los puntos a las esquinas del piso';
+      render();
+    };
+    im.src = src;
+  }
+  function handleFile(f){ if(!f) return; const fr=new FileReader(); fr.onload=e=>loadImage(e.target.result); fr.readAsDataURL(f); }
+
+  drop.addEventListener('click', ()=>fileInput.click());
+  $('#nf-change').addEventListener('click', ()=>fileInput.click());
+  fileInput.addEventListener('change', e=>handleFile(e.target.files[0]));
+  ['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();}));
+  drop.addEventListener('drop', e=>{e.preventDefault(); handleFile(e.dataTransfer.files[0]);});
+
+  function evtPos(e){
+    const r=canvas.getBoundingClientRect();
+    const t=e.touches?e.touches[0]:e;
+    return {x:(t.clientX-r.left)*(canvas.width/r.width), y:(t.clientY-r.top)*(canvas.height/r.height)};
+  }
+  function down(e){
+    if(!img) return;
+    const p=evtPos(e);
+    for(let i=0;i<corners.length;i++){
+      if(Math.hypot(corners[i].x-p.x,corners[i].y-p.y)<16){ dragging=i; e.preventDefault(); render(); return; }
+    }
+  }
+  function move(e){
+    if(dragging<0) return;
+    const p=evtPos(e);
+    corners[dragging]={x:Math.max(0,Math.min(canvas.width,p.x)),y:Math.max(0,Math.min(canvas.height,p.y))};
+    e.preventDefault(); render();
+  }
+  function up(){ dragging=-1; render(); }
+  canvas.addEventListener('mousedown',down); window.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
+  canvas.addEventListener('touchstart',down,{passive:false}); canvas.addEventListener('touchmove',move,{passive:false}); canvas.addEventListener('touchend',up);
+
+  function buildSwatches(){
+    const wrap=$('#nf-swatches'); wrap.innerHTML='';
+    MATERIALS.forEach((m,i)=>{
+      const d=document.createElement('div'); d.className='sw'+(i===matIndex?' on':'');
+      const c=document.createElement('canvas'); c.width=120;c.height=120;
+      const t=buildTexture(m,5,false); c.getContext('2d').drawImage(t,0,0,120,120);
+      d.appendChild(c);
+      const nm=document.createElement('div'); nm.className='nm'; nm.textContent=m.name; d.appendChild(nm);
+      d.addEventListener('click',()=>{matIndex=i;$('#nf-mat-name').textContent=m.name;buildSwatches();render();});
+      wrap.appendChild(d);
+    });
+  }
+  $('#nf-mat-name').textContent = MATERIALS[0].name;
+  buildSwatches();
+
+  $('#nf-dir').addEventListener('click',e=>{
+    if(e.target.dataset.dir){ dir=e.target.dataset.dir;
+      [...e.currentTarget.children].forEach(b=>b.classList.toggle('on',b===e.target)); render(); }
+  });
+  $('#nf-scale').addEventListener('input',e=>{plankScale=+e.target.value;render();});
+  $('#nf-light').addEventListener('input',render);
+  $('#nf-opacity').addEventListener('input',render);
+  $('#nf-reset-corners').addEventListener('click',()=>{if(img){corners=defaultCorners();render();}});
+
+  const before=$('#nf-before');
+  const press=v=>{showOriginal=v;render();};
+  before.addEventListener('mousedown',()=>press(true));
+  before.addEventListener('mouseup',()=>press(false));
+  before.addEventListener('mouseleave',()=>press(false));
+  before.addEventListener('touchstart',e=>{e.preventDefault();press(true);});
+  before.addEventListener('touchend',e=>{e.preventDefault();press(false);});
+
+  $('#nf-wa').addEventListener('click',()=>{
+    const msg = `Hola! Estuve probando el visualizador en la web y me interesa el piso ${MATERIALS[matIndex].name}. Quería consultar disponibilidad y precio.`;
+    window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank','noopener,noreferrer');
+  });
+
+  loadImage('images/antes-gimnasio-con-piso-deteriorado.jpg');
+})();
+</script>
