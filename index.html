@@ -110,12 +110,6 @@
   .hero h1 .lime{color:var(--lime)}
   .hero .lead{margin-top:24px; font-size:1.15rem; max-width:60ch}
   .cta-row{margin-top:34px; display:flex; gap:12px; flex-wrap:wrap}
-  .specbar{
-    margin-top:44px; padding-top:18px; border-top:1px solid var(--line);
-    display:flex; gap:34px; flex-wrap:wrap;
-    font-family:var(--fm); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint);
-  }
-  .specbar b{color:var(--sage); font-weight:500}
   .hero h1 .w{display:inline-block; opacity:0; transform:translateY(.22em); animation:rise .6s cubic-bezier(.2,.8,.2,1) forwards}
   @keyframes rise{to{opacity:1; transform:translateY(0)}}
   @media (prefers-reduced-motion: reduce){ .hero h1 .w{opacity:1; transform:none; animation:none} }
@@ -203,16 +197,41 @@
   .ba-range{width:100%; margin:0; accent-color:var(--lime); cursor:ew-resize}
 
   /* ---------- cotizador ---------- */
-  .quote-body{padding:22px}
-  .quote-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px}
-  @media (max-width:520px){ .quote-row{grid-template-columns:1fr} }
-  .field{display:flex; flex-direction:column; gap:7px}
+  .quote-body{padding:22px; display:flex; flex-direction:column; gap:18px}
+  .field{display:flex; flex-direction:column; gap:9px}
+
+  .chipset{display:flex; flex-wrap:wrap; gap:7px}
+  .chip{
+    font-family:var(--f); font-size:.85rem; font-weight:400; letter-spacing:-.01em;
+    padding:9px 14px; border-radius:4px; border:1px solid var(--line-2);
+    background:transparent; color:var(--text-muted); cursor:pointer;
+    transition:border-color .15s ease, color .15s ease, background .15s ease;
+  }
+  .chip:hover{color:var(--lime); border-color:var(--lime)}
+  .chip[aria-pressed="true"]{background:var(--lime); border-color:var(--lime); color:#0b0c08; font-weight:500}
+
+  .measure{display:flex; align-items:center; border:1px solid var(--line-2); border-radius:var(--r); background:var(--black); max-width:230px}
+  .measure:focus-within{border-color:var(--lime)}
+  .measure button{
+    width:42px; align-self:stretch; border:none; background:transparent; color:var(--text-muted);
+    font-family:var(--f); font-size:1.05rem; cursor:pointer; transition:color .15s ease, background .15s ease;
+  }
+  .measure button:hover{color:var(--lime); background:var(--ink-2)}
+  .measure input{
+    flex:1; min-width:0; border:none; background:transparent; color:var(--text); text-align:center;
+    font-family:var(--fm); font-size:1rem; font-variant-numeric:tabular-nums; padding:12px 0;
+    -moz-appearance:textfield; appearance:textfield;
+  }
+  .measure input:focus{outline:none}
+  .measure input::-webkit-outer-spin-button,
+  .measure input::-webkit-inner-spin-button{-webkit-appearance:none; margin:0}
+  .measure .unit{font-family:var(--fm); font-size:.74rem; color:var(--text-faint); padding-right:14px}
   .field label{font-family:var(--fm); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-faint)}
-  .field select, .field input, .field textarea{
+  .field input, .field textarea{
     font-family:var(--f); font-size:.92rem; font-weight:400; padding:11px 12px; border-radius:var(--r);
     border:1px solid var(--line-2); background:var(--black); color:var(--text);
   }
-  .field select:focus, .field input:focus, .field textarea:focus{border-color:var(--lime); outline:none}
+  .field input:focus, .field textarea:focus{border-color:var(--lime); outline:none}
   .quote-result{
     margin-top:6px; padding:16px 18px; border-radius:var(--r); background:var(--black); border:1px solid var(--line-2);
     display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
@@ -319,11 +338,6 @@
         <a class="btn solid" href="#herramientas">Ver las herramientas</a>
         <a class="btn" href="#caso-real">Caso: Natural Flooring</a>
       </div>
-      <div class="specbar">
-        <span>Sin backend · <b>corre en el navegador</b></span>
-        <span>Se embebe en <b>tu web actual</b></span>
-        <span>Sin migrar <b>nada</b></span>
-      </div>
     </div>
   </section>
 
@@ -362,7 +376,6 @@
 
       <div class="tool reveal">
         <div class="tool-copy">
-          <p class="eyebrow">Herramienta 01</p>
           <h3>Visualizador de materiales</h3>
           <p>Tu cliente sube una foto de su ambiente, marca las cuatro esquinas de la superficie y prueba cada material del catálogo con la perspectiva y la luz reales del lugar.</p>
           <ul>
@@ -381,7 +394,6 @@
 
       <div class="tool reveal">
         <div class="tool-copy">
-          <p class="eyebrow">Herramienta 02</p>
           <h3>Comparador antes / después</h3>
           <p>Las fotos de cada obra, una sobre la otra con un control deslizante. La prueba más simple de que el trabajo se hizo bien — con las fotos reales de tu obra, no un stock genérico.</p>
           <ul>
@@ -411,7 +423,6 @@
 
       <div class="tool reveal">
         <div class="tool-copy">
-          <p class="eyebrow">Herramienta 03 · prototipo</p>
           <h3>Cotizador automático</h3>
           <p>Tres datos y una estimación al instante, lista para mandar por WhatsApp. Esto es un prototipo funcional del concepto: los valores son de ejemplo, no el catálogo ni los precios reales de nadie.</p>
           <ul>
@@ -421,34 +432,32 @@
         </div>
         <div class="tool-demo">
           <div class="demo-frame">
-            <div class="demo-label"><span>concepto · valores de ejemplo</span><span>v0.1</span></div>
+            <div class="demo-label"><span>concepto · valores de ejemplo</span></div>
             <div class="quote-body">
-              <div class="quote-row">
-                <div class="field">
-                  <label>Tipo de obra</label>
-                  <select id="q-amb">
-                    <option value="1.0">Vivienda</option>
-                    <option value="1.15">Local comercial</option>
-                    <option value="1.3">Escalera</option>
-                    <option value="0.95">Gimnasio / club</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label>Material</label>
-                  <select id="q-mat">
-                    <option value="14500">SPC / vinílico</option>
-                    <option value="21000">Roble / guatambú</option>
-                    <option value="27500">Nogal / premium</option>
-                  </select>
+              <div class="field">
+                <label>Tipo de obra</label>
+                <div class="chipset" id="q-amb">
+                  <button type="button" class="chip" data-value="1.0" aria-pressed="true">Vivienda</button>
+                  <button type="button" class="chip" data-value="1.15" aria-pressed="false">Local comercial</button>
+                  <button type="button" class="chip" data-value="1.3" aria-pressed="false">Escalera</button>
+                  <button type="button" class="chip" data-value="0.95" aria-pressed="false">Gimnasio / club</button>
                 </div>
               </div>
-              <div class="quote-row">
-                <div class="field">
-                  <label>Superficie (m²)</label>
-                  <input type="number" id="q-m2" value="32" min="1">
+              <div class="field">
+                <label>Material</label>
+                <div class="chipset" id="q-mat">
+                  <button type="button" class="chip" data-value="14500" aria-pressed="true">SPC / vinílico</button>
+                  <button type="button" class="chip" data-value="21000" aria-pressed="false">Roble / guatambú</button>
+                  <button type="button" class="chip" data-value="27500" aria-pressed="false">Nogal / premium</button>
                 </div>
-                <div class="field" style="justify-content:flex-end">
-                  <button class="btn solid" id="q-calc" type="button" style="justify-content:center">Calcular estimado</button>
+              </div>
+              <div class="field">
+                <label>Superficie</label>
+                <div class="measure">
+                  <button type="button" id="q-minus" aria-label="Restar un metro cuadrado">&minus;</button>
+                  <input type="number" id="q-m2" value="32" min="1" inputmode="numeric" aria-label="Superficie en metros cuadrados">
+                  <button type="button" id="q-plus" aria-label="Sumar un metro cuadrado">+</button>
+                  <span class="unit">m&sup2;</span>
                 </div>
               </div>
               <div class="quote-result">
@@ -567,12 +576,12 @@
             </div>
             <div class="field">
               <label>Qué necesitás</label>
-              <select id="c-need">
-                <option>Visualizador de materiales</option>
-                <option>Comparador antes / después</option>
-                <option>Cotizador</option>
-                <option>Todavía no lo sé</option>
-              </select>
+              <div class="chipset" id="c-need">
+                <button type="button" class="chip" aria-pressed="true">Visualizador de materiales</button>
+                <button type="button" class="chip" aria-pressed="false">Comparador antes / después</button>
+                <button type="button" class="chip" aria-pressed="false">Cotizador</button>
+                <button type="button" class="chip" aria-pressed="false">Todavía no lo sé</button>
+              </div>
             </div>
             <div class="field">
               <label>Contanos tu caso</label>
@@ -626,24 +635,40 @@
   range.addEventListener('input',function(){ setClip(+range.value); });
   loadProject(0);
 
-  var qAmb=document.getElementById('q-amb'), qMat=document.getElementById('q-mat'), qM2=document.getElementById('q-m2'),
-      qRange=document.getElementById('q-range'), qWa=document.getElementById('q-wa'), qCalc=document.getElementById('q-calc');
+  function initChips(id, onChange){
+    var wrap=document.getElementById(id);
+    wrap.addEventListener('click', function(e){
+      var b=e.target.closest('.chip'); if(!b) return;
+      [].forEach.call(wrap.querySelectorAll('.chip'), function(c){ c.setAttribute('aria-pressed', c===b?'true':'false'); });
+      if(onChange) onChange();
+    });
+    function sel(){ return wrap.querySelector('.chip[aria-pressed="true"]'); }
+    return { value:function(){ var s=sel(); return s?s.dataset.value:null; },
+             label:function(){ var s=sel(); return s?s.textContent.trim():''; } };
+  }
+
+  var qM2=document.getElementById('q-m2'), qRange=document.getElementById('q-range'), qWa=document.getElementById('q-wa');
+  var ambChips=initChips('q-amb', function(){ calcQuote(); }), matChips=initChips('q-mat', function(){ calcQuote(); });
   function calcQuote(){
     var m2=Math.max(1,+qM2.value||0);
-    var base=+qMat.value * +qAmb.value;
+    var base=+matChips.value() * +ambChips.value();
     var low=Math.round(m2*base*0.94/100)*100, high=Math.round(m2*base*1.08/100)*100;
-    var matName=qMat.options[qMat.selectedIndex].text, ambName=qAmb.options[qAmb.selectedIndex].text;
+    var matName=matChips.label(), ambName=ambChips.label();
     qRange.textContent='$'+low.toLocaleString('es-AR')+' – $'+high.toLocaleString('es-AR')+' +IVA';
     var msg='Hola! Quiero cotizar '+matName+' para '+ambName.toLowerCase()+', '+m2+' m². Vi un estimado de $'+low.toLocaleString('es-AR')+' a $'+high.toLocaleString('es-AR')+' en la web.';
     qWa.href='https://wa.me/?text='+encodeURIComponent(msg);
   }
-  qCalc.addEventListener('click',calcQuote);
+  qM2.addEventListener('input',calcQuote);
+  document.getElementById('q-minus').addEventListener('click',function(){ qM2.value=Math.max(1,(+qM2.value||1)-1); calcQuote(); });
+  document.getElementById('q-plus').addEventListener('click',function(){ qM2.value=(+qM2.value||0)+1; calcQuote(); });
   calcQuote();
+
+  var needChips=initChips('c-need');
 
   document.getElementById('contact-form').addEventListener('submit',function(e){
     e.preventDefault();
     var name=document.getElementById('c-name').value, company=document.getElementById('c-company').value,
-        email=document.getElementById('c-email').value, need=document.getElementById('c-need').value,
+        email=document.getElementById('c-email').value, need=needChips.label(),
         msg=document.getElementById('c-msg').value;
     var text='Hola! Soy '+name+(company?' de '+company:'')+'. Me interesa: '+need+'. '+msg+' (Email: '+email+')';
     window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank','noopener,noreferrer');
