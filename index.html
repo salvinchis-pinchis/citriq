@@ -194,105 +194,24 @@
   .problem-punch{font-size:1.35rem; font-weight:600; letter-spacing:-.02em; color:var(--accent-text); max-width:460px; padding-top:6px}
   @media (max-width:880px){ .problem-grid{grid-template-columns:1fr; gap:30px} .problem-sticky{position:static} }
 
-  .tool{display:grid; grid-template-columns:.82fr 1.18fr; gap:46px; align-items:start; padding:54px 0; border-top:1px solid var(--line)}
-  .tool:first-of-type{border-top:none; padding-top:0}
-  .tool-copy h3{font-size:1.55rem; margin-bottom:14px; font-weight:600}
-  .tool-copy p{color:var(--text-muted); font-weight:300; margin-bottom:10px}
-  .tool-copy ul{margin:18px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px}
-  .tool-copy li{font-size:.88rem; color:var(--text-muted); font-weight:300; display:flex; gap:11px; line-height:1.5}
-  .tool-copy li::before{content:"·"; color:var(--accent-text); font-weight:700; flex:none}
-  .tool-demo{min-width:0}
-  .demo-frame{background:var(--surface); border:1px solid var(--line); border-radius:8px; overflow:hidden}
-  .demo-label{
-    display:flex; justify-content:space-between; align-items:center; gap:12px; padding:11px 16px;
-    font-family:var(--fm); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
-    color:var(--text-faint); border-bottom:1px solid var(--line); background:var(--bg);
-  }
-  .demo-label .live{display:flex; align-items:center; gap:7px; color:var(--accent-text)}
-  .demo-label .live::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
-  @media (max-width:920px){ .tool{grid-template-columns:1fr; gap:28px} }
+  .values{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+  .value{background:var(--bg); padding:30px 26px 32px}
+  .value h3{font-size:1.05rem; font-weight:600; letter-spacing:-.02em; line-height:1.3; margin-bottom:12px}
+  .value p{font-size:.88rem; color:var(--text-muted); font-weight:300; line-height:1.6}
+  @media (max-width:920px){ .values{grid-template-columns:1fr 1fr} }
+  @media (max-width:620px){ .values{grid-template-columns:1fr} }
 
-  .ba-tabs{display:flex; gap:7px; padding:14px 16px 0; flex-wrap:wrap}
-  .ba-tab{
-    font-family:var(--fm); font-size:.7rem; letter-spacing:.06em; padding:7px 12px; border-radius:3px;
-    border:1px solid var(--line-2); background:transparent; color:var(--text-muted); cursor:pointer;
-    transition:all .15s ease;
+  .quote-block{margin:0; max-width:900px}
+  .quote-block blockquote{
+    margin:0; font-size:clamp(1.3rem,2.8vw,1.95rem); font-weight:600; letter-spacing:-.025em;
+    line-height:1.3; text-wrap:balance; position:relative; padding-left:26px;
+    border-left:2px solid var(--accent);
   }
-  .ba-tab:hover{color:var(--accent-text); border-color:var(--accent-text)}
-  .ba-tab.on{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
-  .ba-stage{position:relative; margin:14px 16px 0; border-radius:4px; overflow:hidden; aspect-ratio:4/3; background:var(--surface-2)}
-  .ba-stage img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; user-select:none}
-  .ba-stage .ba-before{clip-path:inset(0 var(--clip,50%) 0 0)}
-  .ba-line{position:absolute; top:0; bottom:0; left:calc(100% - var(--clip,50%)); width:2px; background:var(--accent); pointer-events:none}
-  .ba-handle{
-    position:absolute; top:50%; left:calc(100% - var(--clip,50%)); transform:translate(-50%,-50%);
-    width:34px; height:34px; border-radius:50%; background:var(--accent); color:var(--accent-ink);
-    display:flex; align-items:center; justify-content:center; font-size:.85rem; font-weight:700; pointer-events:none;
-  }
-  .ba-badge{
-    position:absolute; top:11px; font-family:var(--fm); font-size:.64rem; letter-spacing:.12em; text-transform:uppercase;
-    background:rgba(0,0,0,.72); color:#f2f4ef; padding:5px 9px; border-radius:3px; border:1px solid rgba(255,255,255,.18);
-  }
-  .ba-badge.before{left:11px} .ba-badge.after{right:11px; color:#c4ff0d; border-color:rgba(196,255,13,.4)}
-  .ba-foot{padding:14px 16px 18px}
-  .ba-range{width:100%; margin:0; accent-color:var(--accent); cursor:ew-resize}
-
-  .quote-body{padding:22px; display:flex; flex-direction:column; gap:18px}
-  .field{display:flex; flex-direction:column; gap:9px}
-  .field label{font-family:var(--fm); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-faint)}
-  .field input, .field textarea{
-    font-family:var(--f); font-size:.92rem; font-weight:400; padding:11px 12px; border-radius:var(--r);
-    border:1px solid var(--line-2); background:var(--bg); color:var(--text);
-  }
-  .field input:focus, .field textarea:focus{border-color:var(--accent-text); outline:none}
-
-  .chipset{display:flex; flex-wrap:wrap; gap:7px}
-  .chip{
-    font-family:var(--f); font-size:.85rem; font-weight:400; letter-spacing:-.01em;
-    padding:9px 14px; border-radius:4px; border:1px solid var(--line-2);
-    background:transparent; color:var(--text-muted); cursor:pointer;
-    transition:border-color .15s ease, color .15s ease, background .15s ease;
-  }
-  .chip:hover{color:var(--accent-text); border-color:var(--accent-text)}
-  .chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:500}
-
-  .measure{display:flex; align-items:center; border:1px solid var(--line-2); border-radius:var(--r); background:var(--bg); max-width:230px}
-  .measure:focus-within{border-color:var(--accent-text)}
-  .measure button{
-    width:42px; align-self:stretch; border:none; background:transparent; color:var(--text-muted);
-    font-family:var(--f); font-size:1.05rem; cursor:pointer; transition:color .15s ease, background .15s ease;
-  }
-  .measure button:hover{color:var(--accent-text); background:var(--surface-2)}
-  .measure input{
-    flex:1; min-width:0; border:none; background:transparent; color:var(--text); text-align:center;
-    font-family:var(--fm); font-size:1rem; font-variant-numeric:tabular-nums; padding:12px 0;
-    -moz-appearance:textfield; appearance:textfield;
-  }
-  .measure input:focus{outline:none}
-  .measure input::-webkit-outer-spin-button,
-  .measure input::-webkit-inner-spin-button{-webkit-appearance:none; margin:0}
-  .measure .unit{font-family:var(--fm); font-size:.74rem; color:var(--text-faint); padding-right:14px}
-
-  .quote-result{
-    padding:16px 18px; border-radius:var(--r); background:var(--bg); border:1px solid var(--line-2);
-    display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
-  }
-  .quote-result .label{font-family:var(--fm); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-faint)}
-  .quote-result .amount{font-family:var(--fm); font-size:1.1rem; font-weight:500; color:var(--accent-text); font-variant-numeric:tabular-nums; display:block; margin-top:4px}
-  .quote-note{font-size:.76rem; color:var(--text-faint); font-weight:300; line-height:1.5}
-
-  .case{display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:center}
-  .case-media{position:relative; border-radius:8px; overflow:hidden; border:1px solid var(--line)}
-  .case-media img{aspect-ratio:4/3; object-fit:cover}
-  .case-logo{position:absolute; left:16px; bottom:16px; background:rgba(0,0,0,.8); border:1px solid rgba(255,255,255,.18); padding:9px 13px; border-radius:4px}
-  .case-logo img{height:24px; width:auto}
-  .case-copy h2{font-size:clamp(1.6rem,3.2vw,2.3rem); margin-top:16px}
-  .case-copy .role{font-family:var(--fm); font-size:.74rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-faint); margin:10px 0 20px}
-  .case-copy p{color:var(--text-muted); font-weight:300}
-  .case-list{list-style:none; margin:24px 0 0; padding:0}
-  .case-list li{display:flex; gap:14px; font-size:.9rem; font-weight:300; color:var(--text-muted); padding:13px 0; border-top:1px solid var(--line)}
-  .case-list li b{color:var(--text); font-weight:500; min-width:150px; flex:none}
-  @media (max-width:920px){ .case{grid-template-columns:1fr; gap:30px} .case-list li{flex-direction:column; gap:4px} }
+  .quote-block figcaption{display:flex; align-items:center; gap:16px; margin-top:28px; padding-left:28px}
+  .quote-block figcaption img{height:30px; width:auto}
+  .quote-block figcaption span{display:flex; flex-direction:column; gap:3px}
+  .quote-block figcaption b{font-size:.95rem; font-weight:600; letter-spacing:-.01em}
+  .quote-block figcaption small{font-family:var(--fm); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint)}
 
   .steps{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden}
   .step{background:var(--bg); padding:28px 24px}
@@ -395,8 +314,8 @@
     <a class="brand" href="#inicio"><span class="mark"></span>Citriq</a>
     <div class="nav-inner">
       <nav><ul class="navlinks">
-        <li><a href="#herramientas" data-i18n="nav.tools">Herramientas</a></li>
-        <li><a href="#caso-real" data-i18n="nav.cases">Casos</a></li>
+        <li><a href="#que-resolvemos" data-i18n="nav.solve">Qué resolvemos</a></li>
+        <li><a href="#clientes" data-i18n="nav.clients">Clientes</a></li>
         <li><a href="#proceso" data-i18n="nav.process">Proceso</a></li>
       </ul></nav>
       <div class="switches">
@@ -421,10 +340,10 @@
     <div class="wrap hero-inner">
       <p class="eyebrow" data-i18n="hero.eyebrow">Creando tecnología para la construcción</p>
       <h1 data-i18n="hero.title"><span class="w" style="animation-delay:.02s">Software</span> <span class="w" style="animation-delay:.07s">para</span> <span class="w" style="animation-delay:.12s">una</span> <span class="w" style="animation-delay:.17s">industria</span> <span class="w" style="animation-delay:.22s">que</span> <span class="w" style="animation-delay:.27s">todavía</span> <span class="w lime" style="animation-delay:.32s">cotiza</span> <span class="w lime" style="animation-delay:.37s">a</span> <span class="w lime" style="animation-delay:.42s">mano.</span></h1>
-      <p class="lead" data-i18n="hero.lead">Construimos herramientas interactivas para empresas de construcción y materiales: visualizadores, comparadores de obra y cotizadores. Corren en el navegador, se integran a la web que ya tenés y hacen que tu cliente decida sin esperar tres días un presupuesto.</p>
+      <p class="lead" data-i18n="hero.lead">Automatizamos procesos y construimos herramientas a medida para empresas de construcción y materiales. Para que tu cliente decida sin esperar tres días un presupuesto, y tu equipo deje de hacer a mano lo que puede hacerse solo.</p>
       <div class="cta-row">
         <button class="btn solid" type="button" data-open-contact data-i18n="cta.button">Hablemos</button>
-        <a class="btn" href="#herramientas" data-i18n="hero.secondary">Ver las herramientas</a>
+        <a class="btn" href="#que-resolvemos" data-i18n="hero.secondary">Qué resolvemos</a>
       </div>
     </div>
   </section>
@@ -459,138 +378,58 @@
     </div>
   </section>
 
-  <section class="section" id="herramientas">
+  <section class="section" id="que-resolvemos">
     <div class="wrap">
       <div class="section-head reveal">
-        <p class="eyebrow" data-i18n="tools.eyebrow">Herramientas</p>
-        <h2 data-i18n="tools.title">Tres formas de que el cliente decida más rápido.</h2>
-        <p class="lead" data-i18n="tools.lead">Cada una corre 100% en el navegador — sin servidor, sin API, sin depender de tu proveedor de hosting. Se integran como un bloque de código en la web que ya tenés.</p>
+        <p class="eyebrow" data-i18n="solve.eyebrow">Qué resolvemos</p>
+        <h2 data-i18n="solve.title">Lo que cambia en tu negocio cuando la tecnología entra en la obra.</h2>
+        <p class="lead" data-i18n="solve.lead">No vendemos una plataforma cerrada. Miramos cómo trabaja tu empresa hoy y construimos lo que le falta, sobre lo que ya tiene andando.</p>
       </div>
-
-      <div class="tool reveal">
-        <div class="tool-copy">
-          <h3 data-i18n="t1.title">Visualizador de materiales</h3>
-          <p data-i18n="t1.body">Tu cliente sube una foto de su ambiente, marca las cuatro esquinas de la superficie y prueba cada material del catálogo con la perspectiva y la luz reales del lugar.</p>
-          <ul>
-            <li data-i18n="t1.b1">Homografía de perspectiva calculada en el momento, no un filtro plano</li>
-            <li data-i18n="t1.b2">Conserva sombras y reflejos de la foto original</li>
-            <li data-i18n="t1.b3">Termina en un botón directo a WhatsApp con el material elegido</li>
-          </ul>
+      <div class="values reveal">
+        <div class="value">
+          <h3 data-i18n="v1.t">Automatizar lo que hoy se hace a mano</h3>
+          <p data-i18n="v1.b">El presupuesto que se calcula con la calculadora del celular, el dato que se copia de un chat a una planilla, el aviso que depende de que alguien se acuerde. Todo eso puede correr solo.</p>
         </div>
-        <div class="tool-demo">
-          <div class="demo-frame">
-            <div class="demo-label"><span data-i18n="demo.embed">tu-web.com · embebido</span><span class="live" data-i18n="demo.live">En vivo</span></div>
-            <div id="nf-mount"></div>
-          </div>
+        <div class="value">
+          <h3 data-i18n="v2.t">Que tu cliente no tenga que esperarte</h3>
+          <p data-i18n="v2.b">Le damos herramientas para ver el material puesto, comparar obras terminadas y tener un número aproximado sin depender de que vos estés disponible.</p>
         </div>
-      </div>
-
-      <div class="tool reveal">
-        <div class="tool-copy">
-          <h3 data-i18n="t2.title">Comparador antes / después</h3>
-          <p data-i18n="t2.body">Las fotos de cada obra, una sobre la otra con un control deslizante. La prueba más simple de que el trabajo se hizo bien — con las fotos reales de tu obra, no un stock genérico.</p>
-          <ul>
-            <li data-i18n="t2.b1">Se arrastra con el dedo o con el control: sin apps, sin plugins</li>
-            <li data-i18n="t2.b2">Una galería por tipo de obra</li>
-            <li data-i18n="t2.b3">Pensado para el celular tanto como para el escritorio</li>
-          </ul>
+        <div class="value">
+          <h3 data-i18n="v3.t">La consulta no se pierde fuera de horario</h3>
+          <p data-i18n="v3.b">El cliente pregunta un sábado a la noche. Si del otro lado no hay nada, esa consulta se va a la competencia el lunes a la mañana.</p>
         </div>
-        <div class="tool-demo">
-          <div class="demo-frame">
-            <div class="demo-label"><span data-i18n="demo.embed">tu-web.com · embebido</span><span class="live" data-i18n="demo.live">En vivo</span></div>
-            <div class="ba-tabs" id="ba-tabs"></div>
-            <div class="ba-stage" id="ba-stage">
-              <img class="ba-after" id="ba-after" alt="Después">
-              <img class="ba-before" id="ba-before" alt="Antes">
-              <div class="ba-line"></div>
-              <div class="ba-handle">↔</div>
-              <span class="ba-badge before" data-i18n="ba.before">Antes</span>
-              <span class="ba-badge after" data-i18n="ba.after">Después</span>
-            </div>
-            <div class="ba-foot">
-              <input type="range" class="ba-range" id="ba-range" min="0" max="100" value="50" aria-label="Comparar antes y después">
-            </div>
-          </div>
+        <div class="value">
+          <h3 data-i18n="v4.t">Tu negocio adelante del rubro</h3>
+          <p data-i18n="v4.b">La construcción viene atrasada en lo digital. El que llega primero con algo que el cliente no vio en ningún otro lado se queda con la consulta.</p>
         </div>
-      </div>
-
-      <div class="tool reveal">
-        <div class="tool-copy">
-          <h3 data-i18n="t3.title">Cotizador automático</h3>
-          <p data-i18n="t3.body">Tres datos y una estimación al instante, lista para mandar por WhatsApp. Esto es un prototipo funcional del concepto: los valores son de ejemplo, no el catálogo ni los precios reales de nadie.</p>
-          <ul>
-            <li data-i18n="t3.b1">Hoy: reglas de superficie, tipo de obra y material</li>
-            <li data-i18n="t3.b2">Mañana: tu lista de precios real, con IA leyendo la consulta del cliente</li>
-          </ul>
+        <div class="value">
+          <h3 data-i18n="v5.t">Más fácil para los dos lados</h3>
+          <p data-i18n="v5.b">Para el cliente, decidir sin dudar. Para tu equipo, dejar de responder veinte veces lo mismo y llegar a la visita con la consulta ya avanzada.</p>
         </div>
-        <div class="tool-demo">
-          <div class="demo-frame">
-            <div class="demo-label"><span data-i18n="demo.concept">concepto · valores de ejemplo</span></div>
-            <div class="quote-body">
-              <div class="field">
-                <label data-i18n="q.type">Tipo de obra</label>
-                <div class="chipset" id="q-amb">
-                  <button type="button" class="chip" data-value="1.0" aria-pressed="true" data-i18n="q.home">Vivienda</button>
-                  <button type="button" class="chip" data-value="1.15" aria-pressed="false" data-i18n="q.retail">Local comercial</button>
-                  <button type="button" class="chip" data-value="1.1" aria-pressed="false" data-i18n="q.office">Oficina</button>
-                  <button type="button" class="chip" data-value="0.95" aria-pressed="false" data-i18n="q.gym">Gimnasio / club</button>
-                  <button type="button" class="chip" data-value="1.2" aria-pressed="false" data-i18n="q.club">Bar / boliche</button>
-                  <button type="button" class="chip" data-value="1.45" aria-pressed="false" data-i18n="q.boat">Embarcación</button>
-                  <button type="button" class="chip" data-value="1.3" aria-pressed="false" data-i18n="q.stairs">Escalera</button>
-                </div>
-              </div>
-              <div class="field">
-                <label data-i18n="q.material">Material</label>
-                <div class="chipset" id="q-mat">
-                  <button type="button" class="chip" data-value="14500" aria-pressed="true" data-i18n="q.mat1">SPC / vinílico</button>
-                  <button type="button" class="chip" data-value="21000" aria-pressed="false" data-i18n="q.mat2">Roble / guatambú</button>
-                  <button type="button" class="chip" data-value="27500" aria-pressed="false" data-i18n="q.mat3">Nogal / premium</button>
-                </div>
-              </div>
-              <div class="field">
-                <label data-i18n="q.area">Superficie</label>
-                <div class="measure">
-                  <button type="button" id="q-minus" aria-label="-1 m2">&minus;</button>
-                  <input type="number" id="q-m2" value="32" min="1" inputmode="numeric" aria-label="m2">
-                  <button type="button" id="q-plus" aria-label="+1 m2">+</button>
-                  <span class="unit">m&sup2;</span>
-                </div>
-              </div>
-              <div class="quote-result">
-                <span><span class="label" data-i18n="q.estimate">Estimado</span><span class="amount" id="q-range">—</span></span>
-                <a class="btn" id="q-wa" href="#" target="_blank" rel="noopener noreferrer" data-i18n="q.send">Mandar por WhatsApp</a>
-              </div>
-              <p class="quote-note" data-i18n="q.note">Ejemplo ilustrativo. En producción se conecta al catálogo y la lista de precios real de cada cliente, y aclara siempre si el valor lleva IVA.</p>
-            </div>
-          </div>
+        <div class="value">
+          <h3 data-i18n="v6.t">Hecho con gente que conoce el oficio</h3>
+          <p data-i18n="v6.b">Cada herramienta sale de trabajar con empresas que llevan años en el rubro. No diseñamos para una industria que no pisamos.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="caso-real">
+  <section class="section" id="clientes">
     <div class="wrap">
       <div class="section-head reveal">
-        <p class="eyebrow" data-i18n="case.eyebrow">Caso real</p>
-        <h2 data-i18n="case.title">Natural Flooring ya lo usa.</h2>
+        <p class="eyebrow" data-i18n="voice.eyebrow">La voz del cliente</p>
+        <h2 data-i18n="voice.title">Escuchalo directo de nuestros clientes.</h2>
       </div>
-      <div class="case reveal">
-        <div class="case-media">
-          <img src="images/showroom-frente.jpg" alt="Showroom de Natural Flooring">
-          <div class="case-logo"><img src="images/logo-natural-flooring.png" alt="Natural Flooring"></div>
-        </div>
-        <div class="case-copy">
-          <p class="eyebrow" data-i18n="case.kicker">Pisos, deck y escaleras</p>
-          <h2>Natural Flooring</h2>
-          <p class="role" data-i18n="case.place">San Fernando · Buenos Aires</p>
-          <p data-i18n="case.body">Vende pisos de madera, deck y renovación de escaleras a clientes que necesitan verlo puesto antes de decidir. Le diseñamos la identidad, el catálogo digital y el visualizador que hoy usa para mostrar cada material antes de instalarlo.</p>
-          <ul class="case-list">
-            <li><b data-i18n="case.i1k">Manual de marca</b><span data-i18n="case.i1v">Identidad y sistema visual del showroom</span></li>
-            <li><b data-i18n="case.i2k">Catálogo digital</b><span data-i18n="case.i2v">Roble, nogal, guatambú, SPC y deck con fichas técnicas</span></li>
-            <li><b data-i18n="case.i3k">Visualizador</b><span data-i18n="case.i3v">El mismo que probaste arriba, con su catálogo real</span></li>
-          </ul>
-        </div>
-      </div>
+      <figure class="quote-block reveal">
+        <blockquote data-i18n="voice.quote">Citriq nos permitió ver cosas que en este rubro el 99% ni se imagina. Ahora estamos automatizados, más actualizados y con una infraestructura tecnológica que jamás hubiésemos tenido.</blockquote>
+        <figcaption>
+          <img src="images/logo-natural-flooring.png" alt="Natural Flooring">
+          <span>
+            <b>Natural Flooring</b>
+            <small data-i18n="voice.meta">Pisos, deck y escaleras · 15 años en el rubro</small>
+          </span>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
@@ -620,7 +459,7 @@
         <div class="fit-card"><span class="k" data-i18n="fit.k2">Ejecución</span><h3 data-i18n="fit.t2">Contratistas e instaladores</h3><p data-i18n="fit.b2">Colocación, pulido, plastificado y renovación con obras que vale la pena mostrar.</p></div>
         <div class="fit-card"><span class="k" data-i18n="fit.k3">Proyecto</span><h3 data-i18n="fit.t3">Estudios y constructoras</h3><p data-i18n="fit.b3">Equipos que presentan opciones de terminación a clientes y comitentes.</p></div>
       </div>
-      <p class="fit-note" data-i18n="fit.note">Empezamos por <b>pisos y revestimientos</b>, donde ya tenemos la herramienta andando. La lógica se repite en toda la obra: si el cliente lo tiene que ver antes de comprarlo, se puede construir.</p>
+      <p class="fit-note" data-i18n="fit.note">Empezamos por <b>pisos y revestimientos</b>, que es donde ya estamos trabajando. La lógica se repite en toda la obra: si el cliente lo tiene que ver antes de comprarlo, se puede construir.</p>
     </div>
   </section>
 
@@ -675,9 +514,9 @@
       <div class="field">
         <label data-i18n="f.need">Qué necesitás</label>
         <div class="chipset" id="c-need">
-          <button type="button" class="chip" aria-pressed="true" data-i18n="t1.title">Visualizador de materiales</button>
-          <button type="button" class="chip" aria-pressed="false" data-i18n="t2.title">Comparador antes / después</button>
-          <button type="button" class="chip" aria-pressed="false" data-i18n="t3.title">Cotizador automático</button>
+          <button type="button" class="chip" aria-pressed="true" data-i18n="f.n1">Automatizar un proceso</button>
+          <button type="button" class="chip" aria-pressed="false" data-i18n="f.n2">Que mi cliente vea el material</button>
+          <button type="button" class="chip" aria-pressed="false" data-i18n="f.n3">Cotizar más rápido</button>
           <button type="button" class="chip" aria-pressed="false" data-i18n="f.dunno">Todavía no lo sé</button>
         </div>
       </div>
@@ -725,12 +564,12 @@
   var I18N = {
     es:{},
     en:{
-      'nav.tools':'Tools', 'nav.cases':'Cases', 'nav.process':'Process',
+      'nav.solve':'What we solve', 'nav.clients':'Clients', 'nav.process':'Process',
       'cta.button':'Get in touch',
       'hero.eyebrow':'Building technology for construction',
       'hero.title':'<span class="w" style="animation-delay:.02s">Software</span> <span class="w" style="animation-delay:.07s">for</span> <span class="w" style="animation-delay:.12s">an</span> <span class="w" style="animation-delay:.17s">industry</span> <span class="w" style="animation-delay:.22s">that</span> <span class="w" style="animation-delay:.27s">still</span> <span class="w lime" style="animation-delay:.32s">quotes</span> <span class="w lime" style="animation-delay:.37s">by</span> <span class="w lime" style="animation-delay:.42s">hand.</span>',
-      'hero.lead':'We build interactive tools for construction and building-materials companies: visualizers, project comparators and instant quoting. They run in the browser, embed into the site you already have, and let your customer decide without waiting three days for a quote.',
-      'hero.secondary':'See the tools',
+      'hero.lead':'We automate processes and build custom tools for construction and building-materials companies. So your customer decides without waiting three days for a quote, and your team stops doing by hand what can run on its own.',
+      'hero.secondary':'What we solve',
       'clients.eyebrow':'Working with',
       'problem.eyebrow':'The problem',
       'problem.title':'Construction moved on fifty years. The way it is sold did not.',
@@ -742,36 +581,24 @@
       'problem.c3tag':'Camera roll', 'problem.c3time':'+40 photos',
       'problem.c3msg':'The before and after of <b>that staircase that came out perfect</b>, buried among job-site photos. Nobody sees it on the website.',
       'problem.punch':'That is exactly what we build.',
-      'tools.eyebrow':'Tools', 'tools.title':'Three ways to help your customer decide faster.',
-      'tools.lead':'Each one runs 100% in the browser — no server, no API, no dependency on your hosting provider. They drop into the site you already have as a block of code.',
-      't1.title':'Material visualizer',
-      't1.body':'Your customer uploads a photo of their space, marks the four corners of the surface, and tries every material in the catalogue with the real perspective and light of the room.',
-      't1.b1':'Perspective homography solved on the fly, not a flat filter',
-      't1.b2':'Keeps the shadows and reflections of the original photo',
-      't1.b3':'Ends in a direct WhatsApp button carrying the chosen material',
-      't2.title':'Before / after comparator',
-      't2.body':'The photos of each job, one over the other with a slider. The simplest proof that the work was done well — with your real job photos, not generic stock.',
-      't2.b1':'Drag with a finger or the slider: no apps, no plugins',
-      't2.b2':'One gallery per type of job',
-      't2.b3':'Designed for mobile as much as for desktop',
-      't3.title':'Instant quoting',
-      't3.body':'Three inputs and an instant estimate, ready to send over WhatsApp. This is a working prototype of the concept: the values are examples, not anyone’s real catalogue or prices.',
-      't3.b1':'Today: rules for area, type of job and material',
-      't3.b2':'Tomorrow: your real price list, with AI reading the customer enquiry',
-      'demo.embed':'your-site.com · embedded', 'demo.live':'Live', 'demo.concept':'concept · example values',
-      'ba.before':'Before', 'ba.after':'After',
-      'q.type':'Type of job', 'q.material':'Material', 'q.area':'Area',
-      'q.home':'Home', 'q.retail':'Retail space', 'q.office':'Office', 'q.gym':'Gym / club',
-      'q.club':'Bar / nightclub', 'q.boat':'Boat', 'q.stairs':'Staircase',
-      'q.mat1':'SPC / vinyl', 'q.mat2':'Oak / guatambú', 'q.mat3':'Walnut / premium',
-      'q.estimate':'Estimate', 'q.send':'Send over WhatsApp',
-      'q.note':'Illustrative example. In production it connects to each client’s real catalogue and price list, and always states whether tax is included.',
-      'case.eyebrow':'Real case', 'case.title':'Natural Flooring already uses it.',
-      'case.kicker':'Flooring, decking and staircases', 'case.place':'San Fernando · Buenos Aires',
-      'case.body':'They sell hardwood flooring, decking and staircase renovation to customers who need to see it in place before deciding. We designed their identity, their digital catalogue, and the visualizer they now use to show every material before installing it.',
-      'case.i1k':'Brand manual', 'case.i1v':'Identity and visual system for the showroom',
-      'case.i2k':'Digital catalogue', 'case.i2v':'Oak, walnut, guatambú, SPC and decking with spec sheets',
-      'case.i3k':'Visualizer', 'case.i3v':'The same one you tried above, with their real catalogue',
+      'solve.eyebrow':'What we solve',
+      'solve.title':'What changes in your business when technology reaches the job site.',
+      'solve.lead':'We do not sell a closed platform. We look at how your company works today and build what it is missing, on top of what is already running.',
+      'v1.t':'Automate what is done by hand today',
+      'v1.b':'The quote worked out on a phone calculator, the detail copied from a chat into a spreadsheet, the handover that depends on someone remembering. All of that can run on its own.',
+      'v2.t':'Your customer should not have to wait for you',
+      'v2.b':'We give them tools to see the material in place, compare finished jobs and get an approximate number without depending on you being available.',
+      'v3.t':'The enquiry is not lost after hours',
+      'v3.b':'A customer asks on a Saturday night. If there is nothing on the other side, that enquiry goes to a competitor on Monday morning.',
+      'v4.t':'Your business ahead of the trade',
+      'v4.b':'Construction runs behind on anything digital. Whoever gets there first with something the customer has not seen anywhere else keeps the enquiry.',
+      'v5.t':'Easier on both sides',
+      'v5.b':'For the customer, deciding without hesitating. For your team, no longer answering the same question twenty times and arriving at the site visit with the enquiry already moving.',
+      'v6.t':'Built with people who know the trade',
+      'v6.b':'Every tool comes out of working with companies with years in the business. We do not design for an industry we have never set foot in.',
+      'voice.eyebrow':'In their words', 'voice.title':'Hear it straight from our clients.',
+      'voice.quote':'Citriq let us see things that 99% of this trade cannot even imagine. We are automated now, more up to date, and running on technology infrastructure we would never have had otherwise.',
+      'voice.meta':'Flooring, decking and staircases · 15 years in the trade',
       'process.eyebrow':'How we work', 'process.title':'Four steps. You always know which one we are on.',
       'p1.t':'Survey', 'p1.b':'We look at your catalogue, your job photos and how you quote today — WhatsApp, spreadsheet or from memory.',
       'p2.t':'Prototype', 'p2.b':'We build the tool with your materials, your photos and your brand. No generic placeholders.',
@@ -781,12 +608,13 @@
       'fit.k1':'Materials', 'fit.t1':'Builders merchants and distributors', 'fit.b1':'Flooring, cladding, openings, decking and tiles with a broad catalogue.',
       'fit.k2':'Execution', 'fit.t2':'Contractors and installers', 'fit.b2':'Installation, sanding, finishing and renovation with work worth showing.',
       'fit.k3':'Project', 'fit.t3':'Studios and construction firms', 'fit.b3':'Teams presenting finish options to clients and developers.',
-      'fit.note':'We started with <b>flooring and cladding</b>, where the tool is already running. The logic repeats across the whole build: if the customer has to see it before buying it, it can be built.',
+      'fit.note':'We started with <b>flooring and cladding</b>, which is where we are already working. The logic repeats across the whole build: if the customer has to see it before buying it, it can be built.',
       'contact.eyebrow':'Next step',
       'contact.title':'Tell us what you want your customer to <span class="lime">see</span> before they buy.',
       'contact.lead':'We will look at it and show you how we would solve it with your own catalogue. No commitment.',
       'f.name':'Name', 'f.company':'Company', 'f.email':'Email', 'f.phone':'Phone (optional)',
       'f.need':'What you need', 'f.dunno':'Not sure yet', 'f.case':'Tell us about your case',
+      'f.n1':'Automate a process', 'f.n2':'Let my customer see the material', 'f.n3':'Quote faster',
       'f.placeholder':'What you sell and what you would like your customer to be able to do on your site',
       'f.submit':'Get in touch on WhatsApp →',
       'contact.open':'Tell us about your project →',
@@ -832,7 +660,6 @@
       b.setAttribute('aria-pressed', b.dataset.lang === l ? 'true' : 'false');
     });
     try{ localStorage.setItem('citriq-lang', l); }catch(e){}
-    calcQuote();
   }
   document.getElementById('lang-switch').addEventListener('click', function(e){
     var b = e.target.closest('button[data-lang]'); if(b) applyLang(b.dataset.lang);
@@ -871,30 +698,6 @@
     els.forEach(function(el){ io.observe(el); });
   } else { els.forEach(function(el){ el.classList.add('in'); }); }
 
-  var PROJECTS = [
-    {es:'Parquet espiga · pulido', en:'Herringbone · sanded', before:'images/pulido-herringbone-antes.jpg', after:'images/pulido-herringbone-despues-1.jpg'},
-    {es:'Escalera · renovación', en:'Staircase · renovation', before:'images/escalera-pvc-antes.jpg', after:'images/escalera-pvc-despues-1.jpg'},
-    {es:'Piso de gimnasio', en:'Gym flooring', before:'images/antes-gimnasio-con-piso-deteriorado.jpg', after:'images/despues-gimnasio-renovado.jpg'}
-  ];
-  var tabsEl=document.getElementById('ba-tabs'), stage=document.getElementById('ba-stage'),
-      imgBefore=document.getElementById('ba-before'), imgAfter=document.getElementById('ba-after'),
-      range=document.getElementById('ba-range');
-  function setClip(v){ stage.style.setProperty('--clip', (100-v)+'%'); }
-  function loadProject(i){
-    imgBefore.src=PROJECTS[i].before; imgAfter.src=PROJECTS[i].after;
-    range.value=50; setClip(50);
-    [].forEach.call(tabsEl.children,function(b,idx){ b.classList.toggle('on', idx===i); });
-  }
-  PROJECTS.forEach(function(p,i){
-    var b=document.createElement('button'); b.type='button'; b.className='ba-tab';
-    b.textContent=p.es; b.dataset.i18n='ba.p'+i;
-    I18N.en['ba.p'+i]=p.en;
-    b.addEventListener('click',function(){ loadProject(i); });
-    tabsEl.appendChild(b);
-  });
-  loadProject(0);
-  range.addEventListener('input',function(){ setClip(+range.value); });
-
   function initChips(id, onChange){
     var wrap=document.getElementById(id);
     wrap.addEventListener('click', function(e){
@@ -903,24 +706,8 @@
       if(onChange) onChange();
     });
     function sel(){ return wrap.querySelector('.chip[aria-pressed="true"]'); }
-    return { value:function(){ var s=sel(); return s?s.dataset.value:null; },
-             label:function(){ var s=sel(); return s?s.textContent.trim():''; } };
+    return { label:function(){ var s=sel(); return s?s.textContent.trim():''; } };
   }
-  var qM2=document.getElementById('q-m2'), qRange=document.getElementById('q-range'), qWa=document.getElementById('q-wa');
-  var ambChips=initChips('q-amb', function(){ calcQuote(); }), matChips=initChips('q-mat', function(){ calcQuote(); });
-  function calcQuote(){
-    var m2=Math.max(1,+qM2.value||0);
-    var base=+matChips.value() * +ambChips.value();
-    var low=Math.round(m2*base*0.94/100)*100, high=Math.round(m2*base*1.08/100)*100;
-    var f=function(n){ return n.toLocaleString(lang==='en'?'en-US':'es-AR'); };
-    qRange.textContent = lang==='en' ? '$'+f(low)+' – $'+f(high)+' + tax' : '$'+f(low)+' – $'+f(high)+' +IVA';
-    qWa.href = waLink(lang==='en'
-      ? 'Hi! I would like a quote for '+matChips.label()+' in a '+ambChips.label().toLowerCase()+', '+m2+' m². The site estimated $'+f(low)+' to $'+f(high)+'.'
-      : 'Hola! Quiero cotizar '+matChips.label()+' para '+ambChips.label().toLowerCase()+', '+m2+' m². Vi un estimado de $'+f(low)+' a $'+f(high)+' en la web.');
-  }
-  qM2.addEventListener('input',calcQuote);
-  document.getElementById('q-minus').addEventListener('click',function(){ qM2.value=Math.max(1,(+qM2.value||1)-1); calcQuote(); });
-  document.getElementById('q-plus').addEventListener('click',function(){ qM2.value=(+qM2.value||0)+1; calcQuote(); });
 
   var modal=document.getElementById('contact-modal');
   var lastFocus=null;
@@ -957,9 +744,6 @@
     closeContact();
   });
 
-  window.citriqWa = waLink;
-  window.citriqRescan = function(){ captureES(); applyLang(lang); };
-
   var savedTheme, savedLang;
   try{ savedTheme = localStorage.getItem('citriq-theme'); savedLang = localStorage.getItem('citriq-lang'); }catch(e){}
   if(savedTheme) applyTheme(savedTheme);
@@ -973,434 +757,5 @@
   }
   captureES();
   applyLang(savedLang === 'en' ? 'en' : 'es');
-})();
-</script>
-
-<!-- ===================== VISUALIZADOR DE PISOS (embebido) ===================== -->
-<div id="nf-app">
-  <style>
-    #nf-app{
-      --nf-ink:var(--text); --nf-ink-soft:var(--text-muted);
-      --nf-line:var(--line); --nf-line-strong:var(--line-2);
-      --nf-bg:var(--bg); --nf-panel:var(--surface);
-      --nf-wood:var(--accent-hover); --nf-wood-deep:var(--accent-text);
-      --nf-accent:var(--accent);
-      font-family:'Sora', ui-sans-serif, system-ui, -apple-system, sans-serif;
-      color:var(--nf-ink); background:var(--nf-bg); line-height:1.45;
-    }
-    #nf-app *{box-sizing:border-box}
-    #nf-app .head{padding:22px 26px 18px;border-bottom:1px solid var(--nf-line);background:var(--nf-panel)}
-    #nf-app .kicker{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--nf-wood-deep);font-weight:700;margin:0 0 6px}
-    #nf-app .title{font-size:21px;font-weight:600;margin:0;letter-spacing:-.03em}
-    #nf-app .sub{font-size:13.5px;color:var(--nf-ink-soft);margin:5px 0 0;max-width:60ch}
-    #nf-app .body{display:grid;grid-template-columns:1fr 280px;gap:0}
-    @media(max-width:760px){#nf-app .body{grid-template-columns:1fr}}
-    #nf-app .stage{position:relative;background:#000000;min-height:380px;display:flex;align-items:center;justify-content:center}
-    #nf-app canvas{max-width:100%;display:block;touch-action:none;cursor:crosshair}
-    #nf-app .drop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#cbbfaf;text-align:center;padding:30px;cursor:pointer}
-    #nf-app .drop svg{opacity:.7}
-    #nf-app .drop b{color:#f3ead9;font-size:15px;font-weight:600}
-    #nf-app .drop span{font-size:12.5px;opacity:.75;max-width:34ch}
-    #nf-app .drop.hide{display:none}
-    #nf-app .panel{background:var(--nf-panel);border-left:1px solid var(--nf-line);padding:18px;overflow:auto}
-    @media(max-width:760px){#nf-app .panel{border-left:none;border-top:1px solid var(--nf-line)}}
-    #nf-app .grp{margin-bottom:20px}
-    #nf-app .grp:last-child{margin-bottom:0}
-    #nf-app .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--nf-ink-soft);font-weight:700;margin:0 0 9px;display:flex;justify-content:space-between;align-items:baseline}
-    #nf-app .lbl span{font-weight:600;letter-spacing:0;text-transform:none;color:var(--nf-wood-deep)}
-    #nf-app .swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    #nf-app .sw{aspect-ratio:1;border-radius:9px;border:2px solid transparent;cursor:pointer;overflow:hidden;position:relative;background:#ddd;transition:border-color .12s}
-    #nf-app .sw canvas{width:100%;height:100%;cursor:pointer}
-    #nf-app .sw.on{border-color:var(--nf-accent)}
-    #nf-app .sw .nm{position:absolute;left:0;right:0;bottom:0;font-size:9.5px;font-weight:600;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.6));padding:8px 4px 3px;text-align:center;line-height:1.1}
-    #nf-app .row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-    #nf-app .row label{font-size:12.5px;color:var(--nf-ink);min-width:78px}
-    #nf-app input[type=range]{flex:1;accent-color:var(--nf-accent)}
-    #nf-app .seg{display:flex;border:1px solid var(--nf-line-strong);border-radius:8px;overflow:hidden}
-    #nf-app .seg button{flex:1;border:none;background:var(--nf-panel);padding:7px;font-size:12px;cursor:pointer;color:var(--nf-ink-soft);font-weight:600}
-    #nf-app .seg button.on{background:var(--nf-accent);color:var(--accent-ink)}
-    #nf-app .btns{display:flex;gap:8px}
-    #nf-app button.act{flex:1;border:1px solid var(--nf-line-strong);background:var(--nf-panel);color:var(--nf-ink);padding:10px;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;transition:background .12s}
-    #nf-app button.act:hover{background:var(--nf-bg)}
-    #nf-app button.act.primary{background:var(--nf-accent);color:var(--accent-ink);border-color:var(--nf-accent)}
-    #nf-app button.act.primary:hover{background:var(--accent-hover)}
-    #nf-app button.act.wa{width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
-    #nf-app .hint{font-size:11.5px;color:var(--nf-ink-soft);background:var(--nf-bg);border-radius:8px;padding:10px 12px;line-height:1.4}
-    #nf-app .hint b{color:var(--nf-ink)}
-    #nf-app input[type=file]{display:none}
-    #nf-app .toolbar{display:flex;gap:8px;padding:10px 14px;background:var(--nf-panel);border-top:1px solid var(--nf-line);align-items:center;flex-wrap:wrap}
-    #nf-app .toolbar .t{font-size:11.5px;color:var(--nf-ink-soft)}
-    #nf-app .chip{font-size:11px;border:1px solid var(--nf-line-strong);border-radius:20px;padding:5px 11px;background:var(--nf-panel);cursor:pointer;color:var(--nf-ink)}
-    #nf-app .chip:hover{background:var(--nf-bg)}
-  </style>
-
-  <div class="head">
-    <p class="kicker" data-i18n="nf.kicker">Natural Flooring · Visualizador</p>
-    <h2 class="title" data-i18n="nf.title">Probá el material en tu propio ambiente</h2>
-    <p class="sub" data-i18n="nf.sub">Ya cargamos una foto de ejemplo. Arrastrá las esquinas para ajustar el marco, o subí la tuya.</p>
-  </div>
-
-  <div class="body">
-    <div>
-      <div class="stage">
-        <canvas id="nf-canvas" width="720" height="480"></canvas>
-        <div id="nf-drop" class="drop">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
-          <b data-i18n="nf.dropTitle">Subí una foto del ambiente</b>
-          <span data-i18n="nf.dropHint">Una sala, cocina, local o gimnasio. Tocá acá o arrastrá la imagen.</span>
-        </div>
-      </div>
-      <div class="toolbar">
-        <span class="t" data-i18n="nf.corners">Esquinas:</span>
-        <span class="chip" id="nf-reset-corners" data-i18n="nf.reset">Reubicar puntos</span>
-        <span class="chip" id="nf-change" data-i18n="nf.change">Cambiar foto</span>
-        <span class="t" id="nf-status" style="margin-left:auto"></span>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="grp">
-        <p class="lbl"><span data-i18n="nf.material">Material</span> <span id="nf-mat-name">—</span></p>
-        <div class="swatches" id="nf-swatches"></div>
-      </div>
-
-      <div class="grp">
-        <p class="lbl" data-i18n="nf.dir">Dirección del tablón</p>
-        <div class="seg" id="nf-dir">
-          <button data-dir="h" class="on">Horizontal</button>
-          <button data-dir="v">Vertical</button>
-        </div>
-      </div>
-
-      <div class="grp">
-        <p class="lbl" data-i18n="nf.settings">Ajustes</p>
-        <div class="row"><label data-i18n="nf.size">Tamaño</label><input type="range" id="nf-scale" min="4" max="20" value="9"></div>
-        <div class="row"><label data-i18n="nf.light">Luz y sombra</label><input type="range" id="nf-light" min="0" max="100" value="62"></div>
-        <div class="row"><label data-i18n="nf.opacity">Opacidad</label><input type="range" id="nf-opacity" min="60" max="100" value="100"></div>
-      </div>
-
-      <div class="grp">
-        <div class="btns">
-          <button class="act" id="nf-before" data-i18n="nf.original">Mantener para ver el original</button>
-        </div>
-      </div>
-
-      <div class="grp">
-        <button class="act primary wa" id="nf-wa">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.69 8.24-8.23 8.24Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
-          <span data-i18n="nf.ask">Consultar por WhatsApp</span>
-        </button>
-      </div>
-
-      <div class="grp">
-        <div class="hint" data-i18n="nf.hint"><b>Tip:</b> para mejor resultado, marcá las esquinas justo donde el piso toca las paredes. Mantené presionado <b>“Ver original”</b> para comparar.</div>
-      </div>
-    </div>
-  </div>
-
-  <input type="file" id="nf-file" accept="image/*">
-</div>
-
-<script>
-(function(){
-  var mount = document.getElementById('nf-mount');
-  var app = document.getElementById('nf-app');
-  mount.appendChild(app);
-
-  const $ = s => app.querySelector(s);
-  const canvas = $('#nf-canvas'), ctx = canvas.getContext('2d');
-  const fileInput = $('#nf-file'), drop = $('#nf-drop'), status = $('#nf-status');
-
-  let img = null;
-  let imgW = 720, imgH = 480;
-  let corners = [];
-  let dragging = -1;
-  let showOriginal = false;
-
-  const MATERIALS = [
-    {name:'Roble claro', base:'#caa46f', grain:'#a9824f', gap:'#9a7747', tint:1},
-    {name:'Roble miel',  base:'#b9853f', grain:'#996a2c', gap:'#85551f', tint:1},
-    {name:'Nogal',       base:'#7a5230', grain:'#5d3c20', gap:'#4a2e16', tint:1},
-    {name:'Guatambú',    base:'#dcc596', grain:'#c4a86f', gap:'#b39a60', tint:1},
-    {name:'SPC gris',    base:'#9a958c', grain:'#827d74', gap:'#6f6a61', tint:0},
-    {name:'Wengué',      base:'#3f342b', grain:'#2c241d', gap:'#221c16', tint:1},
-  ];
-  let matIndex = 0, dir = 'h', plankScale = 9;
-
-  function buildTexture(mat, planks, vertical){
-    const S = 600;
-    const c = document.createElement('canvas'); c.width = S; c.height = S;
-    const g = c.getContext('2d');
-    g.fillStyle = mat.base; g.fillRect(0,0,S,S);
-    const n = Math.max(3, planks|0);
-    const pw = S / n;
-    const offsets = [0, .45, .2, .7, .35, .6, .1, .8];
-    for(let i=0;i<n;i++){
-      const y0 = i*pw;
-      const v = (Math.sin(i*12.9898)*43758.5453)%1;
-      const shade = (Math.abs(v)-.5)* (mat.tint?26:14);
-      g.save();
-      g.translate(0,y0);
-      g.fillStyle = shadeColor(mat.base, shade);
-      g.fillRect(0,0,S,pw);
-      g.strokeStyle = withAlpha(mat.grain, .35);
-      const lines = mat.tint?9:5;
-      for(let k=0;k<lines;k++){
-        const yy = (k+ .5)/lines*pw;
-        g.lineWidth = .6 + Math.random()*1.1;
-        g.beginPath();
-        let x=0; g.moveTo(0,yy);
-        const amp = mat.tint? (1.2+Math.random()*2.6):(0.5+Math.random()*1);
-        const freq = .015 + Math.random()*.02;
-        const ph = Math.random()*6.28;
-        for(x=0;x<=S;x+=8){ g.lineTo(x, yy + Math.sin(x*freq+ph)*amp); }
-        g.stroke();
-      }
-      if(mat.tint && Math.random()<.5){
-        const kx=Math.random()*S, ky=pw*(.3+Math.random()*.4), kr=1.5+Math.random()*2.5;
-        const rad=g.createRadialGradient(kx,ky,0,kx,ky,kr*3);
-        rad.addColorStop(0, withAlpha(mat.gap,.55)); rad.addColorStop(1, withAlpha(mat.gap,0));
-        g.fillStyle=rad; g.beginPath(); g.arc(kx,ky,kr*3,0,6.28); g.fill();
-      }
-      g.fillStyle = withAlpha(mat.gap, .9);
-      g.fillRect(0, pw-1.5, S, 1.5);
-      const cut = (offsets[i%offsets.length])*S;
-      g.fillStyle = withAlpha(mat.gap,.7);
-      g.fillRect(cut, 0, 1.4, pw);
-      g.fillRect((cut+S*0.55)%S, 0, 1.4, pw);
-      g.restore();
-    }
-    const lg = g.createLinearGradient(0,0,S,S);
-    lg.addColorStop(0, 'rgba(255,255,255,.05)'); lg.addColorStop(1,'rgba(0,0,0,.05)');
-    g.fillStyle=lg; g.fillRect(0,0,S,S);
-
-    if(vertical){
-      const r = document.createElement('canvas'); r.width=S; r.height=S;
-      const rg = r.getContext('2d');
-      rg.translate(S/2,S/2); rg.rotate(Math.PI/2); rg.translate(-S/2,-S/2);
-      rg.drawImage(c,0,0); return r;
-    }
-    return c;
-  }
-  function shadeColor(hex, amt){
-    const {r,g,b}=hex2rgb(hex);
-    return `rgb(${clamp(r+amt)},${clamp(g+amt)},${clamp(b+amt)})`;
-  }
-  function withAlpha(hex,a){const{r,g,b}=hex2rgb(hex);return `rgba(${r},${g},${b},${a})`;}
-  function hex2rgb(h){h=h.replace('#','');return{r:parseInt(h.slice(0,2),16),g:parseInt(h.slice(2,4),16),b:parseInt(h.slice(4,6),16)};}
-  function clamp(v){return Math.max(0,Math.min(255,v|0));}
-
-  let textureCache = {};
-  function getTexture(){
-    const key = matIndex+'_'+plankScale+'_'+dir;
-    if(!textureCache[key]) textureCache[key] = buildTexture(MATERIALS[matIndex], plankScale, dir==='v');
-    return textureCache[key];
-  }
-
-  function computeHomography(src, dst){
-    const A=[], b=[];
-    for(let i=0;i<4;i++){
-      const {x:sx,y:sy}=src[i], {x:dx,y:dy}=dst[i];
-      A.push([sx,sy,1,0,0,0,-sx*dx,-sy*dx]); b.push(dx);
-      A.push([0,0,0,sx,sy,1,-sx*dy,-sy*dy]); b.push(dy);
-    }
-    const h = solve(A,b);
-    return [h[0],h[1],h[2],h[3],h[4],h[5],h[6],h[7],1];
-  }
-  function solve(A,b){
-    const n=8, M=A.map((r,i)=>[...r,b[i]]);
-    for(let col=0;col<n;col++){
-      let piv=col; for(let r=col+1;r<n;r++) if(Math.abs(M[r][col])>Math.abs(M[piv][col])) piv=r;
-      [M[col],M[piv]]=[M[piv],M[col]];
-      const d=M[col][col]||1e-9;
-      for(let k=col;k<=n;k++) M[col][k]/=d;
-      for(let r=0;r<n;r++){ if(r===col) continue; const f=M[r][col]; for(let k=col;k<=n;k++) M[r][k]-=f*M[col][k]; }
-    }
-    return M.map(r=>r[n]);
-  }
-  function applyH(H,x,y){
-    const X=H[0]*x+H[1]*y+H[2], Y=H[3]*x+H[4]*y+H[5], W=H[6]*x+H[7]*y+H[8];
-    return {x:X/W, y:Y/W};
-  }
-
-  function texTri(c, tex, s0,s1,s2, d0,d1,d2){
-    c.save();
-    c.beginPath();
-    c.moveTo(d0.x,d0.y); c.lineTo(d1.x,d1.y); c.lineTo(d2.x,d2.y); c.closePath();
-    c.clip();
-    const denom = s0.x*(s2.y-s1.y) - s1.x*s2.y + s2.x*s1.y + (s1.x-s2.x)*s0.y;
-    if(Math.abs(denom)<1e-6){c.restore();return;}
-    const a=(d0.x*(s2.y-s1.y)-d1.x*s2.y+d2.x*s1.y+(d1.x-d2.x)*s0.y)/denom;
-    const bb=(s0.x*(d1.x-d2.x)+s1.x*(d2.x-d0.x)+s2.x*(d0.x-d1.x))/denom;
-    const cc=(d0.y*(s2.y-s1.y)-d1.y*s2.y+d2.y*s1.y+(d1.y-d2.y)*s0.y)/denom;
-    const dd=(s0.x*(d1.y-d2.y)+s1.x*(d2.y-d0.y)+s2.x*(d0.y-d1.y))/denom;
-    const e=(s0.x*(s2.y*d1.x-s1.y*d2.x)+s0.y*(s1.x*d2.x-s2.x*d1.x)+(s1.x*s2.y-s2.x*s1.y)*d0.x)/denom;
-    const f=(s0.x*(s2.y*d1.y-s1.y*d2.y)+s0.y*(s1.x*d2.y-s2.x*d1.y)+(s1.x*s2.y-s2.x*s1.y)*d0.y)/denom;
-    c.transform(a,bb,cc,dd,e,f);
-    c.drawImage(tex,0,0);
-    c.restore();
-  }
-
-  function pathQuad(c, q){ c.beginPath(); c.moveTo(q[0].x,q[0].y); for(let i=1;i<4;i++) c.lineTo(q[i].x,q[i].y); c.closePath(); }
-
-  function render(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    if(!img){ return; }
-    ctx.drawImage(img,0,0,imgW,imgH);
-    if(showOriginal || corners.length<4){ drawHandles(); return; }
-
-    const tex = getTexture();
-    const TS = tex.width;
-
-    const buf = document.createElement('canvas'); buf.width=canvas.width; buf.height=canvas.height;
-    const bx = buf.getContext('2d');
-
-    const H = computeHomography(
-      [{x:0,y:0},{x:1,y:0},{x:1,y:1},{x:0,y:1}],
-      corners
-    );
-    const N = 14;
-    for(let i=0;i<N;i++){
-      for(let j=0;j<N;j++){
-        const u0=i/N,u1=(i+1)/N,v0=j/N,v1=(j+1)/N;
-        const s00={x:u0*TS,y:v0*TS},s10={x:u1*TS,y:v0*TS},s11={x:u1*TS,y:v1*TS},s01={x:u0*TS,y:v1*TS};
-        const d00=applyH(H,u0,v0),d10=applyH(H,u1,v0),d11=applyH(H,u1,v1),d01=applyH(H,u0,v1);
-        texTri(bx, tex, s00,s10,s11, d00,d10,d11);
-        texTri(bx, tex, s00,s11,s01, d00,d11,d01);
-      }
-    }
-
-    const lightAmt = +$('#nf-light').value/100;
-    if(lightAmt>0){
-      bx.save(); pathQuad(bx, corners); bx.clip();
-      bx.globalCompositeOperation='multiply';
-      bx.globalAlpha = lightAmt;
-      bx.drawImage(img,0,0,imgW,imgH);
-      bx.globalCompositeOperation='screen';
-      bx.globalAlpha = lightAmt*0.5;
-      bx.drawImage(img,0,0,imgW,imgH);
-      bx.restore();
-    }
-
-    ctx.save();
-    ctx.globalAlpha = +$('#nf-opacity').value/100;
-    pathQuad(ctx, corners); ctx.clip();
-    ctx.drawImage(buf,0,0);
-    ctx.restore();
-
-    drawHandles();
-  }
-
-  function drawHandles(){
-    if(corners.length<4) return;
-    ctx.save();
-    ctx.strokeStyle='rgba(196,255,13,.9)'; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
-    pathQuad(ctx,corners); ctx.stroke(); ctx.setLineDash([]);
-    corners.forEach((p,i)=>{
-      ctx.beginPath(); ctx.arc(p.x,p.y,8,0,6.28);
-      ctx.fillStyle= i===dragging?'#c4ff0d':'#ffffff'; ctx.fill();
-      ctx.lineWidth=2; ctx.strokeStyle='#c4ff0d'; ctx.stroke();
-    });
-    ctx.restore();
-  }
-
-  function defaultCorners(){
-    const w=imgW,h=imgH;
-    return [
-      {x:w*0.28,y:h*0.55},
-      {x:w*0.72,y:h*0.55},
-      {x:w*0.96,y:h*0.96},
-      {x:w*0.04,y:h*0.96},
-    ];
-  }
-
-  function loadImage(src){
-    const im = new Image();
-    im.crossOrigin = 'anonymous';
-    im.onload = ()=>{
-      img = im;
-      const maxW=720, maxH=520;
-      let r = Math.min(maxW/im.width, maxH/im.height, 1);
-      imgW = Math.round(im.width*r); imgH = Math.round(im.height*r);
-      canvas.width = imgW; canvas.height = imgH;
-      corners = defaultCorners();
-      drop.classList.add('hide');
-      status.textContent = 'Arrastrá los puntos a las esquinas del piso';
-      render();
-    };
-    im.src = src;
-  }
-  function handleFile(f){ if(!f) return; const fr=new FileReader(); fr.onload=e=>loadImage(e.target.result); fr.readAsDataURL(f); }
-
-  drop.addEventListener('click', ()=>fileInput.click());
-  $('#nf-change').addEventListener('click', ()=>fileInput.click());
-  fileInput.addEventListener('change', e=>handleFile(e.target.files[0]));
-  ['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();}));
-  drop.addEventListener('drop', e=>{e.preventDefault(); handleFile(e.dataTransfer.files[0]);});
-
-  function evtPos(e){
-    const r=canvas.getBoundingClientRect();
-    const t=e.touches?e.touches[0]:e;
-    return {x:(t.clientX-r.left)*(canvas.width/r.width), y:(t.clientY-r.top)*(canvas.height/r.height)};
-  }
-  function down(e){
-    if(!img) return;
-    const p=evtPos(e);
-    for(let i=0;i<corners.length;i++){
-      if(Math.hypot(corners[i].x-p.x,corners[i].y-p.y)<16){ dragging=i; e.preventDefault(); render(); return; }
-    }
-  }
-  function move(e){
-    if(dragging<0) return;
-    const p=evtPos(e);
-    corners[dragging]={x:Math.max(0,Math.min(canvas.width,p.x)),y:Math.max(0,Math.min(canvas.height,p.y))};
-    e.preventDefault(); render();
-  }
-  function up(){ dragging=-1; render(); }
-  canvas.addEventListener('mousedown',down); window.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
-  canvas.addEventListener('touchstart',down,{passive:false}); canvas.addEventListener('touchmove',move,{passive:false}); canvas.addEventListener('touchend',up);
-
-  function buildSwatches(){
-    const wrap=$('#nf-swatches'); wrap.innerHTML='';
-    MATERIALS.forEach((m,i)=>{
-      const d=document.createElement('div'); d.className='sw'+(i===matIndex?' on':'');
-      const c=document.createElement('canvas'); c.width=120;c.height=120;
-      const t=buildTexture(m,5,false); c.getContext('2d').drawImage(t,0,0,120,120);
-      d.appendChild(c);
-      const nm=document.createElement('div'); nm.className='nm'; nm.textContent=m.name; d.appendChild(nm);
-      d.addEventListener('click',()=>{matIndex=i;$('#nf-mat-name').textContent=m.name;buildSwatches();render();});
-      wrap.appendChild(d);
-    });
-  }
-  $('#nf-mat-name').textContent = MATERIALS[0].name;
-  buildSwatches();
-
-  $('#nf-dir').addEventListener('click',e=>{
-    if(e.target.dataset.dir){ dir=e.target.dataset.dir;
-      [...e.currentTarget.children].forEach(b=>b.classList.toggle('on',b===e.target)); render(); }
-  });
-  $('#nf-scale').addEventListener('input',e=>{plankScale=+e.target.value;render();});
-  $('#nf-light').addEventListener('input',render);
-  $('#nf-opacity').addEventListener('input',render);
-  $('#nf-reset-corners').addEventListener('click',()=>{if(img){corners=defaultCorners();render();}});
-
-  const before=$('#nf-before');
-  const press=v=>{showOriginal=v;render();};
-  before.addEventListener('mousedown',()=>press(true));
-  before.addEventListener('mouseup',()=>press(false));
-  before.addEventListener('mouseleave',()=>press(false));
-  before.addEventListener('touchstart',e=>{e.preventDefault();press(true);});
-  before.addEventListener('touchend',e=>{e.preventDefault();press(false);});
-
-  $('#nf-wa').addEventListener('click',()=>{
-    const en = document.documentElement.lang === 'en';
-    const msg = en
-      ? `Hi! I was trying the visualizer on your site and I am interested in the ${MATERIALS[matIndex].name} floor. I would like to ask about availability and price.`
-      : `Hola! Estuve probando el visualizador en la web y me interesa el piso ${MATERIALS[matIndex].name}. Quería consultar disponibilidad y precio.`;
-    window.open(window.citriqWa ? window.citriqWa(msg) : 'https://wa.me/?text='+encodeURIComponent(msg),'_blank','noopener,noreferrer');
-  });
-
-  loadImage('images/antes-gimnasio-con-piso-deteriorado.jpg');
-  if(window.citriqRescan) window.citriqRescan();
 })();
 </script>
