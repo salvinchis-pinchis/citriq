@@ -271,6 +271,21 @@
   .value p{font-size:.88rem; color:var(--text-muted); font-weight:400; line-height:1.6}
   @media (max-width:920px){ .values{grid-template-columns:1fr} }
 
+  .journey{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:16px; overflow:hidden}
+  .leg{background:var(--bg); padding:32px 28px 34px; display:flex; flex-direction:column; gap:12px}
+  .leg-k{font-size:.7rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-text)}
+  .leg h3{font-size:1.1rem; font-weight:700; letter-spacing:-.02em; line-height:1.3}
+  .leg p{font-size:.88rem; color:var(--text-muted); font-weight:400; line-height:1.6}
+  @media (max-width:880px){ .journey{grid-template-columns:1fr} }
+
+  .pledge{
+    margin-top:34px; padding:30px 34px; border-radius:16px;
+    border:1px solid var(--accent-line); background:var(--surface);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .pledge h3{font-size:1.15rem; font-weight:700; letter-spacing:-.025em; color:var(--accent-text)}
+  .pledge p{font-size:.95rem; color:var(--text-muted); font-weight:400; line-height:1.65; max-width:70ch}
+
   .voice-grid{display:grid; grid-template-columns:.8fr 1.2fr; gap:52px; align-items:center}
   .voice-photo{border-radius:16px; aspect-ratio:4/5; object-fit:cover; width:100%; border:1px solid var(--line)}
   @media (max-width:880px){ .voice-grid{grid-template-columns:1fr; gap:30px} .voice-photo{aspect-ratio:16/10} }
@@ -412,6 +427,7 @@
     <div class="nav-inner">
       <nav><ul class="navlinks">
         <li><a href="#que-resolvemos" data-i18n="nav.solve">Qué resolvemos</a></li>
+        <li><a href="#visualizador" data-i18n="nav.demo">Demo</a></li>
         <li><a href="#clientes" data-i18n="nav.clients">Clientes</a></li>
         <li><a href="#proceso" data-i18n="nav.process">Proceso</a></li>
       </ul></nav>
@@ -542,6 +558,61 @@
           <h3 data-i18n="v6.t">Hecho con gente que conoce el oficio</h3>
           <p data-i18n="v6.b">Cada herramienta sale de trabajar con empresas que llevan años en el rubro. No diseñamos para una industria que no pisamos.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="visualizador">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="viz.eyebrow">La herramienta</p>
+        <h2 data-i18n="viz.title">Probalo vos mismo.</h2>
+        <p class="lead" data-i18n="viz.lead">Este es el visualizador que hoy usa Natural Flooring, corriendo acá mismo. Subí una foto de tu ambiente, marcá las cuatro esquinas del piso y probá materiales. No se sube nada a ningún servidor: todo pasa en tu navegador.</p>
+      </div>
+      <div class="demo-frame reveal">
+        <div class="demo-label"><span data-i18n="demo.embed">tu-web.com · embebido</span><span class="live" data-i18n="demo.live">En vivo</span></div>
+        <!-- ===== PUNTO DE INTEGRACIÓN =====================================
+             Manu: todo lo que va acá adentro es reemplazable. El contrato es:
+               · un único elemento con id="nf-app" que se monta en #nf-mount
+               · se autoconfigura solo, sin props ni init externo
+               · si existe window.citriqWa(texto), usalo para los links de
+                 WhatsApp, así toma el número de WA_PHONE de una sola fuente
+               · si existe window.citriqRescan(), llamalo al terminar de montar
+                 para que los textos entren al sistema de traducción ES/EN
+             Para cambiar de versión: borrá el bloque de abajo y pegá el tuyo.
+             ================================================================= -->
+        <div id="nf-mount"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="online-offline">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="o2o.eyebrow">Del online al salón</p>
+        <h2 data-i18n="o2o.title">La compra empieza en el teléfono y termina en tu showroom.</h2>
+        <p class="lead" data-i18n="o2o.lead">El cliente ya eligió antes de cruzar tu puerta. La pregunta es si eligió mirando tu catálogo o el de otro. Conectamos las dos puntas para que el recorrido sea uno solo.</p>
+      </div>
+      <div class="journey reveal">
+        <div class="leg">
+          <span class="leg-k" data-i18n="o2o.k1">En su casa</span>
+          <h3 data-i18n="o2o.t1">Prueba el material en su propio ambiente</h3>
+          <p data-i18n="o2o.b1">Saca una foto del living y ve el piso puesto, con la luz y las sombras reales del lugar. Deja de imaginar y empieza a elegir.</p>
+        </div>
+        <div class="leg">
+          <span class="leg-k" data-i18n="o2o.k2">En el showroom</span>
+          <h3 data-i18n="o2o.t2">Llega sabiendo qué quiere</h3>
+          <p data-i18n="o2o.b2">La misma herramienta corre en una tablet en el salón. Tu vendedor no arranca de cero: arranca de lo que el cliente ya probó en su casa.</p>
+        </div>
+        <div class="leg">
+          <span class="leg-k" data-i18n="o2o.k3">En tu negocio</span>
+          <h3 data-i18n="o2o.t3">Queda registrado qué buscó</h3>
+          <p data-i18n="o2o.b3">Qué materiales probó, cuáles descartó, cuántos metros necesita. Esa información es tuya y sirve para vender, no para llenar una planilla.</p>
+        </div>
+      </div>
+      <div class="pledge reveal">
+        <h3 data-i18n="pledge.t">Tu base de datos es tuya.</h3>
+        <p data-i18n="pledge.b">Privada y confidencial. Los datos que generan tus herramientas no se comparten, no se mezclan con los de nadie y no se usan para otra cosa. Son tuyos, y están para que le saques provecho a tu negocio.</p>
       </div>
     </div>
   </section>
@@ -699,7 +770,7 @@
   var I18N = {
     es:{},
     en:{
-      'nav.solve':'What we solve', 'nav.clients':'Clients', 'nav.process':'Process',
+      'nav.solve':'What we solve', 'nav.demo':'Demo', 'nav.clients':'Clients', 'nav.process':'Process',
       'cta.button':'Get in touch',
       'hero.eyebrow':'Building technology for construction',
       'hero.title':'<span class="w" style="animation-delay:.02s">Software</span> <span class="w" style="animation-delay:.07s">for</span> <span class="w" style="animation-delay:.12s">an</span> <span class="w" style="animation-delay:.17s">industry</span> <span class="w" style="animation-delay:.22s">that</span> <span class="w" style="animation-delay:.27s">still</span> <span class="w lime" style="animation-delay:.32s">quotes</span> <span class="w lime" style="animation-delay:.37s">by</span> <span class="w lime" style="animation-delay:.42s">hand.</span>',
@@ -737,6 +808,20 @@
       'm3.bar':'Saturday', 'm3.in':'Do you have vinyl for a 40 m² shop?',
       'm3.out':'Yes. For heavy traffic you want SPC. Here are two options with the price per m².',
       'm3.badge':'Showroom closed',
+      'viz.eyebrow':'The tool', 'viz.title':'Try it yourself.',
+      'viz.lead':'This is the visualizer Natural Flooring uses today, running right here. Upload a photo of your space, mark the four corners of the floor and try materials. Nothing is uploaded to a server: it all happens in your browser.',
+      'o2o.eyebrow':'From online to the showroom',
+      'o2o.title':'The purchase starts on a phone and ends in your showroom.',
+      'o2o.lead':'Your customer has already chosen before walking through your door. The question is whether they chose looking at your catalogue or someone else’s. We connect both ends so the journey is one.',
+      'o2o.k1':'At home', 'o2o.t1':'They try the material in their own space',
+      'o2o.b1':'They take a photo of the living room and see the floor in place, with the real light and shadows of the room. They stop imagining and start choosing.',
+      'o2o.k2':'In the showroom', 'o2o.t2':'They arrive knowing what they want',
+      'o2o.b2':'The same tool runs on a tablet in the showroom. Your salesperson does not start from zero: they start from what the customer already tried at home.',
+      'o2o.k3':'In your business', 'o2o.t3':'What they looked for stays on record',
+      'o2o.b3':'Which materials they tried, which they ruled out, how many square metres they need. That information is yours and it is there to sell, not to fill in a spreadsheet.',
+      'pledge.t':'Your database is yours.',
+      'pledge.b':'Private and confidential. The data your tools generate is not shared, not mixed with anyone else’s and not used for anything else. It is yours, and it is there for you to get value out of your business.',
+      'demo.embed':'your-site.com · embedded', 'demo.live':'Live',
       'voice.eyebrow':'In their words', 'voice.title':'Hear it straight from our clients.',
       'voice.quote':'Citriq let us see things that 99% of this trade cannot even imagine. We are automated now, more up to date, and running on technology infrastructure we would never have had otherwise.',
       'voice.meta':'Flooring, decking and staircases · 15 years in the trade',
@@ -930,6 +1015,9 @@
     });
   })();
 
+  window.citriqWa = waLink;
+  window.citriqRescan = function(){ captureES(); applyLang(lang); };
+
   var savedTheme, savedLang;
   try{ savedTheme = localStorage.getItem('citriq-theme'); savedLang = localStorage.getItem('citriq-lang'); }catch(e){}
   if(savedTheme) applyTheme(savedTheme);
@@ -943,5 +1031,434 @@
   }
   captureES();
   applyLang(savedLang === 'en' ? 'en' : 'es');
+})();
+</script>
+
+<!-- ===================== VISUALIZADOR DE PISOS (embebido) ===================== -->
+<div id="nf-app">
+  <style>
+    #nf-app{
+      --nf-ink:var(--text); --nf-ink-soft:var(--text-muted);
+      --nf-line:var(--line); --nf-line-strong:var(--line-2);
+      --nf-bg:var(--bg); --nf-panel:var(--surface);
+      --nf-wood:var(--accent-hover); --nf-wood-deep:var(--accent-text);
+      --nf-accent:var(--accent);
+      font-family:'Sora', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      color:var(--nf-ink); background:var(--nf-bg); line-height:1.45;
+    }
+    #nf-app *{box-sizing:border-box}
+    #nf-app .head{padding:22px 26px 18px;border-bottom:1px solid var(--nf-line);background:var(--nf-panel)}
+    #nf-app .kicker{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--nf-wood-deep);font-weight:700;margin:0 0 6px}
+    #nf-app .title{font-size:21px;font-weight:600;margin:0;letter-spacing:-.03em}
+    #nf-app .sub{font-size:13.5px;color:var(--nf-ink-soft);margin:5px 0 0;max-width:60ch}
+    #nf-app .body{display:grid;grid-template-columns:1fr 280px;gap:0}
+    @media(max-width:760px){#nf-app .body{grid-template-columns:1fr}}
+    #nf-app .stage{position:relative;background:#000000;min-height:380px;display:flex;align-items:center;justify-content:center}
+    #nf-app canvas{max-width:100%;display:block;touch-action:none;cursor:crosshair}
+    #nf-app .drop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#cbbfaf;text-align:center;padding:30px;cursor:pointer}
+    #nf-app .drop svg{opacity:.7}
+    #nf-app .drop b{color:#f3ead9;font-size:15px;font-weight:600}
+    #nf-app .drop span{font-size:12.5px;opacity:.75;max-width:34ch}
+    #nf-app .drop.hide{display:none}
+    #nf-app .panel{background:var(--nf-panel);border-left:1px solid var(--nf-line);padding:18px;overflow:auto}
+    @media(max-width:760px){#nf-app .panel{border-left:none;border-top:1px solid var(--nf-line)}}
+    #nf-app .grp{margin-bottom:20px}
+    #nf-app .grp:last-child{margin-bottom:0}
+    #nf-app .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--nf-ink-soft);font-weight:700;margin:0 0 9px;display:flex;justify-content:space-between;align-items:baseline}
+    #nf-app .lbl span{font-weight:600;letter-spacing:0;text-transform:none;color:var(--nf-wood-deep)}
+    #nf-app .swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    #nf-app .sw{aspect-ratio:1;border-radius:9px;border:2px solid transparent;cursor:pointer;overflow:hidden;position:relative;background:#ddd;transition:border-color .12s}
+    #nf-app .sw canvas{width:100%;height:100%;cursor:pointer}
+    #nf-app .sw.on{border-color:var(--nf-accent)}
+    #nf-app .sw .nm{position:absolute;left:0;right:0;bottom:0;font-size:9.5px;font-weight:600;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.6));padding:8px 4px 3px;text-align:center;line-height:1.1}
+    #nf-app .row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    #nf-app .row label{font-size:12.5px;color:var(--nf-ink);min-width:78px}
+    #nf-app input[type=range]{flex:1;accent-color:var(--nf-accent)}
+    #nf-app .seg{display:flex;border:1px solid var(--nf-line-strong);border-radius:8px;overflow:hidden}
+    #nf-app .seg button{flex:1;border:none;background:var(--nf-panel);padding:7px;font-size:12px;cursor:pointer;color:var(--nf-ink-soft);font-weight:600}
+    #nf-app .seg button.on{background:var(--nf-accent);color:var(--accent-ink)}
+    #nf-app .btns{display:flex;gap:8px}
+    #nf-app button.act{flex:1;border:1px solid var(--nf-line-strong);background:var(--nf-panel);color:var(--nf-ink);padding:10px;border-radius:9px;font-size:12.5px;font-weight:600;cursor:pointer;transition:background .12s}
+    #nf-app button.act:hover{background:var(--nf-bg)}
+    #nf-app button.act.primary{background:var(--nf-accent);color:var(--accent-ink);border-color:var(--nf-accent)}
+    #nf-app button.act.primary:hover{background:var(--accent-hover)}
+    #nf-app button.act.wa{width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+    #nf-app .hint{font-size:11.5px;color:var(--nf-ink-soft);background:var(--nf-bg);border-radius:8px;padding:10px 12px;line-height:1.4}
+    #nf-app .hint b{color:var(--nf-ink)}
+    #nf-app input[type=file]{display:none}
+    #nf-app .toolbar{display:flex;gap:8px;padding:10px 14px;background:var(--nf-panel);border-top:1px solid var(--nf-line);align-items:center;flex-wrap:wrap}
+    #nf-app .toolbar .t{font-size:11.5px;color:var(--nf-ink-soft)}
+    #nf-app .chip{font-size:11px;border:1px solid var(--nf-line-strong);border-radius:20px;padding:5px 11px;background:var(--nf-panel);cursor:pointer;color:var(--nf-ink)}
+    #nf-app .chip:hover{background:var(--nf-bg)}
+  </style>
+
+  <div class="head">
+    <p class="kicker" data-i18n="nf.kicker">Natural Flooring · Visualizador</p>
+    <h2 class="title" data-i18n="nf.title">Probá el material en tu propio ambiente</h2>
+    <p class="sub" data-i18n="nf.sub">Ya cargamos una foto de ejemplo. Arrastrá las esquinas para ajustar el marco, o subí la tuya.</p>
+  </div>
+
+  <div class="body">
+    <div>
+      <div class="stage">
+        <canvas id="nf-canvas" width="720" height="480"></canvas>
+        <div id="nf-drop" class="drop">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+          <b data-i18n="nf.dropTitle">Subí una foto del ambiente</b>
+          <span data-i18n="nf.dropHint">Una sala, cocina, local o gimnasio. Tocá acá o arrastrá la imagen.</span>
+        </div>
+      </div>
+      <div class="toolbar">
+        <span class="t" data-i18n="nf.corners">Esquinas:</span>
+        <span class="chip" id="nf-reset-corners" data-i18n="nf.reset">Reubicar puntos</span>
+        <span class="chip" id="nf-change" data-i18n="nf.change">Cambiar foto</span>
+        <span class="t" id="nf-status" style="margin-left:auto"></span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="grp">
+        <p class="lbl"><span data-i18n="nf.material">Material</span> <span id="nf-mat-name">—</span></p>
+        <div class="swatches" id="nf-swatches"></div>
+      </div>
+
+      <div class="grp">
+        <p class="lbl" data-i18n="nf.dir">Dirección del tablón</p>
+        <div class="seg" id="nf-dir">
+          <button data-dir="h" class="on">Horizontal</button>
+          <button data-dir="v">Vertical</button>
+        </div>
+      </div>
+
+      <div class="grp">
+        <p class="lbl" data-i18n="nf.settings">Ajustes</p>
+        <div class="row"><label data-i18n="nf.size">Tamaño</label><input type="range" id="nf-scale" min="4" max="20" value="9"></div>
+        <div class="row"><label data-i18n="nf.light">Luz y sombra</label><input type="range" id="nf-light" min="0" max="100" value="62"></div>
+        <div class="row"><label data-i18n="nf.opacity">Opacidad</label><input type="range" id="nf-opacity" min="60" max="100" value="100"></div>
+      </div>
+
+      <div class="grp">
+        <div class="btns">
+          <button class="act" id="nf-before" data-i18n="nf.original">Mantener para ver el original</button>
+        </div>
+      </div>
+
+      <div class="grp">
+        <button class="act primary wa" id="nf-wa">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.69 8.24-8.23 8.24Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
+          <span data-i18n="nf.ask">Consultar por WhatsApp</span>
+        </button>
+      </div>
+
+      <div class="grp">
+        <div class="hint" data-i18n="nf.hint"><b>Tip:</b> para mejor resultado, marcá las esquinas justo donde el piso toca las paredes. Mantené presionado <b>“Ver original”</b> para comparar.</div>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="nf-file" accept="image/*">
+</div>
+
+<script>
+(function(){
+  var mount = document.getElementById('nf-mount');
+  var app = document.getElementById('nf-app');
+  mount.appendChild(app);
+
+  const $ = s => app.querySelector(s);
+  const canvas = $('#nf-canvas'), ctx = canvas.getContext('2d');
+  const fileInput = $('#nf-file'), drop = $('#nf-drop'), status = $('#nf-status');
+
+  let img = null;
+  let imgW = 720, imgH = 480;
+  let corners = [];
+  let dragging = -1;
+  let showOriginal = false;
+
+  const MATERIALS = [
+    {name:'Roble claro', base:'#caa46f', grain:'#a9824f', gap:'#9a7747', tint:1},
+    {name:'Roble miel',  base:'#b9853f', grain:'#996a2c', gap:'#85551f', tint:1},
+    {name:'Nogal',       base:'#7a5230', grain:'#5d3c20', gap:'#4a2e16', tint:1},
+    {name:'Guatambú',    base:'#dcc596', grain:'#c4a86f', gap:'#b39a60', tint:1},
+    {name:'SPC gris',    base:'#9a958c', grain:'#827d74', gap:'#6f6a61', tint:0},
+    {name:'Wengué',      base:'#3f342b', grain:'#2c241d', gap:'#221c16', tint:1},
+  ];
+  let matIndex = 0, dir = 'h', plankScale = 9;
+
+  function buildTexture(mat, planks, vertical){
+    const S = 600;
+    const c = document.createElement('canvas'); c.width = S; c.height = S;
+    const g = c.getContext('2d');
+    g.fillStyle = mat.base; g.fillRect(0,0,S,S);
+    const n = Math.max(3, planks|0);
+    const pw = S / n;
+    const offsets = [0, .45, .2, .7, .35, .6, .1, .8];
+    for(let i=0;i<n;i++){
+      const y0 = i*pw;
+      const v = (Math.sin(i*12.9898)*43758.5453)%1;
+      const shade = (Math.abs(v)-.5)* (mat.tint?26:14);
+      g.save();
+      g.translate(0,y0);
+      g.fillStyle = shadeColor(mat.base, shade);
+      g.fillRect(0,0,S,pw);
+      g.strokeStyle = withAlpha(mat.grain, .35);
+      const lines = mat.tint?9:5;
+      for(let k=0;k<lines;k++){
+        const yy = (k+ .5)/lines*pw;
+        g.lineWidth = .6 + Math.random()*1.1;
+        g.beginPath();
+        let x=0; g.moveTo(0,yy);
+        const amp = mat.tint? (1.2+Math.random()*2.6):(0.5+Math.random()*1);
+        const freq = .015 + Math.random()*.02;
+        const ph = Math.random()*6.28;
+        for(x=0;x<=S;x+=8){ g.lineTo(x, yy + Math.sin(x*freq+ph)*amp); }
+        g.stroke();
+      }
+      if(mat.tint && Math.random()<.5){
+        const kx=Math.random()*S, ky=pw*(.3+Math.random()*.4), kr=1.5+Math.random()*2.5;
+        const rad=g.createRadialGradient(kx,ky,0,kx,ky,kr*3);
+        rad.addColorStop(0, withAlpha(mat.gap,.55)); rad.addColorStop(1, withAlpha(mat.gap,0));
+        g.fillStyle=rad; g.beginPath(); g.arc(kx,ky,kr*3,0,6.28); g.fill();
+      }
+      g.fillStyle = withAlpha(mat.gap, .9);
+      g.fillRect(0, pw-1.5, S, 1.5);
+      const cut = (offsets[i%offsets.length])*S;
+      g.fillStyle = withAlpha(mat.gap,.7);
+      g.fillRect(cut, 0, 1.4, pw);
+      g.fillRect((cut+S*0.55)%S, 0, 1.4, pw);
+      g.restore();
+    }
+    const lg = g.createLinearGradient(0,0,S,S);
+    lg.addColorStop(0, 'rgba(255,255,255,.05)'); lg.addColorStop(1,'rgba(0,0,0,.05)');
+    g.fillStyle=lg; g.fillRect(0,0,S,S);
+
+    if(vertical){
+      const r = document.createElement('canvas'); r.width=S; r.height=S;
+      const rg = r.getContext('2d');
+      rg.translate(S/2,S/2); rg.rotate(Math.PI/2); rg.translate(-S/2,-S/2);
+      rg.drawImage(c,0,0); return r;
+    }
+    return c;
+  }
+  function shadeColor(hex, amt){
+    const {r,g,b}=hex2rgb(hex);
+    return `rgb(${clamp(r+amt)},${clamp(g+amt)},${clamp(b+amt)})`;
+  }
+  function withAlpha(hex,a){const{r,g,b}=hex2rgb(hex);return `rgba(${r},${g},${b},${a})`;}
+  function hex2rgb(h){h=h.replace('#','');return{r:parseInt(h.slice(0,2),16),g:parseInt(h.slice(2,4),16),b:parseInt(h.slice(4,6),16)};}
+  function clamp(v){return Math.max(0,Math.min(255,v|0));}
+
+  let textureCache = {};
+  function getTexture(){
+    const key = matIndex+'_'+plankScale+'_'+dir;
+    if(!textureCache[key]) textureCache[key] = buildTexture(MATERIALS[matIndex], plankScale, dir==='v');
+    return textureCache[key];
+  }
+
+  function computeHomography(src, dst){
+    const A=[], b=[];
+    for(let i=0;i<4;i++){
+      const {x:sx,y:sy}=src[i], {x:dx,y:dy}=dst[i];
+      A.push([sx,sy,1,0,0,0,-sx*dx,-sy*dx]); b.push(dx);
+      A.push([0,0,0,sx,sy,1,-sx*dy,-sy*dy]); b.push(dy);
+    }
+    const h = solve(A,b);
+    return [h[0],h[1],h[2],h[3],h[4],h[5],h[6],h[7],1];
+  }
+  function solve(A,b){
+    const n=8, M=A.map((r,i)=>[...r,b[i]]);
+    for(let col=0;col<n;col++){
+      let piv=col; for(let r=col+1;r<n;r++) if(Math.abs(M[r][col])>Math.abs(M[piv][col])) piv=r;
+      [M[col],M[piv]]=[M[piv],M[col]];
+      const d=M[col][col]||1e-9;
+      for(let k=col;k<=n;k++) M[col][k]/=d;
+      for(let r=0;r<n;r++){ if(r===col) continue; const f=M[r][col]; for(let k=col;k<=n;k++) M[r][k]-=f*M[col][k]; }
+    }
+    return M.map(r=>r[n]);
+  }
+  function applyH(H,x,y){
+    const X=H[0]*x+H[1]*y+H[2], Y=H[3]*x+H[4]*y+H[5], W=H[6]*x+H[7]*y+H[8];
+    return {x:X/W, y:Y/W};
+  }
+
+  function texTri(c, tex, s0,s1,s2, d0,d1,d2){
+    c.save();
+    c.beginPath();
+    c.moveTo(d0.x,d0.y); c.lineTo(d1.x,d1.y); c.lineTo(d2.x,d2.y); c.closePath();
+    c.clip();
+    const denom = s0.x*(s2.y-s1.y) - s1.x*s2.y + s2.x*s1.y + (s1.x-s2.x)*s0.y;
+    if(Math.abs(denom)<1e-6){c.restore();return;}
+    const a=(d0.x*(s2.y-s1.y)-d1.x*s2.y+d2.x*s1.y+(d1.x-d2.x)*s0.y)/denom;
+    const bb=(s0.x*(d1.x-d2.x)+s1.x*(d2.x-d0.x)+s2.x*(d0.x-d1.x))/denom;
+    const cc=(d0.y*(s2.y-s1.y)-d1.y*s2.y+d2.y*s1.y+(d1.y-d2.y)*s0.y)/denom;
+    const dd=(s0.x*(d1.y-d2.y)+s1.x*(d2.y-d0.y)+s2.x*(d0.y-d1.y))/denom;
+    const e=(s0.x*(s2.y*d1.x-s1.y*d2.x)+s0.y*(s1.x*d2.x-s2.x*d1.x)+(s1.x*s2.y-s2.x*s1.y)*d0.x)/denom;
+    const f=(s0.x*(s2.y*d1.y-s1.y*d2.y)+s0.y*(s1.x*d2.y-s2.x*d1.y)+(s1.x*s2.y-s2.x*s1.y)*d0.y)/denom;
+    c.transform(a,bb,cc,dd,e,f);
+    c.drawImage(tex,0,0);
+    c.restore();
+  }
+
+  function pathQuad(c, q){ c.beginPath(); c.moveTo(q[0].x,q[0].y); for(let i=1;i<4;i++) c.lineTo(q[i].x,q[i].y); c.closePath(); }
+
+  function render(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(!img){ return; }
+    ctx.drawImage(img,0,0,imgW,imgH);
+    if(showOriginal || corners.length<4){ drawHandles(); return; }
+
+    const tex = getTexture();
+    const TS = tex.width;
+
+    const buf = document.createElement('canvas'); buf.width=canvas.width; buf.height=canvas.height;
+    const bx = buf.getContext('2d');
+
+    const H = computeHomography(
+      [{x:0,y:0},{x:1,y:0},{x:1,y:1},{x:0,y:1}],
+      corners
+    );
+    const N = 14;
+    for(let i=0;i<N;i++){
+      for(let j=0;j<N;j++){
+        const u0=i/N,u1=(i+1)/N,v0=j/N,v1=(j+1)/N;
+        const s00={x:u0*TS,y:v0*TS},s10={x:u1*TS,y:v0*TS},s11={x:u1*TS,y:v1*TS},s01={x:u0*TS,y:v1*TS};
+        const d00=applyH(H,u0,v0),d10=applyH(H,u1,v0),d11=applyH(H,u1,v1),d01=applyH(H,u0,v1);
+        texTri(bx, tex, s00,s10,s11, d00,d10,d11);
+        texTri(bx, tex, s00,s11,s01, d00,d11,d01);
+      }
+    }
+
+    const lightAmt = +$('#nf-light').value/100;
+    if(lightAmt>0){
+      bx.save(); pathQuad(bx, corners); bx.clip();
+      bx.globalCompositeOperation='multiply';
+      bx.globalAlpha = lightAmt;
+      bx.drawImage(img,0,0,imgW,imgH);
+      bx.globalCompositeOperation='screen';
+      bx.globalAlpha = lightAmt*0.5;
+      bx.drawImage(img,0,0,imgW,imgH);
+      bx.restore();
+    }
+
+    ctx.save();
+    ctx.globalAlpha = +$('#nf-opacity').value/100;
+    pathQuad(ctx, corners); ctx.clip();
+    ctx.drawImage(buf,0,0);
+    ctx.restore();
+
+    drawHandles();
+  }
+
+  function drawHandles(){
+    if(corners.length<4) return;
+    ctx.save();
+    ctx.strokeStyle='rgba(196,255,13,.9)'; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
+    pathQuad(ctx,corners); ctx.stroke(); ctx.setLineDash([]);
+    corners.forEach((p,i)=>{
+      ctx.beginPath(); ctx.arc(p.x,p.y,8,0,6.28);
+      ctx.fillStyle= i===dragging?'#c4ff0d':'#ffffff'; ctx.fill();
+      ctx.lineWidth=2; ctx.strokeStyle='#c4ff0d'; ctx.stroke();
+    });
+    ctx.restore();
+  }
+
+  function defaultCorners(){
+    const w=imgW,h=imgH;
+    return [
+      {x:w*0.28,y:h*0.55},
+      {x:w*0.72,y:h*0.55},
+      {x:w*0.96,y:h*0.96},
+      {x:w*0.04,y:h*0.96},
+    ];
+  }
+
+  function loadImage(src){
+    const im = new Image();
+    im.crossOrigin = 'anonymous';
+    im.onload = ()=>{
+      img = im;
+      const maxW=720, maxH=520;
+      let r = Math.min(maxW/im.width, maxH/im.height, 1);
+      imgW = Math.round(im.width*r); imgH = Math.round(im.height*r);
+      canvas.width = imgW; canvas.height = imgH;
+      corners = defaultCorners();
+      drop.classList.add('hide');
+      status.textContent = 'Arrastrá los puntos a las esquinas del piso';
+      render();
+    };
+    im.src = src;
+  }
+  function handleFile(f){ if(!f) return; const fr=new FileReader(); fr.onload=e=>loadImage(e.target.result); fr.readAsDataURL(f); }
+
+  drop.addEventListener('click', ()=>fileInput.click());
+  $('#nf-change').addEventListener('click', ()=>fileInput.click());
+  fileInput.addEventListener('change', e=>handleFile(e.target.files[0]));
+  ['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();}));
+  drop.addEventListener('drop', e=>{e.preventDefault(); handleFile(e.dataTransfer.files[0]);});
+
+  function evtPos(e){
+    const r=canvas.getBoundingClientRect();
+    const t=e.touches?e.touches[0]:e;
+    return {x:(t.clientX-r.left)*(canvas.width/r.width), y:(t.clientY-r.top)*(canvas.height/r.height)};
+  }
+  function down(e){
+    if(!img) return;
+    const p=evtPos(e);
+    for(let i=0;i<corners.length;i++){
+      if(Math.hypot(corners[i].x-p.x,corners[i].y-p.y)<16){ dragging=i; e.preventDefault(); render(); return; }
+    }
+  }
+  function move(e){
+    if(dragging<0) return;
+    const p=evtPos(e);
+    corners[dragging]={x:Math.max(0,Math.min(canvas.width,p.x)),y:Math.max(0,Math.min(canvas.height,p.y))};
+    e.preventDefault(); render();
+  }
+  function up(){ dragging=-1; render(); }
+  canvas.addEventListener('mousedown',down); window.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
+  canvas.addEventListener('touchstart',down,{passive:false}); canvas.addEventListener('touchmove',move,{passive:false}); canvas.addEventListener('touchend',up);
+
+  function buildSwatches(){
+    const wrap=$('#nf-swatches'); wrap.innerHTML='';
+    MATERIALS.forEach((m,i)=>{
+      const d=document.createElement('div'); d.className='sw'+(i===matIndex?' on':'');
+      const c=document.createElement('canvas'); c.width=120;c.height=120;
+      const t=buildTexture(m,5,false); c.getContext('2d').drawImage(t,0,0,120,120);
+      d.appendChild(c);
+      const nm=document.createElement('div'); nm.className='nm'; nm.textContent=m.name; d.appendChild(nm);
+      d.addEventListener('click',()=>{matIndex=i;$('#nf-mat-name').textContent=m.name;buildSwatches();render();});
+      wrap.appendChild(d);
+    });
+  }
+  $('#nf-mat-name').textContent = MATERIALS[0].name;
+  buildSwatches();
+
+  $('#nf-dir').addEventListener('click',e=>{
+    if(e.target.dataset.dir){ dir=e.target.dataset.dir;
+      [...e.currentTarget.children].forEach(b=>b.classList.toggle('on',b===e.target)); render(); }
+  });
+  $('#nf-scale').addEventListener('input',e=>{plankScale=+e.target.value;render();});
+  $('#nf-light').addEventListener('input',render);
+  $('#nf-opacity').addEventListener('input',render);
+  $('#nf-reset-corners').addEventListener('click',()=>{if(img){corners=defaultCorners();render();}});
+
+  const before=$('#nf-before');
+  const press=v=>{showOriginal=v;render();};
+  before.addEventListener('mousedown',()=>press(true));
+  before.addEventListener('mouseup',()=>press(false));
+  before.addEventListener('mouseleave',()=>press(false));
+  before.addEventListener('touchstart',e=>{e.preventDefault();press(true);});
+  before.addEventListener('touchend',e=>{e.preventDefault();press(false);});
+
+  $('#nf-wa').addEventListener('click',()=>{
+    const en = document.documentElement.lang === 'en';
+    const msg = en
+      ? `Hi! I was trying the visualizer on your site and I am interested in the ${MATERIALS[matIndex].name} floor. I would like to ask about availability and price.`
+      : `Hola! Estuve probando el visualizador en la web y me interesa el piso ${MATERIALS[matIndex].name}. Quería consultar disponibilidad y precio.`;
+    window.open(window.citriqWa ? window.citriqWa(msg) : 'https://wa.me/?text='+encodeURIComponent(msg),'_blank','noopener,noreferrer');
+  });
+
+  loadImage('images/antes-gimnasio-con-piso-deteriorado.jpg');
+  if(window.citriqRescan) window.citriqRescan();
 })();
 </script>

@@ -58,10 +58,30 @@ Todo dentro de `index.html`, sin dependencias externas ni backend:
 3. **Cotizador** — función `calcQuote()`. Prototipo con valores de ejemplo, no son precios
    reales de nadie. En producción va contra la lista de precios del cliente.
 
+## Reemplazar el visualizador (para Manu)
+
+La sección `#visualizador` de `index.html` tiene el visualizador embebido. El bloque
+está marcado con un comentario `PUNTO DE INTEGRACIÓN`. Borrás lo que hay adentro y
+pegás tu versión. El contrato es corto:
+
+| Requisito | Detalle |
+|---|---|
+| Un solo nodo | Tu componente tiene que exponer un elemento con `id="nf-app"` |
+| Dónde se monta | El script lo mueve dentro de `#nf-mount`, que ya está en el HTML |
+| Sin init externo | Se autoconfigura solo: la página no le pasa props ni lo inicializa |
+| WhatsApp | Si existe `window.citriqWa(texto)`, usalo en lugar de armar el link a mano. Toma el número de `WA_PHONE`, que está declarado una sola vez arriba del script principal |
+| Traducción | Llamá a `window.citriqRescan()` cuando termines de montar. Eso mete tus textos en el sistema ES/EN. Marcá cada texto traducible con `data-i18n="clave"` y agregá la clave al diccionario `I18N.en` |
+| Tema claro/oscuro | No uses colores literales. Los tokens de la página son `--text`, `--text-muted`, `--surface`, `--line`, `--accent`, `--accent-text`, `--accent-ink`. Si los usás, el componente sigue el tema solo |
+
+Si tu versión no cumple algo de esto igual va a funcionar, pero pierde la traducción,
+el número centralizado o el tema claro, según lo que falte.
+
 ## Estado y pendientes
 
 - [ ] El formulario de contacto abre WhatsApp: no hay backend ni número real cargado.
 - [ ] Falta el número de WhatsApp real en los links `wa.me/` (hoy van sin número).
 - [ ] Solo tenemos un caso (Natural Flooring) y sin métricas. Es la debilidad más grande
       de la página: conseguir dos números concretos del cliente.
+- [ ] FAQ: pendiente de escribir.
+- [ ] Agendador de llamadas (ver nota de integraciones).
 - [ ] Definir el nombre final. "Citriq" es la hipótesis de trabajo.
