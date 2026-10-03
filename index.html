@@ -353,7 +353,9 @@
   .chip:hover{color:var(--accent-text); border-color:var(--accent-text)}
   .chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
 
-  .cta-aside{display:flex; flex-direction:column; align-items:flex-start; gap:16px; justify-content:center}
+  .cta-aside{display:flex; flex-direction:column; align-items:flex-start; gap:14px; justify-content:center}
+  .cta-aside .btn[data-cal]{border-color:rgba(255,255,255,.22); color:#f2f4ef}
+  .cta-aside .btn[data-cal]:hover{border-color:#c4ff0d; color:#c4ff0d}
   .cta-big{font-size:1rem; padding:16px 26px}
   .cta-sub{font-size:.88rem; color:#868a7f; font-weight:300; max-width:34ch}
   @media (max-width:920px){ .cta-grid{grid-template-columns:1fr} }
@@ -393,6 +395,12 @@
   .phone input:focus{outline:none}
   .counter{font-family:var(--fm); font-size:.66rem; color:var(--text-faint); text-align:right; margin-top:-4px}
   .modal-note{font-size:.74rem; color:var(--text-faint); font-weight:300; line-height:1.5}
+  .modal-alt{
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+    padding-top:14px; border-top:1px solid var(--line); font-size:.84rem; color:var(--text-faint);
+  }
+  .modal-alt a{color:var(--accent-text); font-weight:600; text-decoration:none}
+  .modal-alt a:hover{text-decoration:underline}
   @media (max-width:820px){
     .modal-shell{grid-template-columns:1fr; max-height:calc(100vh - 32px)}
     .modal-aside{border-right:none; border-bottom:1px solid var(--line); padding:26px 24px}
@@ -680,7 +688,8 @@
           </div>
           <div class="cta-aside reveal">
             <button class="btn solid cta-big" type="button" data-open-contact data-i18n="contact.open">Contanos tu proyecto →</button>
-            <p class="cta-sub" data-i18n="contact.sub">Te respondemos por WhatsApp con una idea concreta de cómo lo resolveríamos.</p>
+            <a class="btn cta-big" data-cal href="#" target="_blank" rel="noopener noreferrer" data-i18n="contact.book">Agendar 30 minutos</a>
+            <p class="cta-sub" data-i18n="contact.sub">Te respondemos por WhatsApp con una idea concreta de cómo lo resolveríamos. Si preferís hablar, agendá y listo.</p>
           </div>
         </div>
       </div>
@@ -733,6 +742,10 @@
       </div>
       <button class="btn solid" type="submit" style="width:100%; justify-content:center" data-i18n="f.submit">Hablemos por WhatsApp →</button>
       <p class="modal-note" data-i18n="f.note">Al enviar se abre WhatsApp con el mensaje ya escrito. No guardamos tus datos en ningún lado.</p>
+      <div class="modal-alt">
+        <span data-i18n="f.or">¿Preferís hablar?</span>
+        <a data-cal href="#" target="_blank" rel="noopener noreferrer" data-i18n="f.book">Agendá una llamada de 30 min →</a>
+      </div>
     </form>
   </div>
 </dialog>
@@ -755,6 +768,21 @@
      Vacío = el link abre WhatsApp sin destinatario.
      ============================================================ */
   var WA_PHONE = '';
+
+  /* ============================================================
+     AGENDA — Calendly. Acá es un link que abre en otra pestaña,
+     porque la vista previa de Claude no deja cargar su script.
+     Cuando el sitio viva en Framer o en hosting propio, se puede
+     reemplazar por el embed real:
+
+       <div class="calendly-inline-widget"
+            data-url="https://calendly.com/salva-pad-arg/30min"
+            style="min-width:320px;height:700px"></div>
+       <script src="https://assets.calendly.com/assets/external/widget.js" async><\/script>
+
+     o por el popup:  Calendly.initPopupWidget({url: CAL_LINK})
+     ============================================================ */
+  var CAL_LINK = 'https://calendly.com/salva-pad-arg/30min';
 
   /* ============================================================
      CLIENTES de la marquesina. Agregá acá y aparecen solos.
@@ -844,8 +872,10 @@
       'f.placeholder':'What you sell and what you would like your customer to be able to do on your site',
       'f.submit':'Get in touch on WhatsApp →',
       'contact.open':'Tell us about your project →',
-      'contact.sub':'We reply on WhatsApp with a concrete idea of how we would solve it.',
+      'contact.sub':'We reply on WhatsApp with a concrete idea of how we would solve it. If you would rather talk, just book a slot.',
       'contact.formkicker':'Contact',
+      'contact.book':'Book 30 minutes',
+      'f.or':'Rather talk?', 'f.book':'Book a 30-minute call →',
       'contact.s1':'We look at your catalogue and your job photos',
       'contact.s2':'We show you which tool fits',
       'contact.s3':'If it works for you, we build the prototype with your materials',
@@ -1014,6 +1044,8 @@
       if(document.hidden){ cancelAnimationFrame(raf); } else { raf=requestAnimationFrame(frame); }
     });
   })();
+
+  document.querySelectorAll('[data-cal]').forEach(function(a){ a.href = CAL_LINK; });
 
   window.citriqWa = waLink;
   window.citriqRescan = function(){ captureES(); applyLang(lang); };
