@@ -337,8 +337,53 @@
   .cta-form .chip[aria-pressed="true"]{background:#c4ff0d; border-color:#c4ff0d; color:#0b0c08}
   .cta-form textarea{resize:vertical; min-height:84px}
   .cta-form .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .cta-aside{display:flex; flex-direction:column; align-items:flex-start; gap:16px; justify-content:center}
+  .cta-big{font-size:1rem; padding:16px 26px}
+  .cta-sub{font-size:.88rem; color:#868a7f; font-weight:300; max-width:34ch}
   @media (max-width:920px){ .cta-grid{grid-template-columns:1fr} }
-  @media (max-width:520px){ .cta-form .row2{grid-template-columns:1fr} }
+
+  /* ---------- modal de contacto ---------- */
+  dialog#contact-modal{
+    padding:0; border:none; background:transparent; max-width:960px; width:calc(100% - 32px);
+    max-height:calc(100vh - 48px); overflow:visible; color:var(--text);
+  }
+  dialog#contact-modal::backdrop{background:rgba(0,0,0,.72); backdrop-filter:blur(4px)}
+  .modal-shell{
+    display:grid; grid-template-columns:.85fr 1.15fr; background:var(--surface);
+    border:1px solid var(--line); border-radius:10px; overflow:hidden; max-height:calc(100vh - 48px);
+  }
+  .modal-aside{padding:38px 34px; background:var(--bg); border-right:1px solid var(--line); display:flex; flex-direction:column; gap:16px}
+  .modal-aside h2{font-size:1.7rem}
+  .modal-aside h2 .lime{color:var(--accent-text)}
+  .modal-aside .lead{font-size:.95rem}
+  .modal-steps{list-style:none; margin:auto 0 0; padding:18px 0 0; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:9px}
+  .modal-steps li{font-size:.82rem; color:var(--text-faint); font-weight:300; display:flex; gap:10px}
+  .modal-steps li::before{content:"·"; color:var(--accent-text); font-weight:700}
+  .modal-form{padding:34px; overflow-y:auto; display:flex; flex-direction:column; gap:16px}
+  .modal-head{display:flex; justify-content:space-between; align-items:flex-start; gap:16px}
+  .modal-head p{font-family:var(--fm); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-faint)}
+  .modal-close{
+    background:none; border:1px solid var(--line-2); border-radius:50%; width:30px; height:30px; flex:none;
+    color:var(--text-muted); cursor:pointer; font-size:1rem; line-height:1; transition:all .15s ease;
+  }
+  .modal-close:hover{border-color:var(--accent-text); color:var(--accent-text)}
+  .req{color:var(--accent-text)}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .phone{display:flex; align-items:stretch; border:1px solid var(--line-2); border-radius:var(--r); background:var(--bg)}
+  .phone:focus-within{border-color:var(--accent-text)}
+  .phone input{border:none; background:transparent; border-radius:0}
+  .phone .cc{width:62px; text-align:center; font-family:var(--fm); font-size:.86rem; border-right:1px solid var(--line-2); color:var(--text-muted)}
+  .phone .num{flex:1; min-width:0}
+  .phone input:focus{outline:none}
+  .counter{font-family:var(--fm); font-size:.66rem; color:var(--text-faint); text-align:right; margin-top:-4px}
+  .modal-note{font-size:.74rem; color:var(--text-faint); font-weight:300; line-height:1.5}
+  @media (max-width:820px){
+    .modal-shell{grid-template-columns:1fr; max-height:calc(100vh - 32px)}
+    .modal-aside{border-right:none; border-bottom:1px solid var(--line); padding:26px 24px}
+    .modal-steps{display:none}
+    .modal-form{padding:24px}
+  }
+  @media (max-width:520px){ .row2{grid-template-columns:1fr} }
 
   footer{padding:40px 0; border-top:1px solid var(--line)}
   .foot-inner{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px}
@@ -366,7 +411,7 @@
           <button type="button" data-theme-set="dark" aria-pressed="true">Dark</button>
         </div>
       </div>
-      <a class="btn solid" href="#contacto" data-i18n="cta.button">Hablemos</a>
+      <button class="btn solid" type="button" data-open-contact data-i18n="cta.button">Hablemos</button>
     </div>
   </div>
 </header>
@@ -378,7 +423,7 @@
       <h1 data-i18n="hero.title"><span class="w" style="animation-delay:.02s">Software</span> <span class="w" style="animation-delay:.07s">para</span> <span class="w" style="animation-delay:.12s">una</span> <span class="w" style="animation-delay:.17s">industria</span> <span class="w" style="animation-delay:.22s">que</span> <span class="w" style="animation-delay:.27s">todavía</span> <span class="w lime" style="animation-delay:.32s">cotiza</span> <span class="w lime" style="animation-delay:.37s">a</span> <span class="w lime" style="animation-delay:.42s">mano.</span></h1>
       <p class="lead" data-i18n="hero.lead">Construimos herramientas interactivas para empresas de construcción y materiales: visualizadores, comparadores de obra y cotizadores. Corren en el navegador, se integran a la web que ya tenés y hacen que tu cliente decida sin esperar tres días un presupuesto.</p>
       <div class="cta-row">
-        <a class="btn solid" href="#contacto" data-i18n="cta.button">Hablemos</a>
+        <button class="btn solid" type="button" data-open-contact data-i18n="cta.button">Hablemos</button>
         <a class="btn" href="#herramientas" data-i18n="hero.secondary">Ver las herramientas</a>
       </div>
     </div>
@@ -588,35 +633,64 @@
             <h2 data-i18n="contact.title">Contanos qué querés que tu cliente pueda <span class="lime">ver</span> antes de comprar.</h2>
             <p class="lead" style="margin-top:18px" data-i18n="contact.lead">Lo miramos y te mostramos cómo lo resolveríamos con tu propio catálogo. Sin compromiso.</p>
           </div>
-          <form class="cta-form reveal" id="contact-form">
-            <div class="row2">
-              <div class="field"><label data-i18n="f.name">Nombre</label><input type="text" id="c-name" required></div>
-              <div class="field"><label data-i18n="f.company">Empresa</label><input type="text" id="c-company"></div>
-            </div>
-            <div class="row2">
-              <div class="field"><label data-i18n="f.email">Email</label><input type="email" id="c-email" required></div>
-              <div class="field"><label data-i18n="f.phone">Teléfono (opcional)</label><input type="tel" id="c-phone"></div>
-            </div>
-            <div class="field">
-              <label data-i18n="f.need">Qué necesitás</label>
-              <div class="chipset" id="c-need">
-                <button type="button" class="chip" aria-pressed="true" data-i18n="t1.title">Visualizador de materiales</button>
-                <button type="button" class="chip" aria-pressed="false" data-i18n="t2.title">Comparador antes / después</button>
-                <button type="button" class="chip" aria-pressed="false" data-i18n="t3.title">Cotizador automático</button>
-                <button type="button" class="chip" aria-pressed="false" data-i18n="f.dunno">Todavía no lo sé</button>
-              </div>
-            </div>
-            <div class="field">
-              <label data-i18n="f.case">Contanos tu caso</label>
-              <textarea id="c-msg" data-i18n="f.placeholder" data-i18n-attr="placeholder" placeholder="Qué vendés y qué te gustaría que tu cliente pueda hacer en tu web"></textarea>
-            </div>
-            <button class="btn solid" type="submit" style="width:100%; justify-content:center" data-i18n="f.submit">Hablemos por WhatsApp →</button>
-          </form>
+          <div class="cta-aside reveal">
+            <button class="btn solid cta-big" type="button" data-open-contact data-i18n="contact.open">Contanos tu proyecto →</button>
+            <p class="cta-sub" data-i18n="contact.sub">Te respondemos por WhatsApp con una idea concreta de cómo lo resolveríamos.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 </main>
+
+<dialog id="contact-modal" aria-labelledby="contact-modal-title">
+  <div class="modal-shell">
+    <div class="modal-aside">
+      <p class="eyebrow" data-i18n="contact.eyebrow">Siguiente paso</p>
+      <h2 id="contact-modal-title" data-i18n="contact.title">Contanos qué querés que tu cliente pueda <span class="lime">ver</span> antes de comprar.</h2>
+      <p class="lead" data-i18n="contact.lead">Lo miramos y te mostramos cómo lo resolveríamos con tu propio catálogo. Sin compromiso.</p>
+      <ul class="modal-steps">
+        <li data-i18n="contact.s1">Miramos tu catálogo y tus fotos de obra</li>
+        <li data-i18n="contact.s2">Te mostramos qué herramienta encaja</li>
+        <li data-i18n="contact.s3">Si cierra, armamos el prototipo con tus materiales</li>
+      </ul>
+    </div>
+    <form class="modal-form" id="contact-form">
+      <div class="modal-head">
+        <p data-i18n="contact.formkicker">Contacto</p>
+        <button type="button" class="modal-close" data-close-contact aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="c-name"><span data-i18n="f.name">Nombre</span> <span class="req">*</span></label><input type="text" id="c-name" required></div>
+        <div class="field"><label for="c-company" data-i18n="f.company">Empresa</label><input type="text" id="c-company"></div>
+      </div>
+      <div class="field"><label for="c-email"><span data-i18n="f.email">Email</span> <span class="req">*</span></label><input type="email" id="c-email" required></div>
+      <div class="field">
+        <label for="c-phone" data-i18n="f.phone">Teléfono (opcional)</label>
+        <div class="phone">
+          <input type="text" class="cc" id="c-cc" value="+54" aria-label="País">
+          <input type="tel" class="num" id="c-phone" placeholder="11 1234 5678">
+        </div>
+      </div>
+      <div class="field">
+        <label data-i18n="f.need">Qué necesitás</label>
+        <div class="chipset" id="c-need">
+          <button type="button" class="chip" aria-pressed="true" data-i18n="t1.title">Visualizador de materiales</button>
+          <button type="button" class="chip" aria-pressed="false" data-i18n="t2.title">Comparador antes / después</button>
+          <button type="button" class="chip" aria-pressed="false" data-i18n="t3.title">Cotizador automático</button>
+          <button type="button" class="chip" aria-pressed="false" data-i18n="f.dunno">Todavía no lo sé</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="c-msg" data-i18n="f.case">Contanos tu caso</label>
+        <textarea id="c-msg" maxlength="400" data-i18n="f.placeholder" data-i18n-attr="placeholder" placeholder="Qué vendés y qué te gustaría que tu cliente pueda hacer en tu web"></textarea>
+        <p class="counter"><span id="c-count">0</span>/400</p>
+      </div>
+      <button class="btn solid" type="submit" style="width:100%; justify-content:center" data-i18n="f.submit">Hablemos por WhatsApp →</button>
+      <p class="modal-note" data-i18n="f.note">Al enviar se abre WhatsApp con el mensaje ya escrito. No guardamos tus datos en ningún lado.</p>
+    </form>
+  </div>
+</dialog>
 
 <footer>
   <div class="wrap foot-inner">
@@ -715,6 +789,13 @@
       'f.need':'What you need', 'f.dunno':'Not sure yet', 'f.case':'Tell us about your case',
       'f.placeholder':'What you sell and what you would like your customer to be able to do on your site',
       'f.submit':'Get in touch on WhatsApp →',
+      'contact.open':'Tell us about your project →',
+      'contact.sub':'We reply on WhatsApp with a concrete idea of how we would solve it.',
+      'contact.formkicker':'Contact',
+      'contact.s1':'We look at your catalogue and your job photos',
+      'contact.s2':'We show you which tool fits',
+      'contact.s3':'If it works for you, we build the prototype with your materials',
+      'f.note':'Submitting opens WhatsApp with the message already written. We do not store your data anywhere.',
       'foot':'Technology for construction · 2026',
       'nf.kicker':'Natural Flooring · Visualizer',
       'nf.title':'Try the material in your own space',
@@ -841,14 +922,39 @@
   document.getElementById('q-minus').addEventListener('click',function(){ qM2.value=Math.max(1,(+qM2.value||1)-1); calcQuote(); });
   document.getElementById('q-plus').addEventListener('click',function(){ qM2.value=(+qM2.value||0)+1; calcQuote(); });
 
+  var modal=document.getElementById('contact-modal');
+  var lastFocus=null;
+  function openContact(){
+    lastFocus=document.activeElement;
+    if(modal.showModal) modal.showModal(); else modal.setAttribute('open','');
+    document.body.style.overflow='hidden';
+    var first=document.getElementById('c-name'); if(first) first.focus();
+  }
+  function closeContact(){
+    if(modal.close) modal.close(); else modal.removeAttribute('open');
+    document.body.style.overflow='';
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  document.querySelectorAll('[data-open-contact]').forEach(function(b){ b.addEventListener('click', openContact); });
+  modal.addEventListener('click', function(e){
+    if(e.target.closest('[data-close-contact]')) { closeContact(); return; }
+    if(e.target === modal) closeContact();
+  });
+  modal.addEventListener('close', function(){ document.body.style.overflow=''; });
+
+  var msgBox=document.getElementById('c-msg'), counter=document.getElementById('c-count');
+  msgBox.addEventListener('input', function(){ counter.textContent = msgBox.value.length; });
+
   var needChips=initChips('c-need');
   document.getElementById('contact-form').addEventListener('submit',function(e){
     e.preventDefault();
     var g=function(id){ return document.getElementById(id).value; };
+    var phone = g('c-phone') ? ' ' + g('c-cc') + ' ' + g('c-phone') : '';
     window.open(waLink(lang==='en'
-      ? 'Hi! I am '+g('c-name')+(g('c-company')?' from '+g('c-company'):'')+'. I am interested in: '+needChips.label()+'. '+g('c-msg')+' (Email: '+g('c-email')+')'
-      : 'Hola! Soy '+g('c-name')+(g('c-company')?' de '+g('c-company'):'')+'. Me interesa: '+needChips.label()+'. '+g('c-msg')+' (Email: '+g('c-email')+')'
+      ? 'Hi! I am '+g('c-name')+(g('c-company')?' from '+g('c-company'):'')+'. I am interested in: '+needChips.label()+'. '+g('c-msg')+' (Email: '+g('c-email')+phone+')'
+      : 'Hola! Soy '+g('c-name')+(g('c-company')?' de '+g('c-company'):'')+'. Me interesa: '+needChips.label()+'. '+g('c-msg')+' (Email: '+g('c-email')+phone+')'
     ),'_blank','noopener,noreferrer');
+    closeContact();
   });
 
   window.citriqWa = waLink;
