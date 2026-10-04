@@ -24,13 +24,13 @@ pnpm demo     # regenera las imágenes del ejemplo de la historia
 | Ruta | Qué es |
 |---|---|
 | `app/` | `layout.js` (fuentes, metadata), `page.js` (arma la home), `globals.css` (tokens y átomos: `.btn`, `.field`, `.section`…), `icon.svg` (favicon = el logo). |
-| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` (con las pantallas en `Telefono.jsx`) y `Asesor.jsx` son los scrollytelling. |
+| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` es el scrollytelling (pantallas en `Telefono.jsx`); `QueHacemos.jsx` el índice de servicios. |
 | `lib/asesor/` | Copia del motor del asesor de Natural Flooring y el recorrido del ejemplo, con pruebas. |
 | `lib/visualizador/` | El motor del visualizador, sin DOM: geometría, máscara, texturas, render y sus pruebas. |
 | `scripts/renderizar-demo.mjs` | Usa ese motor (con sharp) para generar `public/images/demo/`. |
 | `data/site.js` | WhatsApp y links del nav. |
 | `data/visualizador.mjs` | Catálogo de materiales, fotos calibradas y qué muestra el ejemplo (`EJEMPLO_DEMO`, `MATERIAL_DEMO`). |
-| `public/images/` | Fotos de obras de Natural Flooring (dormitorio, comedor, deck, escalera), foto aérea de RTS y el logo de Citriq. `demo/` la genera `pnpm demo`. |
+| `public/images/` | Fotos de Natural Flooring (dormitorio, comedor, deck, escalera, captura de su web), foto aérea de RTS y el logo de Citriq. `demo/` la genera `pnpm demo`. |
 | `prompt-framer*.md` | Prompts viejos para Framer. Ya no describen el sitio actual. |
 
 ## Variables de entorno
@@ -61,21 +61,25 @@ El logo está en `components/Marca.jsx` (y `app/icon.svg`); en el hero se dibuja
 ## Capítulos
 
 1. **Hero** (oscuro): el logo se dibuja y dos casos en producción.
-2. **Historia** (claro): scrollytelling de una consulta de sábado a la noche. El bloque queda
-   fijo mientras se scrollea: a la izquierda el recorrido completo (el momento actual abierto),
-   a la derecha un celular de tamaño fijo cuya pantalla va cambiando: WhatsApp → visualizador
-   sin foto → foto → detecta el piso → guatambú → antes/después → estimado → lunes, la
-   notificación en el celular del negocio → la consulta abierta. No es interactivo: los
-   renders salen de `pnpm demo` (`EJEMPLO_DEMO` y `MATERIAL_DEMO` en `data/visualizador.mjs`).
-3. **Asesor** (oscuro): el asesor de materiales de Natural Flooring respondiéndose solo con el
-   scroll (deck exterior al sol, uso alto, mantenimiento simple). A la izquierda, cómo decide:
-   puntajes y descartes calculados con el motor real (`lib/asesor/motor.mjs`, copia del de NF).
+2. **Qué hacemos** (claro): un índice tipo planilla de obra con lo que construimos
+   (visualizadores, asesores, cotizadores, sitios web, plataformas de obra). La fila activa
+   muestra al costado una vista en vivo; rota sola hasta que alguien toca una fila. La vista
+   del asesor usa el motor real (`lib/asesor`); la de sitios web es una captura de la web de
+   Natural Flooring corriendo desde su repo.
+3. **Historia** (oscuro): scrollytelling de una consulta de sábado a la noche. A la izquierda
+   el recorrido completo, a la derecha un celular de tamaño fijo (`Telefono.jsx`): WhatsApp →
+   visualizador sin foto → foto → piso → guatambú → antes/después → estimado → el lunes, la
+   notificación de Mail en el celular del negocio → el mail abierto. Los renders salen de
+   `pnpm demo`.
 4. **Industria** (claro): RTS Commissioning, árbol del proyecto y curva S (ilustrativa).
-5. **Proceso y para quién** (oscuro), y **contacto**.
+5. **Proceso y para quién** (oscuro).
+6. **Contacto**: una carta para completar ("Hola, soy… de… Me gustaría que…") que se manda
+   por WhatsApp tal cual se lee.
 
 ## Estado y pendientes
 
-- [ ] El formulario de contacto abre WhatsApp: falta cargar `NEXT_PUBLIC_WHATSAPP`.
+- [ ] El contacto abre WhatsApp: falta cargar `NEXT_PUBLIC_WHATSAPP`.
+- [ ] `naturalflooring.com.ar` no resuelve (oct 2026): confirmar en qué dominio está online antes de linkearlo.
 - [ ] Dos casos (Natural Flooring y RTS) pero sin métricas: conseguir números concretos
       de cada cliente (consultas por mes del visualizador, proyectos en la plataforma).
 - [ ] `prompt-framer*.md` todavía describen la paleta y el copy anteriores.

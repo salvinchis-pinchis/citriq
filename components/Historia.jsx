@@ -102,7 +102,7 @@ export default function Historia() {
   }
 
   return (
-    <section className={`claro ${styles.historia}`} id="historia">
+    <section className={`oscuro ${styles.historia}`} id="historia">
       <div className="wrap">
         <div className={`section-head ${styles.intro}`}>
           <p className="kicker">Cómo funciona</p>

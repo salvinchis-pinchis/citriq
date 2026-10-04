@@ -6,8 +6,8 @@ export function waLink(texto) {
 }
 
 export const nav = [
+  { href: "#que-hacemos", label: "Qué hacemos" },
   { href: "#historia", label: "Cómo funciona" },
-  { href: "#casos", label: "Casos" },
   { href: "#industria", label: "Industria" },
   { href: "#contacto", label: "Contacto" },
 ];

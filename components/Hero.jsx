@@ -16,8 +16,8 @@ export default function Hero() {
               <a className="btn btn-solid" href="#historia">
                 Ver cómo funciona
               </a>
-              <a className="btn" href="#casos">
-                Ver casos reales
+              <a className="btn" href="#que-hacemos">
+                Ver qué hacemos
               </a>
             </div>
           </div>
@@ -29,7 +29,7 @@ export default function Hero() {
 
         <div className={styles.prueba}>
           <p className={styles.pruebaLabel}>En producción</p>
-          <a href="#casos">
+          <a href="#historia">
             <b>Natural Flooring</b>
             <small>Visualizador de pisos con IA en su web</small>
           </a>
