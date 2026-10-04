@@ -6,82 +6,81 @@ construcción y materiales: visualizador, comparador de obras y cotizador.
 El sitio se está rearmando en Framer, pero **las tres herramientas son código propio**
 y viven acá. En Framer entran como Embed / Code Component.
 
-## Archivos
+## Stack
 
-| Archivo | Qué es |
-|---|---|
-| `index.html` | La página completa, en un solo archivo. Incluye las tres herramientas funcionando. |
-| `images/` | Fotos reales de obras de Natural Flooring (antes/después, showroom, logo). |
-| `prompt-framer.md` | Prompt para generar el sitio en Framer AI (estructura + copy + identidad visual). |
-| `prompt-framer-animaciones.md` | Prompt de animaciones + tabla con los valores exactos del panel Effects. |
-
-## Cómo verlo
-
-Abrí `index.html` en el navegador. Si el navegador bloquea la carga de las imágenes,
-levantá un server local:
+Next.js 16 (App Router) + React 19, JavaScript y CSS Modules, igual que los sitios de
+Natural Flooring, P&R y Parqueplast. Todas las páginas son estáticas: no hay backend.
 
 ```bash
-python3 -m http.server 8000
+pnpm install
+pnpm dev      # http://localhost:3000
+pnpm build
+pnpm test     # pruebas del visualizador y del asesor (node --test)
+pnpm demo     # regenera las imágenes del ejemplo de la historia
 ```
 
-y entrá a http://localhost:8000
+## Dónde está cada cosa
+
+| Ruta | Qué es |
+|---|---|
+| `app/` | `layout.js` (fuentes, metadata), `page.js` (arma la home), `globals.css` (tokens y átomos: `.btn`, `.field`, `.section`…), `icon.svg` (favicon = el logo). |
+| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` es el scrollytelling (pantallas en `Telefono.jsx`); `QueHacemos.jsx` el índice de servicios. |
+| `lib/asesor/` | Copia del motor del asesor de Natural Flooring y el recorrido del ejemplo, con pruebas. |
+| `lib/visualizador/` | El motor del visualizador, sin DOM: geometría, máscara, texturas, render y sus pruebas. |
+| `scripts/renderizar-demo.mjs` | Usa ese motor (con sharp) para generar `public/images/demo/`. |
+| `data/site.js` | WhatsApp y links del nav. |
+| `data/visualizador.mjs` | Catálogo de materiales, fotos calibradas y qué muestra el ejemplo (`EJEMPLO_DEMO`, `MATERIAL_DEMO`). |
+| `public/images/` | Fotos de Natural Flooring (dormitorio, comedor, deck, escalera, captura de su web), foto aérea de RTS y el logo de Citriq. `demo/` la genera `pnpm demo`. |
+| `prompt-framer*.md` | Prompts viejos para Framer. Ya no describen el sitio actual. |
+
+## Variables de entorno
+
+Opcionales, en `.env.local`:
+
+| Variable | Para qué |
+|---|---|
+| `NEXT_PUBLIC_WHATSAPP` | Número de Citriq con código de país, sin signos (ej. `5491100000000`). Vacío = wa.me deja elegir el contacto. |
 
 ## Sistema de diseño
 
-Diseño de un solo tema, siempre oscuro. No hay light mode.
+La página es una historia en capítulos que alternan dos materiales de obra:
 
-| Rol | Color |
-|---|---|
-| Fondo | `#000000` |
-| Superficies | `#111113` |
-| Bordes | `#232428` / `#2e3035` |
-| Acento | `#c4ff0d` (lima alta visibilidad) |
-| Acento hover | `#aedd2b` |
-| Acentos suaves | `#c0de5d` / `#a4c972` |
-| Texto | `#f2f4ef` / `#9a9d94` / `#6b6e67` |
+| Capítulo | Fondo | Texto | Acento de texto |
+|---|---|---|---|
+| `.oscuro` | `#0e1215` carbón (el fondo del logo) | `#eef2ea` | lima `#c0f916` |
+| `.claro` | `#e9e7e1` hormigón | `#15191b` | lapacho `#8a4f2c` |
 
-Tipografías: **Sora** (títulos y cuerpo) + **JetBrains Mono** (etiquetas, datos, números).
+El lima del logo es la marca y lo "en vivo": botones, marcas, el divisor del antes/después.
+Sobre hormigón nunca va como texto. Las maderas del catálogo (lapacho, guatambú) son el acento
+cálido. Los componentes solo usan `--bg`, `--surface`, `--text`, `--muted`, `--acento`…, así
+que funcionan en cualquiera de los dos capítulos.
 
-La idea del lima: no es verde tech genérico, es el color que la construcción ya usa
-para señalizar — chalecos, pintura de marcado, niveles láser.
+Tipografías: **Sora** para todo, **JetBrains Mono** solo para datos (horas, m², precios, tags).
+El logo está en `components/Marca.jsx` (y `app/icon.svg`); en el hero se dibuja al cargar.
 
-## Las tres herramientas (dónde tocar)
+## Capítulos
 
-Todo dentro de `index.html`, sin dependencias externas ni backend:
-
-1. **Visualizador de materiales** — bloque `#nf-app` al final del archivo. Canvas con
-   homografía de perspectiva: el usuario sube una foto, marca 4 esquinas y se le mapea
-   la textura del material conservando luz y sombras. Las texturas hoy son procedurales
-   (array `MATERIALS`); en producción se reemplazan por fotos cenitales del catálogo real.
-2. **Comparador antes/después** — array `PROJECTS` en el script principal. Un clip-path
-   controlado por un range input.
-3. **Cotizador** — función `calcQuote()`. Prototipo con valores de ejemplo, no son precios
-   reales de nadie. En producción va contra la lista de precios del cliente.
-
-## Reemplazar el visualizador (para Manu)
-
-La sección `#visualizador` de `index.html` tiene el visualizador embebido. El bloque
-está marcado con un comentario `PUNTO DE INTEGRACIÓN`. Borrás lo que hay adentro y
-pegás tu versión. El contrato es corto:
-
-| Requisito | Detalle |
-|---|---|
-| Un solo nodo | Tu componente tiene que exponer un elemento con `id="nf-app"` |
-| Dónde se monta | El script lo mueve dentro de `#nf-mount`, que ya está en el HTML |
-| Sin init externo | Se autoconfigura solo: la página no le pasa props ni lo inicializa |
-| WhatsApp | Si existe `window.citriqWa(texto)`, usalo en lugar de armar el link a mano. Toma el número de `WA_PHONE`, que está declarado una sola vez arriba del script principal |
-| Traducción | Llamá a `window.citriqRescan()` cuando termines de montar. Eso mete tus textos en el sistema ES/EN. Marcá cada texto traducible con `data-i18n="clave"` y agregá la clave al diccionario `I18N.en` |
-| Tema claro/oscuro | No uses colores literales. Los tokens de la página son `--text`, `--text-muted`, `--surface`, `--line`, `--accent`, `--accent-text`, `--accent-ink`. Si los usás, el componente sigue el tema solo |
-
-Si tu versión no cumple algo de esto igual va a funcionar, pero pierde la traducción,
-el número centralizado o el tema claro, según lo que falte.
+1. **Hero** (oscuro): el logo se dibuja y dos casos en producción.
+2. **Qué hacemos** (claro): un índice tipo planilla de obra con lo que construimos
+   (visualizadores, asesores, cotizadores, sitios web, plataformas de obra). La fila activa
+   muestra al costado una vista en vivo; rota sola hasta que alguien toca una fila. La vista
+   del asesor usa el motor real (`lib/asesor`); la de sitios web es una captura de la web de
+   Natural Flooring corriendo desde su repo.
+3. **Historia** (oscuro): scrollytelling de una consulta de sábado a la noche. A la izquierda
+   el recorrido completo, a la derecha un celular de tamaño fijo (`Telefono.jsx`): WhatsApp →
+   visualizador sin foto → foto → piso → guatambú → antes/después → estimado → el lunes, la
+   notificación de Mail en el celular del negocio → el mail abierto. Los renders salen de
+   `pnpm demo`.
+4. **Industria** (claro): RTS Commissioning, árbol del proyecto y curva S (ilustrativa).
+5. **Proceso y para quién** (oscuro).
+6. **Contacto**: una carta para completar ("Hola, soy… de… Me gustaría que…") que se manda
+   por WhatsApp tal cual se lee.
 
 ## Estado y pendientes
 
-- [ ] El formulario de contacto abre WhatsApp: no hay backend ni número real cargado.
-- [ ] Falta el número de WhatsApp real en los links `wa.me/` (hoy van sin número).
-- [ ] Solo tenemos un caso (Natural Flooring) y sin métricas. Es la debilidad más grande
-      de la página: conseguir dos números concretos del cliente.
-- [ ] FAQ: pendiente de escribir.
-- [ ] Agendador de llamadas (ver nota de integraciones).
+- [ ] El contacto abre WhatsApp: falta cargar `NEXT_PUBLIC_WHATSAPP`.
+- [ ] `naturalflooring.com.ar` no resuelve (oct 2026): confirmar en qué dominio está online antes de linkearlo.
+- [ ] Dos casos (Natural Flooring y RTS) pero sin métricas: conseguir números concretos
+      de cada cliente (consultas por mes del visualizador, proyectos en la plataforma).
+- [ ] `prompt-framer*.md` todavía describen la paleta y el copy anteriores.
 - [ ] Definir el nombre final. "Citriq" es la hipótesis de trabajo.
