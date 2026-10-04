@@ -15,7 +15,7 @@ Natural Flooring, P&R y Parqueplast. Todas las páginas son estáticas: no hay b
 pnpm install
 pnpm dev      # http://localhost:3000
 pnpm build
-pnpm test     # pruebas del motor del visualizador (node --test)
+pnpm test     # pruebas del visualizador y del asesor (node --test)
 pnpm demo     # regenera las imágenes del ejemplo de la historia
 ```
 
@@ -24,12 +24,13 @@ pnpm demo     # regenera las imágenes del ejemplo de la historia
 | Ruta | Qué es |
 |---|---|
 | `app/` | `layout.js` (fuentes, metadata), `page.js` (arma la home), `globals.css` (tokens y átomos: `.btn`, `.field`, `.section`…), `icon.svg` (favicon = el logo). |
-| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` y `Caso.jsx` son los scrollytelling; `Split.jsx` el antes/después arrastrable. |
+| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` (con las pantallas en `Telefono.jsx`) y `Asesor.jsx` son los scrollytelling. |
+| `lib/asesor/` | Copia del motor del asesor de Natural Flooring y el recorrido del ejemplo, con pruebas. |
 | `lib/visualizador/` | El motor del visualizador, sin DOM: geometría, máscara, texturas, render y sus pruebas. |
 | `scripts/renderizar-demo.mjs` | Usa ese motor (con sharp) para generar `public/images/demo/`. |
 | `data/site.js` | WhatsApp y links del nav. |
 | `data/visualizador.mjs` | Catálogo de materiales, fotos calibradas y qué muestra el ejemplo (`EJEMPLO_DEMO`, `MATERIAL_DEMO`). |
-| `public/images/` | Fotos de obras de Natural Flooring (dormitorio, comedor, gimnasio, escalera), foto aérea de RTS y el logo de Citriq. `demo/` la genera `pnpm demo`. |
+| `public/images/` | Fotos de obras de Natural Flooring (dormitorio, comedor, deck, escalera), foto aérea de RTS y el logo de Citriq. `demo/` la genera `pnpm demo`. |
 | `prompt-framer*.md` | Prompts viejos para Framer. Ya no describen el sitio actual. |
 
 ## Variables de entorno
@@ -66,8 +67,9 @@ El logo está en `components/Marca.jsx` (y `app/icon.svg`); en el hero se dibuja
    sin foto → foto → detecta el piso → guatambú → antes/después → estimado → lunes, la
    notificación en el celular del negocio → la consulta abierta. No es interactivo: los
    renders salen de `pnpm demo` (`EJEMPLO_DEMO` y `MATERIAL_DEMO` en `data/visualizador.mjs`).
-3. **Caso** (oscuro): el gimnasio de Zona Norte de Natural Flooring, antes, durante y
-   después con el scroll, y al final el comparador arrastrable como está en su web.
+3. **Asesor** (oscuro): el asesor de materiales de Natural Flooring respondiéndose solo con el
+   scroll (deck exterior al sol, uso alto, mantenimiento simple). A la izquierda, cómo decide:
+   puntajes y descartes calculados con el motor real (`lib/asesor/motor.mjs`, copia del de NF).
 4. **Industria** (claro): RTS Commissioning, árbol del proyecto y curva S (ilustrativa).
 5. **Proceso y para quién** (oscuro), y **contacto**.
 

@@ -1,4 +1,4 @@
-import Caso from "../components/Caso";
+import Asesor from "../components/Asesor";
 import Contacto from "../components/Contacto";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -16,7 +16,7 @@ export default function Home() {
       <main id="contenido">
         <Hero />
         <Historia />
-        <Caso />
+        <Asesor />
         <Industria />
         <div className="oscuro">
           <Proceso />
