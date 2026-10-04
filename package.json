@@ -1,0 +1,19 @@
+{
+  "name": "citriq",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "node --test \"lib/**/*.test.mjs\"",
+    "demo": "node scripts/renderizar-demo.mjs"
+  },
+  "dependencies": {
+    "next": "16.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "sharp": "0.35.5"
+  }
+}

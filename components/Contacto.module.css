@@ -1,0 +1,101 @@
+.contacto {
+  position: relative;
+  overflow: hidden;
+}
+/* la escalera terminada, apenas, detras de la carta */
+.contacto::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(180deg, rgba(14, 18, 21, 0.86), rgba(14, 18, 21, 0.97) 75%),
+    url("/images/escalera-terminada-noche.jpg");
+  background-size: cover;
+  background-position: center 40%;
+}
+.inner {
+  position: relative;
+  padding-top: 128px;
+  padding-bottom: 128px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 64px;
+  align-items: center;
+}
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---------- la carta ---------- */
+.carta {
+  min-width: 0;
+  padding: clamp(24px, 4vw, 44px);
+  border-radius: 16px;
+  background: var(--hormigon);
+  color: #15191b;
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.7);
+}
+.texto {
+  font-size: clamp(1.25rem, 2.3vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 2;
+  text-wrap: pretty;
+}
+.hueco {
+  display: inline-block;
+  vertical-align: baseline;
+  max-width: 100%;
+}
+.hueco input {
+  font: inherit;
+  letter-spacing: inherit;
+  color: var(--lapacho);
+  width: calc(var(--ch) * 0.58em);
+  max-width: 100%;
+  padding: 0 2px;
+  border: none;
+  border-bottom: 2px solid #bfbbb0;
+  border-radius: 0;
+  background: transparent;
+  line-height: 1.2;
+  transition: border-color 0.2s, background 0.2s;
+}
+.hueco input::placeholder {
+  color: #a7aba3;
+  font-weight: 400;
+}
+.hueco input:focus {
+  outline: none;
+  border-bottom-color: #15191b;
+  background: linear-gradient(transparent 62%, rgba(192, 249, 22, 0.55) 62%);
+}
+.hueco input:user-invalid {
+  border-bottom-color: #c2410c;
+}
+.pie {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid #d3d0c7;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.nota {
+  font-size: 0.84rem;
+  color: #6b716c;
+}
+
+@media (max-width: 920px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+  .texto {
+    line-height: 1.9;
+  }
+}
