@@ -1,0 +1,151 @@
+.hero {
+  padding: 132px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+/* grilla de plano: solo detras del hero, se desvanece hacia abajo */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(to right, rgba(192, 249, 22, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(192, 249, 22, 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center top;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 70% 30%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 70% at 70% 30%, #000 30%, transparent 75%);
+}
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 48px;
+  align-items: center;
+  min-height: min(620px, 78vh);
+}
+.titulo {
+  font-size: clamp(2.6rem, 6.4vw, 5.1rem);
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+.bajada {
+  margin-top: 28px;
+  font-size: 1.15rem;
+  max-width: 54ch;
+}
+.ctas {
+  margin-top: 36px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.marca {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 420px);
+  aspect-ratio: 1;
+  color: var(--lime);
+}
+.marca svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.marca::after {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  z-index: -1;
+  background: radial-gradient(circle, rgba(192, 249, 22, 0.16), transparent 68%);
+}
+.trazo {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: dibujar 1.4s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+}
+.t1 { animation-delay: 0.25s; }
+.t2 { animation-delay: 0.5s; }
+.t3 { animation-delay: 0.7s; }
+.t4 { animation-delay: 0.85s; }
+@keyframes dibujar {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trazo {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* lo que esta en produccion, como prueba y no como slogan */
+.prueba {
+  position: relative;
+  margin-top: 72px;
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  border-top: 1px solid var(--line);
+}
+.prueba > * {
+  padding: 22px 0;
+}
+.pruebaLabel {
+  font-size: 0.85rem;
+  color: var(--faint);
+  padding-right: 36px;
+}
+.prueba a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  padding-left: 28px;
+  border-left: 1px solid var(--line);
+}
+.prueba b {
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.prueba a:hover b {
+  color: var(--lime);
+}
+.prueba small {
+  font-size: 0.86rem;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+@media (max-width: 880px) {
+  .hero {
+    padding-top: 108px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    gap: 8px;
+  }
+  .marca {
+    order: -1;
+    justify-self: start;
+    width: 96px;
+  }
+  .marca::after {
+    display: none;
+  }
+  .prueba {
+    grid-template-columns: 1fr;
+    margin-top: 48px;
+  }
+  .pruebaLabel {
+    padding-bottom: 0;
+  }
+  .prueba a {
+    border-left: none;
+    border-top: 1px solid var(--line);
+    padding-left: 0;
+  }
+}

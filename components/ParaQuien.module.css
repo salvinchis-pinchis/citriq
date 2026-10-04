@@ -1,0 +1,52 @@
+.grilla {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+}
+.perfil {
+  padding: 24px 24px 0 0;
+}
+.perfil + .perfil {
+  padding-left: 24px;
+  border-left: 1px solid var(--line);
+}
+.perfil h3 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+.perfil p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  font-weight: 300;
+  margin-top: 8px;
+  line-height: 1.55;
+}
+.usa {
+  font-size: 0.78rem;
+  color: var(--lime);
+  margin-top: 14px;
+  display: block;
+}
+@media (max-width: 920px) {
+  .grilla {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 28px;
+  }
+  .perfil:nth-child(3) {
+    padding-left: 0;
+    border-left: none;
+  }
+}
+@media (max-width: 560px) {
+  .grilla {
+    grid-template-columns: 1fr;
+  }
+  .perfil + .perfil {
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid var(--line);
+    padding-top: 22px;
+  }
+}

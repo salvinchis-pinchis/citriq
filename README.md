@@ -6,62 +6,75 @@ construcción y materiales: visualizador, comparador de obras y cotizador.
 El sitio se está rearmando en Framer, pero **las tres herramientas son código propio**
 y viven acá. En Framer entran como Embed / Code Component.
 
-## Archivos
+## Stack
 
-| Archivo | Qué es |
-|---|---|
-| `index.html` | La página completa, en un solo archivo. Incluye las tres herramientas funcionando. |
-| `images/` | Fotos reales de obras de Natural Flooring (antes/después, showroom, logo). |
-| `prompt-framer.md` | Prompt para generar el sitio en Framer AI (estructura + copy + identidad visual). |
-| `prompt-framer-animaciones.md` | Prompt de animaciones + tabla con los valores exactos del panel Effects. |
-
-## Cómo verlo
-
-Abrí `index.html` en el navegador. Si el navegador bloquea la carga de las imágenes,
-levantá un server local:
+Next.js 16 (App Router) + React 19, JavaScript y CSS Modules, igual que los sitios de
+Natural Flooring, P&R y Parqueplast. Todas las páginas son estáticas: no hay backend.
 
 ```bash
-python3 -m http.server 8000
+pnpm install
+pnpm dev      # http://localhost:3000
+pnpm build
+pnpm test     # pruebas del motor del visualizador (node --test)
+pnpm demo     # regenera las imágenes del ejemplo de la historia
 ```
 
-y entrá a http://localhost:8000
+## Dónde está cada cosa
+
+| Ruta | Qué es |
+|---|---|
+| `app/` | `layout.js` (fuentes, metadata), `page.js` (arma la home), `globals.css` (tokens y átomos: `.btn`, `.field`, `.section`…), `icon.svg` (favicon = el logo). |
+| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` y `Caso.jsx` son los scrollytelling; `Split.jsx` el antes/después arrastrable. |
+| `lib/visualizador/` | El motor del visualizador, sin DOM: geometría, máscara, texturas, render y sus pruebas. |
+| `scripts/renderizar-demo.mjs` | Usa ese motor (con sharp) para generar `public/images/demo/`. |
+| `data/site.js` | WhatsApp y links del nav. |
+| `data/visualizador.mjs` | Catálogo de materiales, fotos calibradas y qué muestra el ejemplo (`EJEMPLO_DEMO`, `MATERIAL_DEMO`). |
+| `public/images/` | Fotos de obras de Natural Flooring (dormitorio, comedor, gimnasio, escalera), foto aérea de RTS y el logo de Citriq. `demo/` la genera `pnpm demo`. |
+| `prompt-framer*.md` | Prompts viejos para Framer. Ya no describen el sitio actual. |
+
+## Variables de entorno
+
+Opcionales, en `.env.local`:
+
+| Variable | Para qué |
+|---|---|
+| `NEXT_PUBLIC_WHATSAPP` | Número de Citriq con código de país, sin signos (ej. `5491100000000`). Vacío = wa.me deja elegir el contacto. |
 
 ## Sistema de diseño
 
-Diseño de un solo tema, siempre oscuro. No hay light mode.
+La página es una historia en capítulos que alternan dos materiales de obra:
 
-| Rol | Color |
-|---|---|
-| Fondo | `#000000` |
-| Superficies | `#111113` |
-| Bordes | `#232428` / `#2e3035` |
-| Acento | `#c4ff0d` (lima alta visibilidad) |
-| Acento hover | `#aedd2b` |
-| Acentos suaves | `#c0de5d` / `#a4c972` |
-| Texto | `#f2f4ef` / `#9a9d94` / `#6b6e67` |
+| Capítulo | Fondo | Texto | Acento de texto |
+|---|---|---|---|
+| `.oscuro` | `#0e1215` carbón (el fondo del logo) | `#eef2ea` | lima `#c0f916` |
+| `.claro` | `#e9e7e1` hormigón | `#15191b` | lapacho `#8a4f2c` |
 
-Tipografías: **Sora** (títulos y cuerpo) + **JetBrains Mono** (etiquetas, datos, números).
+El lima del logo es la marca y lo "en vivo": botones, marcas, el divisor del antes/después.
+Sobre hormigón nunca va como texto. Las maderas del catálogo (lapacho, guatambú) son el acento
+cálido. Los componentes solo usan `--bg`, `--surface`, `--text`, `--muted`, `--acento`…, así
+que funcionan en cualquiera de los dos capítulos.
 
-La idea del lima: no es verde tech genérico, es el color que la construcción ya usa
-para señalizar — chalecos, pintura de marcado, niveles láser.
+Tipografías: **Sora** para todo, **JetBrains Mono** solo para datos (horas, m², precios, tags).
+El logo está en `components/Marca.jsx` (y `app/icon.svg`); en el hero se dibuja al cargar.
 
-## Las tres herramientas (dónde tocar)
+## Capítulos
 
-Todo dentro de `index.html`, sin dependencias externas ni backend:
-
-1. **Visualizador de materiales** — bloque `#nf-app` al final del archivo. Canvas con
-   homografía de perspectiva: el usuario sube una foto, marca 4 esquinas y se le mapea
-   la textura del material conservando luz y sombras. Las texturas hoy son procedurales
-   (array `MATERIALS`); en producción se reemplazan por fotos cenitales del catálogo real.
-2. **Comparador antes/después** — array `PROJECTS` en el script principal. Un clip-path
-   controlado por un range input.
-3. **Cotizador** — función `calcQuote()`. Prototipo con valores de ejemplo, no son precios
-   reales de nadie. En producción va contra la lista de precios del cliente.
+1. **Hero** (oscuro): el logo se dibuja y dos casos en producción.
+2. **Historia** (claro): scrollytelling de una consulta de sábado a la noche. El bloque queda
+   fijo mientras se scrollea: a la izquierda el recorrido completo (el momento actual abierto),
+   a la derecha un celular de tamaño fijo cuya pantalla va cambiando: WhatsApp → visualizador
+   sin foto → foto → detecta el piso → guatambú → antes/después → estimado → lunes, la
+   notificación en el celular del negocio → la consulta abierta. No es interactivo: los
+   renders salen de `pnpm demo` (`EJEMPLO_DEMO` y `MATERIAL_DEMO` en `data/visualizador.mjs`).
+3. **Caso** (oscuro): el gimnasio de Zona Norte de Natural Flooring, antes, durante y
+   después con el scroll, y al final el comparador arrastrable como está en su web.
+4. **Industria** (claro): RTS Commissioning, árbol del proyecto y curva S (ilustrativa).
+5. **Proceso y para quién** (oscuro), y **contacto**.
 
 ## Estado y pendientes
 
-- [ ] El formulario de contacto abre WhatsApp: no hay backend ni número real cargado.
-- [ ] Falta el número de WhatsApp real en los links `wa.me/` (hoy van sin número).
-- [ ] Solo tenemos un caso (Natural Flooring) y sin métricas. Es la debilidad más grande
-      de la página: conseguir dos números concretos del cliente.
+- [ ] El formulario de contacto abre WhatsApp: falta cargar `NEXT_PUBLIC_WHATSAPP`.
+- [ ] Dos casos (Natural Flooring y RTS) pero sin métricas: conseguir números concretos
+      de cada cliente (consultas por mes del visualizador, proyectos en la plataforma).
+- [ ] `prompt-framer*.md` todavía describen la paleta y el copy anteriores.
 - [ ] Definir el nombre final. "Citriq" es la hipótesis de trabajo.

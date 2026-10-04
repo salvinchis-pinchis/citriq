@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="#c0f916" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round">
+  <!-- Hexágono exterior, punta arriba -->
+  <path d="M50 4 89.84 27 89.84 73 50 96 10.16 73 10.16 27Z"/>
+  <!-- Gajo: círculo y hexágono central -->
+  <circle cx="50" cy="50" r="37.5"/>
+  <path d="M50 37 61.26 43.5 61.26 56.5 50 63 38.74 56.5 38.74 43.5Z"/>
+  <!-- Seis rayos que van del centro a los vértices del hexágono exterior -->
+  <path d="M50 37V4M61.26 43.5 89.84 27M61.26 56.5 89.84 73M50 63V96M38.74 56.5 10.16 73M38.74 43.5 10.16 27"/>
+  <!-- Seis rayos intermedios, del centro al círculo -->
+  <path d="M55.63 40.25 68.75 17.52M55.63 59.75 68.75 82.48M44.37 59.75 31.25 82.48M44.37 40.25 31.25 17.52M61.26 50H87.5M38.74 50H12.5"/>
+</svg>

@@ -1,0 +1,43 @@
+.pasos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.paso {
+  background: var(--bg);
+  padding: 28px 24px;
+}
+.num {
+  font-family: var(--fm);
+  color: var(--lime);
+  font-size: 0.8rem;
+}
+.paso h3 {
+  font-size: 1.12rem;
+  font-weight: 600;
+  margin: 14px 0 10px;
+  letter-spacing: -0.02em;
+}
+.paso p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  font-weight: 300;
+  line-height: 1.55;
+}
+@media (max-width: 920px) {
+  .pasos {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .pasos {
+    grid-template-columns: 1fr;
+  }
+}
