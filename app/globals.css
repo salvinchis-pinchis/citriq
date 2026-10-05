@@ -1,0 +1,260 @@
+/* ============================================================
+   SISTEMA — dos materiales de obra que se alternan por capitulo:
+   - oscuro: el carbon del fondo del logo (#0e1215)
+   - claro: hormigon alisado (#e9e7e1)
+   El lima del logo (#c0f916) es la marca y lo "en vivo": se usa como
+   relleno (botones, marcas), nunca como texto sobre el hormigon.
+   Las maderas del catalogo (lapacho, guatambu) son el acento calido.
+   El mono queda solo para datos: medidas, precios, horas, tags.
+   ============================================================ */
+:root {
+  --lime: #c0f916;
+  --lime-2: #a8dc0c;
+  --lime-ink: #0e1215;
+  --lapacho: #8a4f2c;
+  --guatambu: #e3cf9f;
+  --carbon: #0e1215;
+  --hormigon: #e9e7e1;
+
+  --r: 6px;
+  --maxw: 1200px;
+  --gutter: clamp(16px, 4vw, 44px);
+  --header: 68px;
+  --f: var(--font-sora), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --fm: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Cada capitulo elige su material; los componentes solo usan estos nombres. */
+:root,
+.oscuro {
+  --bg: #0e1215;
+  --bg-2: #121719;
+  --surface: #161c20;
+  --surface-2: #1b2227;
+  --line: #232b30;
+  --line-2: #303a40;
+  --text: #eef2ea;
+  --muted: #a0a89f;
+  --faint: #6f7872;
+  --acento: var(--lime);
+}
+.claro {
+  --bg: #e9e7e1;
+  --bg-2: #e1dfd8;
+  --surface: #f5f4f0;
+  --surface-2: #ffffff;
+  --line: #d3d0c7;
+  --line-2: #bfbbb0;
+  --text: #15191b;
+  --muted: #4e5551;
+  --faint: #7a7f78;
+  --acento: var(--lapacho);
+}
+.oscuro,
+.claro {
+  background: var(--bg);
+  color: var(--text);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--f);
+  font-weight: 400;
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a {
+  color: inherit;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+p {
+  margin: 0;
+}
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+button {
+  font: inherit;
+}
+[hidden] {
+  display: none !important;
+}
+::selection {
+  background: var(--lime);
+  color: var(--lime-ink);
+}
+:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- atomos compartidos ---------- */
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+.mono {
+  font-family: var(--fm);
+}
+/* solo para lectores de pantalla */
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.kicker {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--acento);
+  letter-spacing: -0.005em;
+}
+.lead {
+  font-size: 1.06rem;
+  color: var(--muted);
+  max-width: 58ch;
+  font-weight: 300;
+}
+.h2 {
+  font-size: clamp(1.8rem, 3.6vw, 2.7rem);
+}
+
+.section {
+  padding: 120px 0;
+}
+.section-head {
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 56px;
+}
+
+.btn {
+  font-weight: 600;
+  font-size: 0.92rem;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  padding: 12px 20px;
+  border-radius: var(--r);
+  border: 1px solid var(--line-2);
+  background: transparent;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.btn:hover {
+  border-color: var(--text);
+}
+.btn-solid {
+  background: var(--lime);
+  border-color: var(--lime);
+  color: var(--lime-ink);
+}
+.btn-solid:hover {
+  background: var(--lime-2);
+  border-color: var(--lime-2);
+  color: var(--lime-ink);
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn svg {
+  flex: none;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.field label {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.field select,
+.field input,
+.field textarea {
+  font-family: var(--f);
+  font-size: 0.94rem;
+  padding: 11px 12px;
+  border-radius: var(--r);
+  border: 1px solid var(--line-2);
+  background: var(--bg);
+  color: var(--text);
+  width: 100%;
+}
+.field select:focus,
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--acento);
+  outline: none;
+}
+
+.claro :focus-visible {
+  outline-color: var(--text);
+}
+
+/* Variables que anima el scroll de la historia: registradas para que puedan tener transicion. */
+@property --pos {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+@property --w0 {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --w1 {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --w2 {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --w3 {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
