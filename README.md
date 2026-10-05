@@ -40,6 +40,7 @@ Opcionales, en `.env.local`:
 | Variable | Para qué |
 |---|---|
 | `NEXT_PUBLIC_SITIO_URL` | Dirección pública del sitio (ej. `https://citriq.com.ar`). La usan los links de la imagen para compartir. |
+| `NEXT_PUBLIC_CALENDLY` | Link de la agenda. Por defecto, el de 30 minutos de la versión anterior del sitio. |
 | `NEXT_PUBLIC_WHATSAPP` | Número de Citriq con código de país, sin signos (ej. `5491100000000`). Vacío = wa.me deja elegir el contacto. |
 
 ## Sistema de diseño
@@ -62,21 +63,23 @@ El logo está en `components/Marca.jsx` (y `app/icon.svg`); en el hero se dibuja
 ## Capítulos
 
 1. **Hero** (oscuro): el logo se dibuja y dos casos en producción.
-2. **Qué hacemos** (claro): un índice tipo planilla de obra con lo que construimos
-   (visualizadores, asesores, cotizadores, sitios web, plataformas de obra). La fila activa
-   muestra al costado una vista en vivo; rota sola hasta que alguien toca una fila. La vista
-   del asesor usa el motor real (`lib/asesor`); la de sitios web es una captura de la web de
-   Natural Flooring corriendo desde su repo.
+2. **Qué hacemos** (claro): una grilla de piezas de distinto tamaño, cada una con el producto
+   funcionando: visualizador barriendo la foto, cotizador, asesor con el motor real
+   (`lib/asesor`), la web de Natural Flooring bajando sola (captura de su repo corriendo en
+   local) y seguimiento de obra, que lleva a su sección.
 3. **Historia** (oscuro): scrollytelling de una consulta de sábado a la noche. A la izquierda
    el recorrido completo, a la derecha un celular de tamaño fijo (`Telefono.jsx`): WhatsApp →
    visualizador sin foto → foto → piso → guatambú → antes/después → estimado → el lunes, la
    notificación de Mail en el celular del negocio → el mail abierto. Los renders salen de
    `pnpm demo`.
-4. **Industria** (claro): RTS Commissioning, árbol del proyecto y curva S (ilustrativa).
+4. **Seguimiento de obra** (claro): el recorrido de un proyecto en cinco etapas (planificar,
+   asignar, ejecutar, controlar, entregar). Cada una dice qué hace la plataforma, cómo se ve en
+   una obra de pisos y en una planta industrial, y muestra una pantalla esquemática. Todo lo
+   que se nombra existe en la plataforma de RTS; los datos de las pantallas son de ejemplo.
 5. **Proceso** (oscuro): cuatro pasos que suben como una escalera, y a quién le trabajamos.
-6. **Contacto** (claro): una carta para completar ("Hola, soy… de… Me gustaría que…") que se
-   manda por WhatsApp tal cual se lee.
-7. **Footer** (oscuro): links, y el wordmark grande como placa de obra.
+6. **Contacto** (claro): un bloque con los caminos directos (Calendly y WhatsApp), el
+   testimonio de Natural Flooring y un formulario corto que arma el mensaje para WhatsApp.
+7. **Footer** (oscuro): una línea con la marca, los links y el copyright.
 
 En celular el menú se abre con el botón de la barra. `app/opengraph-image.js` genera la imagen
 que aparece al compartir el link (usa `assets/Sora-Bold.ttf`).

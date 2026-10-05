@@ -33,9 +33,9 @@ export default function Hero() {
             <b>Natural Flooring</b>
             <small>Web, visualizador con IA y asesor de materiales</small>
           </a>
-          <a href="#industria">
+          <a href="#obra">
             <b>RTS Commissioning</b>
-            <small>Plataforma de commissioning para obra industrial</small>
+            <small>Plataforma de seguimiento de obra industrial</small>
           </a>
         </div>
       </div>

@@ -1,103 +1,206 @@
 .contacto {
-  position: relative;
-  overflow: hidden;
-  border-top: 1px solid var(--line);
+  padding: 120px 0;
 }
-.inner {
-  position: relative;
-  padding-top: 128px;
-  padding-bottom: 128px;
+
+/* un solo bloque partido: lo directo a la izquierda, el formulario a la derecha */
+.bloque {
   display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: 64px;
-  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px -40px rgba(21, 25, 27, 0.45);
 }
-.copy {
+
+/* ---------- lado oscuro ---------- */
+.lado {
+  position: relative;
+  padding: clamp(28px, 4vw, 52px);
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
+  overflow: hidden;
 }
-
-/* ---------- la carta ---------- */
-/* la carta es una hoja blanca apoyada sobre el hormigon */
-.carta {
-  min-width: 0;
-  padding: clamp(24px, 4vw, 44px);
-  border-radius: 16px;
-  background: var(--surface-2);
-  color: #15191b;
-  box-shadow: 0 1px 0 var(--line), 0 30px 60px -30px rgba(21, 25, 27, 0.35);
-  transform: rotate(-0.4deg);
+/* la grilla de plano del hero, apenas, en la esquina */
+.lado::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(to right, rgba(192, 249, 22, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(192, 249, 22, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 100% 0%, #000, transparent 70%);
+  mask-image: radial-gradient(ellipse 70% 60% at 100% 0%, #000, transparent 70%);
 }
-.texto {
-  font-size: clamp(1.25rem, 2.3vw, 1.75rem);
-  font-weight: 500;
-  letter-spacing: -0.025em;
-  line-height: 2;
-  text-wrap: pretty;
+.titulo {
+  font-size: clamp(1.9rem, 3.4vw, 2.7rem);
+  letter-spacing: -0.04em;
 }
-.hueco {
-  display: inline-block;
-  vertical-align: baseline;
-  max-width: 100%;
+.bajada {
+  color: var(--muted);
+  font-weight: 300;
+  max-width: 40ch;
 }
-.hueco input {
-  font: inherit;
-  letter-spacing: inherit;
-  color: var(--lapacho);
-  width: calc(var(--ch) * 0.58em);
-  max-width: 100%;
-  padding: 0 2px;
-  border: none;
-  border-bottom: 2px solid #bfbbb0;
-  border-radius: 0;
-  background: transparent;
-  line-height: 1.2;
-  transition: border-color 0.2s, background 0.2s;
+.canales {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
 }
-.hueco input::placeholder {
-  color: #a7aba3;
+.canal {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 18px 14px 14px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.canal:hover {
+  border-color: var(--lime);
+  transform: translateX(3px);
+}
+.canal span:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+.canal b {
+  font-weight: 600;
+}
+.canal small {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.canalIcono {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--lime);
+  color: var(--lime-ink);
+}
+.ir {
+  color: var(--lime);
+  font-size: 1.2rem;
+}
+.cita {
+  margin: auto 0 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.cita blockquote {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.55;
   font-weight: 400;
 }
-.hueco input:focus {
-  outline: none;
-  border-bottom-color: #15191b;
-  background: linear-gradient(transparent 62%, rgba(192, 249, 22, 0.55) 62%);
-}
-.hueco input:user-invalid {
-  border-bottom-color: #c2410c;
-}
-.pie {
-  margin-top: 28px;
-  padding-top: 22px;
-  border-top: 1px dashed #d3d0c7;
+.cita figcaption {
+  margin-top: 12px;
   display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.nota {
+  flex-direction: column;
   font-size: 0.84rem;
-  color: #6b716c;
+}
+.cita figcaption span {
+  color: var(--muted);
 }
 
-/* en pantallas chicas el hueco largo ocupa su propio renglon */
-@media (max-width: 600px) {
-  .largo {
-    display: block;
+/* ---------- formulario ---------- */
+.form {
+  padding: clamp(28px, 4vw, 52px);
+  background: var(--surface-2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.formTitulo {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+/* etiqueta flotante: arriba del campo cuando hay texto o foco */
+.campo {
+  position: relative;
+}
+.campo input,
+.campo textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  padding: 24px 14px 9px;
+  border-radius: 12px;
+  border: 1px solid var(--line-2);
+  background: var(--bg);
+  resize: vertical;
+  transition: border-color 0.2s, background 0.2s;
+}
+.campo textarea {
+  min-height: 120px;
+}
+.campo label {
+  position: absolute;
+  left: 15px;
+  top: 17px;
+  font-size: 1rem;
+  color: var(--faint);
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform 0.2s ease, color 0.2s;
+}
+.campo input:focus,
+.campo textarea:focus {
+  outline: none;
+  border-color: var(--text);
+  background: var(--surface-2);
+}
+.campo input:focus + label,
+.campo input:not(:placeholder-shown) + label,
+.campo textarea:focus + label,
+.campo textarea:not(:placeholder-shown) + label {
+  transform: translateY(-10px) scale(0.76);
+  color: var(--muted);
+}
+.campo input:user-invalid,
+.campo textarea:user-invalid {
+  border-color: #c2410c;
+}
+.ejemplo {
+  font-size: 0.84rem;
+  color: var(--faint);
+  line-height: 1.5;
+}
+.enviar {
+  margin-top: 6px;
+  padding: 15px 20px;
+  font-size: 1rem;
+}
+.nota {
+  font-size: 0.82rem;
+  color: var(--faint);
+  text-align: center;
+}
+
+@media (max-width: 920px) {
+  .contacto {
+    padding: 72px 0;
   }
-  .largo input {
-    width: 100%;
+  .bloque {
+    grid-template-columns: 1fr;
   }
 }
-@media (max-width: 920px) {
-  .inner {
+@media (max-width: 520px) {
+  .fila {
     grid-template-columns: 1fr;
-    gap: 36px;
-    padding-top: 96px;
-    padding-bottom: 96px;
-  }
-  .texto {
-    line-height: 1.9;
   }
 }

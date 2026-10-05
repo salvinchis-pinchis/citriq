@@ -1,60 +1,48 @@
 .footer {
-  padding: 72px 0 28px;
-  overflow: hidden;
+  padding: 36px 0;
 }
-.arriba {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+.inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   gap: 32px;
-  flex-wrap: wrap;
-  padding-bottom: 40px;
-  border-bottom: 1px solid var(--line);
+  align-items: center;
 }
-.frase {
-  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  max-width: 24ch;
-  line-height: 1.2;
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.marca p {
+  font-size: 0.86rem;
+  color: var(--faint);
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
 }
 .links {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 .links a {
+  font-size: 0.88rem;
   color: var(--muted);
   text-decoration: none;
-  font-size: 0.95rem;
   transition: color 0.15s;
 }
 .links a:hover {
   color: var(--text);
 }
-.wordmark {
-  display: flex;
-  align-items: center;
-  gap: 0.18em;
-  margin: 36px 0 20px;
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: clamp(4.5rem, 19vw, 16rem);
-  letter-spacing: -0.06em;
-  line-height: 0.85;
-}
-.wordmark svg {
-  width: 0.78em;
-  height: 0.78em;
-  color: var(--lime);
-  flex: none;
-}
-.abajo {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  font-size: 0.82rem;
+.copy {
+  font-size: 0.84rem;
   color: var(--faint);
+}
+@media (max-width: 860px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .links {
+    justify-content: flex-start;
+  }
 }

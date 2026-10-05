@@ -3,143 +3,119 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { EJEMPLO_DEMO, MATERIAL_DEMO, MATERIALES } from "../data/visualizador.mjs";
-import { armarRecorrido, evaluar } from "../lib/asesor/recorrido.mjs";
+import { armarRecorrido } from "../lib/asesor/recorrido.mjs";
 import styles from "./QueHacemos.module.css";
 
 /**
- * Que hacemos: un indice, como una planilla de terminaciones de obra.
- * Cada fila es algo que construimos; al pasar por una, al costado se ve en
- * vivo. Rota sola hasta que la persona toca una fila.
+ * Que hacemos: cada pieza de la grilla es el producto funcionando, no una
+ * descripcion. El tamano de cada pieza sigue a cuanto pesa en lo que vendemos.
+ * Las animaciones con JS solo corren mientras la seccion esta en pantalla.
  */
 
-const SERVICIOS = [
-  {
-    id: "visualizador",
-    nombre: "Visualizadores",
-    texto: "El cliente sube una foto y ve el material puesto, con la luz y la perspectiva de su casa.",
-    estado: "En uso en Natural Flooring",
-    rubro: "Para vender",
-  },
-  {
-    id: "asesor",
-    nombre: "Asesores de materiales",
-    texto: "Unas pocas preguntas y una recomendación que se puede cotizar, con las reglas de tu negocio.",
-    estado: "En uso en Natural Flooring",
-    rubro: "Para vender",
-  },
-  {
-    id: "cotizador",
-    nombre: "Cotizadores",
-    texto: "Un estimado al instante con tu lista de precios, listo para mandar por WhatsApp.",
-    estado: "Prototipo",
-    rubro: "Para vender",
-  },
-  {
-    id: "web",
-    nombre: "Sitios web del rubro",
-    texto: "Catálogo, obras, showrooms y consultas que llegan con nombre y teléfono.",
-    estado: "En uso en Natural Flooring",
-    rubro: "Para vender",
-  },
-  {
-    id: "plataforma",
-    nombre: "Plataformas de obra",
-    texto: "Sistemas, tags, test packs, curva S e informes, en la oficina y en campo.",
-    estado: "En uso en RTS Commissioning",
-    rubro: "Para la obra",
-  },
-];
-const ROTACION_MS = 5200;
+const MATERIAL = MATERIALES.find((m) => m.id === MATERIAL_DEMO);
 
-/* ---------- vistas en vivo ---------- */
+function useEnPantalla(ref) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const ob = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.1 });
+    ob.observe(ref.current);
+    return () => ob.disconnect();
+  }, [ref]);
+  return visible;
+}
 
-function VistaVisualizador() {
+function Estado({ children, tipo = "uso" }) {
+  return <span className={`${styles.estado} ${tipo === "prototipo" ? styles.prototipo : ""}`}>{children}</span>;
+}
+
+/* ---------- visualizador: el material barre la foto una y otra vez ---------- */
+function Visualizador() {
   return (
-    <div className={styles.vVisualizador}>
-      <Image src={`/images/vis-${EJEMPLO_DEMO}.jpg`} alt="" fill sizes="(max-width: 900px) 90vw, 560px" />
-      <Image src={`/images/demo/${EJEMPLO_DEMO}-${MATERIAL_DEMO}.jpg`} alt="" fill sizes="(max-width: 900px) 90vw, 560px" className={styles.vBarrido} />
-      <span className={styles.vLinea} />
-      <span className={styles.vChip}>{MATERIALES.find((m) => m.id === MATERIAL_DEMO).nombre}</span>
+    <div className={styles.vizFoto}>
+      <Image src={`/images/vis-${EJEMPLO_DEMO}.jpg`} alt="" fill sizes="(max-width: 900px) 92vw, 760px" />
+      <Image
+        src={`/images/demo/${EJEMPLO_DEMO}-${MATERIAL_DEMO}.jpg`}
+        alt=""
+        fill
+        sizes="(max-width: 900px) 92vw, 760px"
+        className={styles.vizNuevo}
+      />
+      <span className={styles.vizLinea} />
+      <span className={`${styles.vizEtiqueta} ${styles.vizAntes}`}>Su piso</span>
+      <span className={`${styles.vizEtiqueta} ${styles.vizDespues}`}>{MATERIAL.nombre}</span>
     </div>
   );
 }
 
-const { pasos: PREGUNTAS } = armarRecorrido();
-function VistaAsesor() {
-  // Recorre las preguntas del caso de ejemplo y muestra como decide el motor real.
-  const [i, setI] = useState(0);
+/* ---------- cotizador: los metros cambian y el estimado los sigue ---------- */
+function Cotizador({ activo }) {
+  const [t, setT] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setI((v) => (v + 1) % (PREGUNTAS.length + 2)), 900);
-    return () => clearInterval(t);
-  }, []);
-  const paso = Math.min(i, PREGUNTAS.length) - 1;
-  const materiales = paso < 0 ? evaluar({}) : PREGUNTAS[paso].materiales;
-  const orden = [...materiales].sort((a, b) => !!a.descarte - !!b.descarte || b.puntaje - a.puntaje);
-  const puesto = Object.fromEntries(orden.map((m, k) => [m.id, k]));
-  const final = i >= PREGUNTAS.length;
-  return (
-    <div className={styles.vAsesor}>
-      <p className={styles.vPregunta}>
-        {paso < 0 ? "Siete materiales en carrera" : PREGUNTAS[paso].pregunta}
-        <b>{paso < 0 ? "" : PREGUNTAS[paso].opciones.find((o) => o.id === PREGUNTAS[paso].elegida).label}</b>
-      </p>
-      <ol className={styles.vRanking}>
-        {materiales.map((m) => (
-          <li
-            key={m.id}
-            style={{ "--puesto": puesto[m.id] }}
-            className={`${m.descarte ? styles.vAfuera : ""} ${final && puesto[m.id] === 0 ? styles.vGanador : ""}`}
-          >
-            <span>{m.nombre}</span>
-            <i style={{ "--ancho": m.descarte ? 0 : m.puntaje / 160 }} />
-            <small>{m.descarte ? "afuera" : m.puntaje}</small>
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
-}
-
-function VistaCotizador() {
-  // Los metros van y vienen y el estimado los sigue. Valores de ejemplo.
-  const [m2, setM2] = useState(24);
-  useEffect(() => {
-    let t = 0;
-    const id = setInterval(() => {
-      t += 1;
-      setM2(Math.round(38 + 22 * Math.sin(t / 6)));
-    }, 120);
+    if (!activo) return undefined;
+    const id = setInterval(() => setT((v) => v + 1), 110);
     return () => clearInterval(id);
-  }, []);
+  }, [activo]);
+  const m2 = Math.round(38 + 22 * Math.sin(t / 7));
   const plata = (n) => "$" + (Math.round(n / 1000) * 1000).toLocaleString("es-AR");
   return (
-    <div className={styles.vCotizador}>
-      <div className={styles.vCampo}>
-        <span>Material</span>
-        <b>Guatambú</b>
-      </div>
-      <div className={styles.vCampo}>
-        <span>Superficie</span>
+    <div className={styles.coti}>
+      <div className={styles.cotiFila}>
+        <span>Guatambú, con colocación</span>
         <b className="mono">{m2} m²</b>
       </div>
-      <div className={styles.vRegla}>
-        <i style={{ width: `${((m2 - 10) / 60) * 100}%` }} />
+      <div className={styles.cotiRegla}>
+        <i style={{ width: `${((m2 - 14) / 48) * 100}%` }} />
       </div>
-      <p className={styles.vMonto}>
-        <span className="mono">
-          {plata(m2 * 21000 * 0.94)} a {plata(m2 * 21000 * 1.08)}
-        </span>
-        <small>+ IVA, con colocación · valores de ejemplo</small>
-      </p>
-      <span className={styles.vBoton}>Mandar por WhatsApp</span>
+      <p className={`mono ${styles.cotiMonto}`}>{plata(m2 * 21000 * 0.94)}</p>
+      <p className={`mono ${styles.cotiHasta}`}>a {plata(m2 * 21000 * 1.08)} + IVA</p>
+      <span className={styles.cotiNota}>Valores de ejemplo</span>
     </div>
   );
 }
 
-function VistaWeb() {
+/* ---------- asesor: las preguntas reales, respondiendose solas ---------- */
+const { pasos: PREGUNTAS, resultado: RESULTADO } = armarRecorrido();
+function Asesor({ activo }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (!activo) return undefined;
+    const id = setInterval(() => setI((v) => (v + 1) % (PREGUNTAS.length * 2 + 3)), 800);
+    return () => clearInterval(id);
+  }, [activo]);
+  const final = i >= PREGUNTAS.length * 2;
+  const p = PREGUNTAS[Math.min(PREGUNTAS.length - 1, Math.floor(i / 2))];
+  const elegida = i % 2 === 1;
+  if (final) {
+    return (
+      <div className={styles.ase}>
+        <span className={styles.aseSub}>Te recomendamos</span>
+        <p className={styles.aseResultado}>{RESULTADO.nombre}</p>
+        <p className={styles.aseMotivo}>{RESULTADO.material.bestUse}</p>
+      </div>
+    );
+  }
   return (
-    <div className={styles.vWeb}>
-      <div className={styles.vBarraNav}>
+    <div className={styles.ase}>
+      <span className={styles.aseSub}>
+        {Math.floor(i / 2) + 1} de {PREGUNTAS.length}
+      </span>
+      <p className={styles.asePregunta}>{p.pregunta}</p>
+      <ul className={styles.aseOpciones}>
+        {p.opciones.slice(0, 3).concat(p.opciones.slice(3).filter((o) => o.id === p.elegida)).map((o) => (
+          <li key={o.id} className={elegida && o.id === p.elegida ? styles.aseElegida : undefined}>
+            {o.label}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* ---------- sitios web: la web de Natural Flooring, bajando sola ---------- */
+function Web() {
+  return (
+    <div className={styles.web}>
+      <div className={styles.webBarra}>
         <span>
           <i />
           <i />
@@ -147,124 +123,117 @@ function VistaWeb() {
         </span>
         <span className="mono">naturalflooring.com.ar</span>
       </div>
-      <div className={styles.vCaptura}>
-        <Image src="/images/web-natural-flooring.jpg" alt="Inicio de la web de Natural Flooring" fill sizes="(max-width: 900px) 90vw, 560px" />
+      <div className={styles.webPagina}>
+        <Image
+          src="/images/web-natural-flooring-larga.jpg"
+          alt="La web de Natural Flooring"
+          width={640}
+          height={2800}
+          sizes="(max-width: 900px) 92vw, 760px"
+          className={styles.webCaptura}
+        />
       </div>
     </div>
   );
 }
 
-const PLAN = [0, 2, 5, 10, 17, 27, 39, 52, 65, 76, 85, 92, 97, 100];
-const REAL = [0, 1, 4, 8, 14, 22, 33, 45, 57, 68];
-const puntos = (s) => s.map((v, i) => `${(i / (PLAN.length - 1)) * 300},${120 - (v / 100) * 120}`).join(" ");
-function VistaPlataforma() {
+/* ---------- seguimiento de obra: tags que avanzan y cambian de estado ---------- */
+const TAREAS = [
+  { tag: "Living · colocación", dueno: "Colocador", estados: ["Pendiente", "En curso", "Firmado"] },
+  { tag: "PT-1203 · prueba hidráulica", dueno: "Operario", estados: ["En curso", "Firmado", "Firmado"] },
+  { tag: "Escalera · hidrolaqueado", dueno: "Líder", estados: ["Pendiente", "Pendiente", "En curso"] },
+  { tag: "TP-044 · test pack", dueno: "Control documental", estados: ["En curso", "En curso", "Firmado"] },
+];
+function Obra({ activo }) {
+  const [f, setF] = useState(0);
+  useEffect(() => {
+    if (!activo) return undefined;
+    const id = setInterval(() => setF((v) => (v + 1) % 3), 1600);
+    return () => clearInterval(id);
+  }, [activo]);
   return (
-    <div className={styles.vPlataforma}>
-      <div className={styles.vArbol}>
-        <div><b>Proyecto</b></div>
-        <div className={styles.n1}>Sistema · Compresión</div>
-        <div className={styles.n2}>Subsistema · Gas combustible</div>
-        <div className={styles.n3}>Tag · PT-1203 <span className={styles.ok}>✓ firmado</span></div>
-        <div className={styles.n3}>Test pack · TP-044</div>
-      </div>
-      <div className={styles.vCurva}>
-        <span>Curva S · ejemplo</span>
-        <svg viewBox="-4 -4 308 128">
-          <polyline points={puntos(PLAN)} className={styles.vPlan} />
-          <polyline points={puntos(REAL)} className={styles.vReal} pathLength="1" />
-        </svg>
-      </div>
-    </div>
+    <ul className={styles.obraLista}>
+      {TAREAS.map((t) => {
+        const e = t.estados[f];
+        return (
+          <li key={t.tag}>
+            <span className={styles.obraQr} aria-hidden="true" />
+            <span className={styles.obraTag}>
+              <b>{t.tag}</b>
+              <small>{t.dueno}</small>
+            </span>
+            <span className={`${styles.obraEstado} ${e === "Firmado" ? styles.firmado : e === "En curso" ? styles.curso : ""}`}>{e}</span>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
-
-const VISTAS = {
-  visualizador: VistaVisualizador,
-  asesor: VistaAsesor,
-  cotizador: VistaCotizador,
-  web: VistaWeb,
-  plataforma: VistaPlataforma,
-};
 
 export default function QueHacemos() {
-  const [activo, setActivo] = useState(0);
-  const [tocado, setTocado] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const seccionRef = useRef(null);
-
-  // Rota solo mientras se ve la seccion y nadie toco una fila.
-  useEffect(() => {
-    const ob = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.35 });
-    ob.observe(seccionRef.current);
-    return () => ob.disconnect();
-  }, []);
-  const reducido = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const rota = visible && !tocado && !reducido;
-  useEffect(() => {
-    if (!rota) return undefined;
-    const t = setTimeout(() => setActivo((a) => (a + 1) % SERVICIOS.length), ROTACION_MS);
-    return () => clearTimeout(t);
-  }, [rota, activo]);
-
-  function elegir(i) {
-    setTocado(true);
-    setActivo(i);
-  }
-
-  const Vista = VISTAS[SERVICIOS[activo].id];
+  const ref = useRef(null);
+  const activo = useEnPantalla(ref);
 
   return (
-    <section ref={seccionRef} className={`claro section ${styles.seccion}`} id="que-hacemos">
+    <section ref={ref} className={`claro section ${styles.seccion}`} id="que-hacemos">
       <div className="wrap">
         <div className={styles.cabecera}>
           <div className="section-head">
             <p className="kicker">Qué hacemos</p>
-            <h2 className="h2">Software para las dos puntas de la obra.</h2>
+            <h2 className="h2">Herramientas que venden y sistemas que ordenan la obra.</h2>
           </div>
           <p className="lead">
-            Desde la web donde el cliente elige el piso hasta la plataforma donde se controla una planta industrial. Todo a
-            medida, con los datos y las reglas de cada negocio.
+            Todo a medida, con los materiales, los datos y las reglas de cada negocio. Esto es lo que ya está
+            funcionando.
           </p>
         </div>
 
-        <div className={styles.grid}>
-          <ul className={styles.indice}>
-            {SERVICIOS.map((s, i) => (
-              <li key={s.id} className={`${styles.fila} ${i === activo ? styles.activa : ""}`}>
-                <button
-                  type="button"
-                  aria-expanded={i === activo}
-                  aria-controls="vista-servicio"
-                  onClick={() => elegir(i)}
-                  onMouseEnter={() => elegir(i)}
-                  onFocus={() => elegir(i)}
-                >
-                  <span className={styles.rubro}>{s.rubro}</span>
-                  <span className={styles.nombre}>{s.nombre}</span>
-                  <span className={styles.flecha} aria-hidden="true">→</span>
-                </button>
-                <div className={styles.detalle}>
-                  <div>
-                  <p>{s.texto}</p>
-                  <span className={styles.estado}>{s.estado}</span>
-                  {/* En pantallas angostas la vista va adentro de la fila abierta */}
-                  {i === activo && (
-                    <div className={styles.vistaMovil} aria-hidden="true">
-                      <Vista />
-                    </div>
-                  )}
-                  </div>
-                </div>
-                {i === activo && rota && <span key={activo} className={styles.progreso} style={{ animationDuration: `${ROTACION_MS}ms` }} />}
-              </li>
-            ))}
-          </ul>
-
-          <div className={styles.vista} id="vista-servicio" aria-hidden="true">
-            <div key={SERVICIOS[activo].id} className={styles.vistaMarco}>
-              <Vista />
+        <div className={styles.grilla}>
+          <article className={`${styles.pieza} ${styles.pVisualizador}`}>
+            <Visualizador />
+            <div className={styles.sobre}>
+              <Estado>En uso en Natural Flooring</Estado>
+              <h3>Visualizador de materiales</h3>
+              <p>El cliente sube una foto y ve el piso puesto, con la luz y la perspectiva de su casa.</p>
             </div>
-          </div>
+          </article>
+
+          <article className={`${styles.pieza} ${styles.pCotizador}`}>
+            <div className={styles.info}>
+              <Estado tipo="prototipo">Prototipo</Estado>
+              <h3>Cotizador</h3>
+              <p>Un estimado al instante con tu lista de precios.</p>
+            </div>
+            <Cotizador activo={activo} />
+          </article>
+
+          <article className={`${styles.pieza} ${styles.pAsesor}`}>
+            <div className={styles.info}>
+              <Estado>En uso en Natural Flooring</Estado>
+              <h3>Asesor de materiales</h3>
+              <p>Seis preguntas y una recomendación que se puede cotizar.</p>
+            </div>
+            <Asesor activo={activo} />
+          </article>
+
+          <article className={`${styles.pieza} ${styles.pWeb}`}>
+            <div className={styles.info}>
+              <Estado>En uso en Natural Flooring</Estado>
+              <h3>Sitios web del rubro</h3>
+              <p>Catálogo, obras, showrooms y consultas que llegan con nombre y teléfono.</p>
+            </div>
+            <Web />
+          </article>
+
+          <a href="#obra" className={`${styles.pieza} ${styles.pObra} oscuro`}>
+            <div className={styles.info}>
+              <Estado>En uso en RTS Commissioning</Estado>
+              <h3>Seguimiento de obra</h3>
+              <p>Planificación, permisos por rol, QR en campo, curva S e informes. Para una obra de pisos o una planta industrial.</p>
+              <span className={styles.mas}>Ver cómo funciona →</span>
+            </div>
+            <Obra activo={activo} />
+          </a>
         </div>
       </div>
     </section>
