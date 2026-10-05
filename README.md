@@ -59,14 +59,27 @@ que funcionan en cualquiera de los dos capítulos.
 Tipografías: **Sora** para todo, **JetBrains Mono** solo para datos (horas, m², precios, tags).
 El logo está en `components/Marca.jsx` (y `app/icon.svg`); en el hero se dibuja al cargar.
 
+## Cómo se conecta la página
+
+Toda la página es un mismo recorrido, con la metáfora de la vía de "Qué hacemos":
+
+- **Puentes** (`Puente.jsx`): entre capítulo y capítulo no hay un corte de fondo. La vía baja
+  hasta una parada, aparece una frase que cierra lo anterior y desde la parada se abre un
+  círculo con el color del capítulo siguiente, con la frase que lo abre. Las frases y la
+  etiqueta de tramo se pasan en `app/page.js`.
+- **Mapa** (`Mapa.jsx`): una vía chica fija al costado con una parada por capítulo; marca en
+  cuál estás y lleva a cualquiera. Solo aparece en pantallas anchas (más de 1380 px).
+- Historia y Seguimiento se presentan como "Tramo 1 · Para vender" y "Tramo 2 · Para la obra",
+  los mismos tramos del mapa de "Qué hacemos".
+
 ## Capítulos
 
 1. **Hero** (oscuro): el logo se dibuja y dos casos en producción.
-2. **Qué hacemos** (claro, con un panel oscuro): el recorrido del proyecto en una sola vía de
-   8 estaciones, "para vender" (sitio web, visualizador, asesor, cotizador) y "para la obra"
-   (plan, equipo y QR, control, entrega), con la parada "se firma la obra" en el medio. La vía
-   se dibuja al aparecer y después un pulso lima la recorre encendiendo cada estación. Abajo,
-   dónde está en uso cada tramo y el link a su historia. En celular la vía es vertical.
+2. **Qué hacemos** (claro, con un panel oscuro): el recorrido en una sola vía de 8 estaciones,
+   tramo 1 "para vender" y tramo 2 "para la obra", con la parada "se firma la obra" en el
+   medio. Un tren recorre las estaciones de a una, deja pintado lo recorrido y abajo se lee la
+   estación en la que está (qué es y dónde está en uso). Pasar el mouse o el foco por una
+   estación la detiene ahí. En celular la vía es vertical.
 3. **Historia** (oscuro): scrollytelling de una consulta de sábado a la noche. A la izquierda
    el recorrido completo, a la derecha un celular de tamaño fijo (`Telefono.jsx`): WhatsApp →
    visualizador sin foto → foto → piso → guatambú → antes/después → estimado → el lunes, la

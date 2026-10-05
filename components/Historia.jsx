@@ -105,7 +105,7 @@ export default function Historia() {
     <section className={`oscuro ${styles.historia}`} id="historia">
       <div className="wrap">
         <div className={`section-head ${styles.intro}`}>
-          <p className="kicker">Cómo funciona</p>
+          <p className="kicker">Tramo 1 · Para vender</p>
           <h2 className="h2">Una consulta de un sábado a la noche, de punta a punta.</h2>
           <p className="lead">
             El visualizador es el que ya usa Natural Flooring; el estimado es el cotizador que se le suma. Bajá

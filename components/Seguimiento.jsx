@@ -150,7 +150,7 @@ export default function Seguimiento() {
       <div className="wrap">
         <div className={styles.cabecera}>
           <div className="section-head">
-            <p className="kicker">Seguimiento de obra</p>
+            <p className="kicker">Tramo 2 · Para la obra</p>
             <h2 className="h2">Seguimos cada proyecto de punta a punta.</h2>
           </div>
           <p className="lead">

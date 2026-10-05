@@ -1,0 +1,145 @@
+/* ============================================================
+   Puente entre secciones. --p va de 0 a 1 mientras se cruza:
+   0.00-0.30 la via baja hasta la parada
+   0.12-0.35 aparece la frase que cierra
+   0.42-0.88 el circulo del color siguiente crece desde la parada
+   0.70-0.88 aparece la frase que abre
+   0.86-1.00 la via sale hacia abajo, a la seccion siguiente
+   ============================================================ */
+.puente {
+  --p: 0;
+  position: relative;
+  height: 170vh;
+}
+.fijo {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.via {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 3px;
+  height: 50%;
+  margin-left: -1.5px;
+  background: var(--acento);
+  transform-origin: top;
+  transform: scaleY(clamp(0, calc(var(--p) / 0.3), 1));
+}
+.parada {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  background: var(--lime);
+  border: 3px solid var(--carbon);
+  box-shadow: 0 0 0 calc(clamp(0, (var(--p) - 0.28) * 40, 1) * 8px) rgba(192, 249, 22, 0.25),
+    0 0 30px rgba(192, 249, 22, 0.5);
+  transform: scale(clamp(0, calc((var(--p) - 0.24) / 0.08), 1));
+}
+
+.cierra,
+.abre {
+  position: absolute;
+  left: 50%;
+  width: min(90vw, 22ch);
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: clamp(1.6rem, 3.6vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.cierra {
+  bottom: calc(50% + 44px);
+  color: var(--text);
+  opacity: clamp(0, calc((var(--p) - 0.12) / 0.2), 1);
+  translate: 0 calc((1 - clamp(0, (var(--p) - 0.12) / 0.2, 1)) * 16px);
+}
+
+/* el color de la seccion siguiente, abriendose desde la parada */
+.circulo {
+  position: absolute;
+  inset: 0;
+  clip-path: circle(calc(clamp(0, (var(--p) - 0.42) / 0.46, 1) * 75vmax) at 50% 50%);
+}
+.abre {
+  top: calc(50% + 44px);
+  color: var(--text);
+  opacity: clamp(0, calc((var(--p) - 0.7) / 0.18), 1);
+}
+.etiqueta {
+  position: absolute;
+  left: 50%;
+  bottom: calc(50% + 40px);
+  transform: translateX(-50%);
+  font-family: var(--fm);
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid currentColor;
+  color: var(--acento);
+  opacity: clamp(0, calc((var(--p) - 0.7) / 0.18), 1);
+}
+.salida {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  bottom: 0;
+  width: 3px;
+  margin-left: -1.5px;
+  background: var(--acento);
+  transform-origin: top;
+  transform: scaleY(clamp(0, calc((var(--p) - 0.86) / 0.14), 1));
+}
+
+/* sin movimiento: las dos frases, una debajo de la otra */
+@media (prefers-reduced-motion: reduce) {
+  .puente {
+    height: auto;
+  }
+  .fijo {
+    position: static;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+  .via,
+  .parada,
+  .salida {
+    display: none;
+  }
+  .cierra,
+  .abre,
+  .etiqueta {
+    position: static;
+    transform: none;
+    translate: none;
+    opacity: 1;
+    margin: 0 auto;
+    padding: 64px 0;
+    display: block;
+  }
+  .etiqueta {
+    width: fit-content;
+    padding: 5px 12px;
+    margin-top: 64px;
+  }
+  .abre {
+    padding-top: 16px;
+  }
+  .circulo {
+    position: static;
+    clip-path: none;
+  }
+}

@@ -1,0 +1,118 @@
+/* Va sobre fondos claros y oscuros: por eso lleva su propia capsula oscura. */
+.mapa {
+  position: fixed;
+  left: 18px;
+  top: 50%;
+  z-index: 900;
+  transform: translate(-12px, -50%);
+  padding: 14px 10px;
+  border-radius: 24px;
+  background: rgba(14, 18, 21, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.visible {
+  opacity: 1;
+  transform: translate(0, -50%);
+  pointer-events: auto;
+}
+.mapa ol {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.via {
+  position: absolute;
+  left: calc(10px + 6px - 1px);
+  top: 20px;
+  bottom: 20px;
+  width: 2px;
+  background: #303a40;
+}
+.hecho {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(var(--a) / (var(--n) - 1) * 100%);
+  background: var(--lime);
+  transition: height 0.4s ease;
+}
+.mapa a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #a0a89f;
+}
+.mapa a:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.punto {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  flex: none;
+  border-radius: 50%;
+  background: #0e1215;
+  border: 2px solid #46525a;
+  transition: all 0.3s ease;
+}
+.pasada .punto {
+  background: var(--lime);
+  border-color: var(--lime);
+}
+.actual .punto {
+  background: var(--lime);
+  border-color: var(--lime);
+  box-shadow: 0 0 0 4px rgba(192, 249, 22, 0.25);
+}
+/* el nombre se ve solo en la parada actual y al pasar el mouse */
+.nombre {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: max-width 0.3s ease, color 0.2s;
+}
+.actual .nombre {
+  color: #eef2ea;
+}
+/* con margen de sobra, el nombre de la parada actual queda a la vista */
+@media (min-width: 1640px) {
+  .actual .nombre {
+    max-width: 160px;
+    padding-right: 6px;
+  }
+}
+.mapa:hover .nombre {
+  max-width: 160px;
+  padding-right: 6px;
+}
+.mapa a:hover .nombre {
+  color: var(--lime);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapa,
+  .hecho,
+  .punto,
+  .nombre {
+    transition: none;
+  }
+}
+/* cuando no hay margen al costado, no se muestra */
+@media (max-width: 1380px) {
+  .mapa {
+    display: none;
+  }
+}
