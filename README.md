@@ -62,10 +62,11 @@ El logo está en `components/Marca.jsx` (y `app/icon.svg`); en el hero se dibuja
 ## Capítulos
 
 1. **Hero** (oscuro): el logo se dibuja y dos casos en producción.
-2. **Qué hacemos** (claro): un mapa de estaciones, como una línea de subte de dos tramos.
-   "Para vender" (sitio web, visualizador, asesor, cotizador) gira en "se firma la obra" y
-   sigue en "para la obra" (plan, equipo y QR, control, entrega). Cada estación dice dónde
-   está en uso. Sin demos: el único movimiento es la línea, que se dibuja una vez.
+2. **Qué hacemos** (claro, con un panel oscuro): el recorrido del proyecto en una sola vía de
+   8 estaciones, "para vender" (sitio web, visualizador, asesor, cotizador) y "para la obra"
+   (plan, equipo y QR, control, entrega), con la parada "se firma la obra" en el medio. La vía
+   se dibuja al aparecer y después un pulso lima la recorre encendiendo cada estación. Abajo,
+   dónde está en uso cada tramo y el link a su historia. En celular la vía es vertical.
 3. **Historia** (oscuro): scrollytelling de una consulta de sábado a la noche. A la izquierda
    el recorrido completo, a la derecha un celular de tamaño fijo (`Telefono.jsx`): WhatsApp →
    visualizador sin foto → foto → piso → guatambú → antes/después → estimado → el lunes, la

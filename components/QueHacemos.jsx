@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./QueHacemos.module.css";
 
 /**
- * Que hacemos: el recorrido de un proyecto como un mapa de estaciones, de
- * vender a entregar la obra. Cada estacion es algo que construimos. Sin demos:
- * las dos historias de abajo las muestran funcionando. El unico movimiento es
- * la linea, que se dibuja una vez al entrar en pantalla.
+ * Que hacemos: el recorrido de un proyecto en una sola via, de vender a
+ * entregar la obra, dentro de un panel oscuro como el hero. Un pulso lima
+ * recorre la via y enciende cada estacion al pasar. Compacto a proposito:
+ * el detalle esta en las dos historias de abajo.
  */
 
 const I = {
@@ -21,44 +21,48 @@ const I = {
   entrega: <path d="M7 3h7l4 4v14H7zM14 3v4h4M10 13l2 2 3-4" />,
 };
 
-const TRAMOS = [
-  {
-    id: "vender",
-    nombre: "Para vender",
-    cuando: "Antes de la obra",
-    link: { href: "#historia", texto: "Verlo en una consulta real" },
-    estaciones: [
-      ["web", "Sitio web", "Catálogo, obras y showrooms, con consultas que llegan con nombre y teléfono.", "Natural Flooring"],
-      ["visualizador", "Visualizador", "El cliente sube una foto y ve el piso puesto en su casa.", "Natural Flooring"],
-      ["asesor", "Asesor de materiales", "Seis preguntas y una recomendación que se puede cotizar.", "Natural Flooring"],
-      ["cotizador", "Cotizador", "Un estimado al instante con tu lista de precios.", null],
-    ],
-  },
-  {
-    id: "hacer",
-    nombre: "Para la obra",
-    cuando: "De la firma a la entrega",
-    link: { href: "#obra", texto: "Verlo en una obra de punta a punta" },
-    estaciones: [
-      ["plan", "Plan de obra", "La obra importada desde tu Excel, con fechas para cada tarea.", "RTS Commissioning"],
-      ["qr", "Equipo y QR en campo", "Permisos por rol y un QR en cada ambiente para cargar desde la obra, aun sin señal.", "RTS Commissioning"],
-      ["control", "Control", "Curva S, pendientes con foto y avisos por mail cuando algo se atrasa.", "RTS Commissioning"],
-      ["entrega", "Entrega", "Informes, certificados y el dossier final en un clic.", "RTS Commissioning"],
-    ],
-  },
+const VENDER = [
+  ["web", "Sitio web", "Catálogo, obras y consultas"],
+  ["visualizador", "Visualizador", "El piso puesto en su foto"],
+  ["asesor", "Asesor", "Qué material le conviene"],
+  ["cotizador", "Cotizador", "El precio al instante", "Prototipo"],
 ];
+const OBRA = [
+  ["plan", "Plan de obra", "Desde tu Excel, con fechas"],
+  ["qr", "Equipo y QR", "Carga en obra, sin señal"],
+  ["control", "Control", "Curva S y pendientes"],
+  ["entrega", "Entrega", "Informes y dossier"],
+];
+const TOTAL = VENDER.length + OBRA.length;
+
+function Estacion({ e, i }) {
+  const [icono, nombre, texto, nota] = e;
+  return (
+    // cada estacion se enciende cuando el pulso pasa por su posicion en la via
+    <li className={styles.estacion} style={{ "--f": (i + 0.5) / (TOTAL + 1) + (i >= VENDER.length ? 1 / (TOTAL + 1) : 0) }}>
+      <span className={styles.parada} aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          {I[icono]}
+        </svg>
+      </span>
+      <span className={styles.num}>{String(i + 1).padStart(2, "0")}</span>
+      <b>{nombre}</b>
+      <small>{texto}</small>
+      {nota && <em>{nota}</em>}
+    </li>
+  );
+}
 
 export default function QueHacemos() {
   const ref = useRef(null);
   const [visto, setVisto] = useState(false);
 
   useEffect(() => {
-    const ob = new IntersectionObserver(([e]) => e.isIntersecting && (setVisto(true), ob.disconnect()), { threshold: 0.25 });
+    const ob = new IntersectionObserver(([e]) => e.isIntersecting && (setVisto(true), ob.disconnect()), { threshold: 0.3 });
     ob.observe(ref.current);
     return () => ob.disconnect();
   }, []);
 
-  let n = 0;
   return (
     <section className={`claro section ${styles.seccion}`} id="que-hacemos">
       <div className="wrap">
@@ -68,47 +72,52 @@ export default function QueHacemos() {
             <h2 className="h2">Acompañamos el proyecto de punta a punta.</h2>
           </div>
           <p className="lead">
-            Desde que el cliente mira el piso en la web hasta que se entrega la obra. Estas son las piezas que construimos
-            para cada tramo, a medida de cada negocio.
+            Desde que el cliente mira el piso en la web hasta que se entrega la obra: construimos cada pieza a medida, con
+            los datos y las reglas de tu negocio.
           </p>
         </div>
 
-        <div ref={ref} className={`${styles.mapa} ${visto ? styles.visto : ""}`}>
-          {TRAMOS.map((t, ti) => (
-            <div key={t.id} className={`${styles.tramo} ${styles[t.id]}`}>
-              <div className={styles.tramoCabecera}>
-                <h3>{t.nombre}</h3>
-                <span>{t.cuando}</span>
-              </div>
-              <ol className={styles.estaciones}>
-                <span className={styles.via} aria-hidden="true" />
-                {t.estaciones.map(([icono, nombre, texto, uso]) => {
-                  n += 1;
-                  return (
-                    <li key={icono} className={styles.estacion} style={{ "--n": n }}>
-                      <span className={styles.parada} aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                          {I[icono]}
-                        </svg>
-                      </span>
-                      <span className={styles.num}>{String(n).padStart(2, "0")}</span>
-                      <h4>{nombre}</h4>
-                      <p>{texto}</p>
-                      <span className={`${styles.uso} ${uso ? "" : styles.prototipo}`}>{uso ? `En uso en ${uso}` : "Prototipo"}</span>
-                    </li>
-                  );
-                })}
-              </ol>
-              <a className={styles.link} href={t.link.href}>
-                {t.link.texto} <span aria-hidden="true">↓</span>
-              </a>
-              {ti === 0 && (
-                <span className={styles.giro} aria-hidden="true">
-                  <span>Se firma la obra</span>
-                </span>
-              )}
-            </div>
-          ))}
+        <div ref={ref} className={`oscuro ${styles.panel} ${visto ? styles.visto : ""}`}>
+          <div className={styles.tramos}>
+            <p className={styles.tramo}>
+              <b>Para vender</b>
+              <span>antes de la obra</span>
+            </p>
+            <p className={`${styles.tramo} ${styles.tramoObra}`}>
+              <b>Para la obra</b>
+              <span>de la firma a la entrega</span>
+            </p>
+          </div>
+
+          <div className={styles.linea}>
+            <span className={styles.via} aria-hidden="true">
+              <span className={styles.pulso} />
+            </span>
+            <ol className={styles.estaciones}>
+              {VENDER.map((e, i) => (
+                <Estacion key={e[0]} e={e} i={i} />
+              ))}
+              <li className={styles.firma} aria-label="Se firma la obra">
+                <span>Se firma la obra</span>
+              </li>
+              {OBRA.map((e, i) => (
+                <Estacion key={e[0]} e={e} i={VENDER.length + i} />
+              ))}
+            </ol>
+          </div>
+
+          <div className={styles.pie}>
+            <a href="#historia">
+              <span className={styles.punto} />
+              En uso en <b>Natural Flooring</b>
+              <span className={styles.ir}>Ver una consulta real ↓</span>
+            </a>
+            <a href="#obra">
+              <span className={styles.punto} />
+              En uso en <b>RTS Commissioning</b>
+              <span className={styles.ir}>Ver una obra de punta a punta ↓</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
