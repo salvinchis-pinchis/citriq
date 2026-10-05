@@ -13,7 +13,7 @@
   margin-bottom: 0;
 }
 
-/* ---------- recorrido fijo, como la historia ---------- */
+/* ---------- recorrido fijo: el tiempo corre en horizontal ---------- */
 .recorrido {
   position: relative;
 }
@@ -22,125 +22,165 @@
   top: var(--header);
   height: calc(100vh - var(--header));
   display: grid;
-  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
-  gap: 48px;
-  align-items: center;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  padding-top: 22px;
+  padding-bottom: 26px;
+  transition: --dia 0.25s linear;
 }
 
-/* la lista de momentos: siempre entera, el actual abierto */
-.lista {
+/* ---------- la cinta metrica ---------- */
+.cinta {
+  position: relative;
+  padding-top: 6px;
+}
+.regla {
+  position: relative;
+  height: 34px;
+  border-radius: 6px;
+  /* amarillo de cinta de obra, apenas apagado para que no grite */
+  background: linear-gradient(180deg, #e8d27a, #dcc25f);
+  box-shadow: inset 0 -2px 0 rgba(21, 25, 27, 0.12), 0 6px 14px -8px rgba(21, 25, 27, 0.4);
+  overflow: hidden;
+}
+.marca,
+.marcaLarga {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  background: #15191b;
+}
+.marca {
+  height: 9px;
+  opacity: 0.55;
+}
+.marcaLarga {
+  height: 15px;
+}
+.marcaLarga small {
+  position: absolute;
+  top: 14px;
+  left: 4px;
+  font-family: var(--fm);
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #15191b;
+}
+.marcaLarga:first-child small::before {
+  content: "Día ";
+}
+/* lo recorrido de la obra se oscurece y el marcador corre con el scroll */
+.recorridoHecho {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: calc(var(--dia, 0) * 100%);
+  background: rgba(21, 25, 27, 0.12);
+}
+.marcador {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  left: calc(var(--dia, 0) * 100%);
+  width: 3px;
+  margin-left: -1.5px;
+  background: #15191b;
+  box-shadow: 0 0 0 2px var(--lime);
+}
+.hitos {
+  position: relative;
   list-style: none;
   margin: 0;
-  padding: 0 0 0 22px;
-  position: relative;
-  max-width: 460px;
+  padding: 0;
+  height: 18px;
 }
-.lista::before {
-  content: "";
+.hitos li {
   position: absolute;
-  left: 4px;
-  top: 10px;
-  bottom: 10px;
-  width: 2px;
-  background: var(--line-2);
+  top: 6px;
+  transform: translateX(-50%);
 }
-.item {
-  position: relative;
-  padding: 7px 0;
-}
-.item::before {
-  content: "";
-  position: absolute;
-  left: -22px;
-  top: 14px;
-  width: 10px;
-  height: 10px;
+.hito {
+  all: unset;
+  display: block;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: var(--bg);
   border: 2px solid var(--line-2);
+  background: var(--bg);
+  cursor: pointer;
   transition: all 0.3s ease;
 }
-.itemHecho::before {
+.hito:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+.hito:hover {
+  border-color: var(--text);
+}
+.hitoHecho {
   background: var(--text);
   border-color: var(--text);
 }
-.itemActivo::before {
+.hitoActivo {
   background: var(--lime);
   border-color: var(--text);
-  transform: scale(1.3);
+  transform: scale(1.35);
 }
-/* el salto al lunes: un respiro antes de cambiar de celular */
-.itemCorte {
-  margin-top: 14px;
-}
-.item button {
-  all: unset;
-  cursor: pointer;
+
+/* ---------- la pantalla ---------- */
+.escena {
+  min-height: 0;
   display: flex;
-  gap: 12px;
-  align-items: baseline;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
-.item button:focus-visible {
-  outline: 2px solid var(--text);
-  outline-offset: 4px;
+/* la notebook toma todo el alto que deja la cinta y el subtitulo */
+.escena > * {
+  width: min(100%, calc((100vh - var(--header) - 330px) * 1.5));
+}
+
+/* ---------- subtitulos ---------- */
+.subtitulos {
+  display: grid;
+}
+.subtitulo {
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+  gap: 40px;
+  align-items: end;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.3, 0.7, 0.2, 1);
+  pointer-events: none;
+}
+.subtituloActivo {
+  opacity: 1;
+  transform: none;
 }
 .cuando {
   font-family: var(--fm);
-  font-size: 0.74rem;
-  color: var(--faint);
-  min-width: 92px;
-  flex: none;
-  transition: color 0.3s;
-}
-.titulo {
-  font-size: 0.98rem;
-  font-weight: 500;
-  color: var(--faint);
-  letter-spacing: -0.01em;
-  line-height: 1.35;
-  transition: color 0.3s, font-size 0.3s;
-}
-.itemHecho .titulo {
-  color: var(--muted);
-}
-.item button:hover .titulo {
-  color: var(--text);
-}
-.itemActivo .cuando {
+  font-size: 0.78rem;
   color: var(--acento);
 }
-.itemActivo .titulo {
-  color: var(--text);
-  font-size: 1.35rem;
+.titulo {
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
   font-weight: 700;
-  letter-spacing: -0.03em;
-}
-.detalle {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.45s ease;
-  margin-left: 104px;
-}
-.detalle > div {
-  overflow: hidden;
-  min-height: 0;
-}
-.itemActivo .detalle {
-  grid-template-rows: 1fr;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  margin-top: 6px;
 }
 .texto {
   margin-top: 8px;
   color: var(--muted);
   font-weight: 300;
-  font-size: 0.98rem;
-  line-height: 1.55;
+  max-width: 62ch;
 }
 .industria {
-  margin: 10px 0 6px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-left: 2px solid var(--acento);
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   line-height: 1.45;
 }
 .industria span {
@@ -149,13 +189,6 @@
   font-weight: 600;
   color: var(--acento);
   margin-bottom: 2px;
-}
-
-.escena {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: 24px 0;
 }
 
 /* ---------- cierre ---------- */
@@ -183,53 +216,45 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .detalle,
-  .titulo {
+  .fijo,
+  .subtitulo,
+  .hito {
     transition: none;
   }
 }
 
-/* angosto: la notebook arriba y solo el momento actual abajo */
 @media (max-width: 900px) {
   .cabecera {
     grid-template-columns: 1fr;
     gap: 16px;
   }
   .fijo {
+    gap: 12px;
+    padding-top: 14px;
+    padding-bottom: 16px;
+  }
+  .regla {
+    height: 28px;
+  }
+  .marca {
+    display: none;
+  }
+  .escena > * {
+    width: 100%;
+  }
+  .subtitulo {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-    gap: 8px;
-    align-items: start;
-    padding-top: 16px;
+    gap: 10px;
   }
-  .escena {
-    order: -1;
-    height: auto;
-    padding: 0 0 12px;
+  .titulo {
+    font-size: 1.25rem;
   }
-  .lista {
-    padding: 0;
-    max-width: none;
+  .texto {
+    font-size: 0.92rem;
   }
-  .lista::before,
-  .item::before {
-    display: none;
-  }
-  .item {
-    display: none;
-  }
-  .itemActivo {
-    display: block;
-  }
-  .itemActivo .titulo {
-    font-size: 1.2rem;
-  }
-  .item button {
-    flex-direction: column;
-    gap: 4px;
-  }
-  .detalle {
-    margin-left: 0;
+  .industria {
+    font-size: 0.82rem;
+    padding: 6px 10px;
   }
   .cierre {
     grid-template-columns: 1fr;

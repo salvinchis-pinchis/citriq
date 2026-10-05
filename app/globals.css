@@ -258,3 +258,8 @@ button {
   inherits: true;
   initial-value: 0;
 }
+@property --dia {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}

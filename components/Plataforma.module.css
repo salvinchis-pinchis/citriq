@@ -586,8 +586,8 @@
 .celular {
   position: absolute;
   right: -3%;
-  bottom: -2%;
-  width: 25%;
+  bottom: 7%;
+  width: 23%;
   aspect-ratio: 9 / 18.5;
   padding: 1.2%;
   border-radius: 9% / 4.5%;
@@ -861,8 +861,8 @@
     display: none;
   }
   .celular {
-    width: 34%;
+    width: 30%;
     right: 0;
-    bottom: -6%;
+    bottom: 2%;
   }
 }
