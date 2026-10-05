@@ -5,12 +5,16 @@ import Hero from "../components/Hero";
 import Historia from "../components/Historia";
 import Mapa from "../components/Mapa";
 import Proceso from "../components/Proceso";
-import Puente from "../components/Puente";
+import Estacion from "../components/puentes/Estacion";
+import Laser from "../components/puentes/Laser";
+import Reloj from "../components/puentes/Reloj";
+import Tablones from "../components/puentes/Tablones";
 import QueHacemos from "../components/QueHacemos";
 import Seguimiento from "../components/Seguimiento";
 
-// Los capitulos alternan carbon (oscuro) y hormigon (claro). Entre uno y otro,
-// un puente: la via baja a una parada y desde ahi se abre el capitulo siguiente.
+// Los capitulos alternan carbon (oscuro) y hormigon (claro). Entre uno y otro, un
+// puente distinto segun lo que conecta: un nivel laser, un reloj que se hace de
+// noche, la estacion donde se firma la obra y un piso que se coloca.
 export default function Home() {
   return (
     <>
@@ -18,17 +22,11 @@ export default function Home() {
       <Mapa />
       <main id="contenido">
         <Hero />
-        <Puente desde="oscuro" hacia="claro" cierra="Una obra no empieza en la obra." abre="Empieza cuando alguien busca un piso." />
+        <Laser cierra="Una obra no empieza en la obra." abre="Empieza cuando alguien busca un piso." />
         <QueHacemos />
-        <Puente
-          desde="claro"
-          hacia="oscuro"
-          etiqueta="Tramo 1 · Para vender"
-          cierra="Empecemos por el primer tramo."
-          abre="Un sábado a la noche, a las 21:47."
-        />
+        <Reloj etiqueta="Tramo 1 · Para vender" cierra="Empecemos por el primer tramo." abre="Un sábado a la noche." />
         <Historia />
-        <Puente
+        <Estacion
           desde="oscuro"
           hacia="claro"
           etiqueta="Tramo 2 · Para la obra"
@@ -36,9 +34,8 @@ export default function Home() {
           abre="Ahora empieza la obra."
         />
         <Seguimiento />
-        <Puente desde="claro" hacia="oscuro" cierra="Así se ve de punta a punta." abre="Y así lo construimos para tu negocio." />
+        <Tablones cierra="Así se ve de punta a punta." abre="Y así lo construimos para tu negocio." />
         <Proceso />
-        <Puente desde="oscuro" hacia="claro" cierra="El primer escalón es una charla." abre="Arranquemos por ahí." />
         <Contacto />
       </main>
       <Footer />

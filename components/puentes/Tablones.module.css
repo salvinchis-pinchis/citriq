@@ -1,0 +1,89 @@
+/* ============================================================
+   --p de 0 a 1:
+   0.00-0.30 frase que cierra, quieta y entera
+   0.28-0.36 la frase se va antes de que lleguen las tablas
+   0.30-0.74 entran las 9 tablas, de a una y alternando el lado
+   0.74-0.82 se borran las juntas
+   0.76-0.86 aparece la frase que abre, quieta hasta el final
+   ============================================================ */
+.puente {
+  --p: 0;
+  --filas: 9;
+  position: relative;
+  height: 170vh;
+}
+.fijo {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+.piso {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: repeat(var(--filas), 1fr);
+}
+.tabla {
+  /* avance de esta tabla: cada una tiene 1/9 del tramo, con un poco de solape */
+  --t: clamp(0, calc(((var(--p) - 0.3) / 0.44 * var(--filas) - var(--i)) / 1.6), 1);
+  position: relative;
+  background:
+    /* la junta de cabeza, en un lugar distinto en cada fila */
+    linear-gradient(90deg, transparent calc(var(--corte) - 1px), rgba(255, 255, 255, var(--junta)) calc(var(--corte) - 1px) var(--corte), transparent var(--corte)),
+    /* veta apenas marcada */
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.018) 0 2px, transparent 2px 7px),
+    var(--carbon);
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, var(--junta));
+  --junta: calc(0.09 * clamp(0, (0.82 - var(--p)) / 0.08, 1));
+  transform: translateX(calc((1 - var(--t)) * 105% * var(--lado)));
+}
+.frase {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: min(90vw, 22ch);
+  transform: translate(-50%, -50%);
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.7rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  text-wrap: balance;
+  background: none;
+}
+.cierra {
+  color: var(--text);
+  opacity: clamp(0, calc((0.36 - var(--p)) / 0.08), 1);
+}
+.abre {
+  color: var(--text);
+  opacity: clamp(0, calc((var(--p) - 0.76) / 0.1), 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .puente {
+    height: auto;
+  }
+  .fijo {
+    position: static;
+    height: auto;
+  }
+  .piso {
+    display: none;
+  }
+  .frase {
+    position: static;
+    transform: none;
+    opacity: 1;
+    margin: 0 auto;
+    padding: 72px 0;
+  }
+  .abre {
+    background: var(--carbon);
+    width: 100%;
+    max-width: none;
+  }
+}

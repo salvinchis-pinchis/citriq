@@ -1,0 +1,146 @@
+/* ============================================================
+   --p de 0 a 1:
+   0.00-0.30 frase que cierra, quieta y entera (sobre hormigon)
+   0.30-0.40 la frase se va
+   0.12-0.67 el reloj avanza de 18:00 a 21:47
+   0.30-0.62 se hace de noche: el fondo pasa al carbon
+   0.66-0.76 aparece la frase que abre, quieta hasta el final
+   ============================================================ */
+.puente {
+  --p: 0;
+  position: relative;
+  height: 170vh;
+}
+.fijo {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+/* la noche baja desde arriba, como un cielo que se oscurece */
+.noche {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 150%;
+  background:
+    radial-gradient(60% 40% at 50% 64%, rgba(192, 249, 22, 0.07), transparent 70%),
+    linear-gradient(180deg, var(--carbon) 0 80%, rgba(14, 18, 21, 0) 100%);
+  transform: translateY(calc((clamp(0, (var(--p) - 0.3) / 0.32, 1) - 1) * 100%));
+}
+.frases {
+  position: relative;
+  width: min(90vw, 22ch);
+  height: 2.3em;
+  font-size: clamp(1.7rem, 4vw, 3rem);
+}
+.frase {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: end center;
+  text-align: center;
+  font-size: 1em;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.cierra {
+  color: var(--text);
+  opacity: clamp(0, calc((0.4 - var(--p)) / 0.1), 1);
+}
+.abre {
+  color: #eef2ea;
+  opacity: clamp(0, calc((var(--p) - 0.66) / 0.1), 1);
+  translate: 0 calc((1 - clamp(0, (var(--p) - 0.66) / 0.1, 1)) * 12px);
+}
+
+/* ---------- el reloj de paletas ---------- */
+.reloj {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.dia {
+  font-family: var(--fm);
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: var(--carbon);
+  color: var(--lime);
+}
+.digitos {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.paleta {
+  position: relative;
+  width: clamp(56px, 9vw, 96px);
+  height: clamp(78px, 12.5vw, 132px);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #1b2227 0 50%, #161c20 50% 100%);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  perspective: 400px;
+  overflow: hidden;
+}
+/* el corte del medio de la paleta */
+.paleta::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--carbon);
+}
+.giro {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--fm);
+  font-size: clamp(2.6rem, 7vw, 5.2rem);
+  font-weight: 500;
+  color: #eef2ea;
+  transform-origin: 50% 50%;
+  animation: girar 0.32s cubic-bezier(0.3, 0.7, 0.3, 1);
+}
+@keyframes girar {
+  from {
+    transform: rotateX(-90deg);
+    opacity: 0.4;
+  }
+}
+.dos {
+  font-family: var(--fm);
+  font-size: clamp(2.2rem, 6vw, 4.4rem);
+  color: var(--lime);
+}
+.etiqueta {
+  position: relative;
+  font-family: var(--fm);
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--lime);
+  color: var(--lime);
+  opacity: clamp(0, calc((var(--p) - 0.66) / 0.1), 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .giro {
+    animation: none;
+  }
+}

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import styles from "./Puente.module.css";
+import { useRef } from "react";
+import styles from "./Estacion.module.css";
+import { useProgreso } from "./useProgreso";
 
 /**
  * El paso de una seccion a la siguiente, como una estacion de la via.
@@ -11,33 +12,13 @@ import styles from "./Puente.module.css";
  * hasta cubrir la pantalla; adentro, la frase que la abre. Asi no hay corte
  * de fondo: se entra a cada seccion por una estacion.
  *
+ * Es el puente entre el tramo 1 y el tramo 2: la parada es "se firma la obra".
  * El scroll solo escribe --p (0 a 1) en el bloque; el resto es CSS.
  */
-export default function Puente({ desde, hacia, cierra, abre, etiqueta }) {
+export default function Estacion({ desde, hacia, cierra, abre, etiqueta }) {
   const ref = useRef(null);
 
-  useEffect(() => {
-    const el = ref.current;
-    let pendiente = false;
-    function actualizar() {
-      pendiente = false;
-      const r = el.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, -r.top / (r.height - window.innerHeight)));
-      el.style.setProperty("--p", p.toFixed(4));
-    }
-    const pedir = () => {
-      if (pendiente) return;
-      pendiente = true;
-      requestAnimationFrame(actualizar);
-    };
-    actualizar();
-    window.addEventListener("scroll", pedir, { passive: true });
-    window.addEventListener("resize", pedir);
-    return () => {
-      window.removeEventListener("scroll", pedir);
-      window.removeEventListener("resize", pedir);
-    };
-  }, []);
+  useProgreso(ref);
 
   return (
     <div ref={ref} className={`${desde} ${styles.puente}`} role="presentation">

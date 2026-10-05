@@ -1,0 +1,92 @@
+/* ============================================================
+   --p de 0 a 1:
+   0.00-0.36 la frase se enciende palabra por palabra
+   0.36-0.48 queda entera y quieta
+   0.48-0.82 el laser baja; arriba de el, el capitulo claro
+   0.82-1.00 queda la frase nueva, quieta
+   ============================================================ */
+.puente {
+  --p: 0;
+  --l: clamp(0, calc((var(--p) - 0.48) / 0.34), 1); /* donde va el laser, 0 arriba y 1 abajo */
+  position: relative;
+  height: 170vh;
+}
+.fijo {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+/* las marcas de una regla a los costados, como en un nivel */
+.marcas {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(180deg, rgba(192, 249, 22, 0.25) 0 1px, transparent 1px 24px) left 24px top / 10px 100% no-repeat,
+    repeating-linear-gradient(180deg, rgba(192, 249, 22, 0.25) 0 1px, transparent 1px 24px) right 24px top / 10px 100% no-repeat;
+  opacity: 0.6;
+}
+.frase {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(90vw, 20ch);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+  text-wrap: balance;
+  color: var(--text);
+}
+.frase span {
+  /* apagada hasta que el scroll llega a su turno, como ScrollReveal */
+  opacity: calc(0.14 + 0.86 * clamp(0, (var(--p) / 0.36 - var(--k)) * 4, 1));
+}
+.claro {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 calc(100% - var(--l) * 100%) 0);
+}
+.laser {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--l) * 100%);
+  height: 2px;
+  margin-top: -1px;
+  background: var(--lime);
+  box-shadow: 0 0 14px 3px rgba(192, 249, 22, 0.7), 0 0 60px 10px rgba(192, 249, 22, 0.25);
+  opacity: calc(clamp(0, (var(--p) - 0.46) * 30, 1) * clamp(0, (0.84 - var(--p)) * 30, 1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .puente {
+    height: auto;
+  }
+  .fijo {
+    position: static;
+    height: auto;
+    display: block;
+  }
+  .marcas,
+  .laser {
+    display: none;
+  }
+  .frase {
+    position: static;
+    transform: none;
+    margin: 0 auto;
+    padding: 72px 0;
+  }
+  .frase span {
+    opacity: 1;
+  }
+  .claro {
+    position: static;
+    clip-path: none;
+  }
+}

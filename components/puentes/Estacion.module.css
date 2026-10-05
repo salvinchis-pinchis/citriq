@@ -1,10 +1,11 @@
 /* ============================================================
    Puente entre secciones. --p va de 0 a 1 mientras se cruza:
-   0.00-0.30 la via baja hasta la parada
-   0.12-0.35 aparece la frase que cierra
-   0.42-0.88 el circulo del color siguiente crece desde la parada
-   0.70-0.88 aparece la frase que abre
-   0.86-1.00 la via sale hacia abajo, a la seccion siguiente
+   0.00-0.25 la via baja hasta la parada
+   0.08-0.22 aparece la frase que cierra; queda quieta y entera hasta 0.42
+   0.42-0.48 la frase se va antes de que la toque el circulo
+   0.46-0.76 el circulo del color siguiente crece desde la parada
+   0.74-0.84 aparece la frase que abre; queda quieta hasta el final
+   0.88-1.00 la via sale hacia abajo, a la seccion siguiente
    ============================================================ */
 .puente {
   --p: 0;
@@ -29,7 +30,7 @@
   margin-left: -1.5px;
   background: var(--acento);
   transform-origin: top;
-  transform: scaleY(clamp(0, calc(var(--p) / 0.3), 1));
+  transform: scaleY(clamp(0, calc(var(--p) / 0.25), 1));
 }
 .parada {
   position: absolute;
@@ -42,9 +43,9 @@
   border-radius: 50%;
   background: var(--lime);
   border: 3px solid var(--carbon);
-  box-shadow: 0 0 0 calc(clamp(0, (var(--p) - 0.28) * 40, 1) * 8px) rgba(192, 249, 22, 0.25),
+  box-shadow: 0 0 0 calc(clamp(0, (var(--p) - 0.24) * 40, 1) * 8px) rgba(192, 249, 22, 0.25),
     0 0 30px rgba(192, 249, 22, 0.5);
-  transform: scale(clamp(0, calc((var(--p) - 0.24) / 0.08), 1));
+  transform: scale(clamp(0, calc((var(--p) - 0.2) / 0.06), 1));
 }
 
 .cierra,
@@ -63,20 +64,21 @@
 .cierra {
   bottom: calc(50% + 44px);
   color: var(--text);
-  opacity: clamp(0, calc((var(--p) - 0.12) / 0.2), 1);
-  translate: 0 calc((1 - clamp(0, (var(--p) - 0.12) / 0.2, 1)) * 16px);
+  /* entra, queda entera y se va antes de que llegue el circulo: nunca se corta */
+  opacity: min(clamp(0, calc((var(--p) - 0.08) / 0.14), 1), clamp(0, calc((0.48 - var(--p)) / 0.06), 1));
+  translate: 0 calc((1 - clamp(0, (var(--p) - 0.08) / 0.14, 1)) * 16px);
 }
 
 /* el color de la seccion siguiente, abriendose desde la parada */
 .circulo {
   position: absolute;
   inset: 0;
-  clip-path: circle(calc(clamp(0, (var(--p) - 0.42) / 0.46, 1) * 75vmax) at 50% 50%);
+  clip-path: circle(calc(clamp(0, (var(--p) - 0.46) / 0.3, 1) * 75vmax) at 50% 50%);
 }
 .abre {
   top: calc(50% + 44px);
   color: var(--text);
-  opacity: clamp(0, calc((var(--p) - 0.7) / 0.18), 1);
+  opacity: clamp(0, calc((var(--p) - 0.74) / 0.1), 1);
 }
 .etiqueta {
   position: absolute;
@@ -89,7 +91,7 @@
   border-radius: 20px;
   border: 1px solid currentColor;
   color: var(--acento);
-  opacity: clamp(0, calc((var(--p) - 0.7) / 0.18), 1);
+  opacity: clamp(0, calc((var(--p) - 0.74) / 0.1), 1);
 }
 .salida {
   position: absolute;
@@ -100,7 +102,7 @@
   margin-left: -1.5px;
   background: var(--acento);
   transform-origin: top;
-  transform: scaleY(clamp(0, calc((var(--p) - 0.86) / 0.14), 1));
+  transform: scaleY(clamp(0, calc((var(--p) - 0.88) / 0.12), 1));
 }
 
 /* sin movimiento: las dos frases, una debajo de la otra */
