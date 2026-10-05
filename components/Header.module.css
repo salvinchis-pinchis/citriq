@@ -59,3 +59,83 @@
     display: none;
   }
 }
+
+/* ---------- menu de celular ---------- */
+.hamburguesa {
+  display: none;
+}
+@media (max-width: 860px) {
+  .hamburguesa {
+    display: grid;
+    place-content: center;
+    gap: 6px;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--line-2);
+    border-radius: var(--r);
+    background: transparent;
+    cursor: pointer;
+  }
+  .hamburguesa i {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--text);
+    transition: transform 0.25s ease;
+  }
+  .abierto .hamburguesa i:first-child {
+    transform: translateY(4px) rotate(45deg);
+  }
+  .abierto .hamburguesa i:last-child {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+  .derecha {
+    gap: 10px;
+  }
+  /* el menu ocupa la pantalla debajo de la barra */
+  .derecha nav {
+    position: fixed;
+    inset: var(--header) 0 0 0;
+    background: var(--bg);
+    padding: 24px var(--gutter);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  }
+  .abierto .derecha nav {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .abierto .links {
+    display: flex;
+  }
+  .links {
+    flex-direction: column;
+    gap: 0;
+  }
+  .links li {
+    border-bottom: 1px solid var(--line);
+  }
+  .links a {
+    display: block;
+    padding: 18px 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .derecha nav,
+  .hamburguesa i {
+    transition: none;
+  }
+}
+/* backdrop-filter haria que el menu fijo se mida contra la barra: con el menu abierto se apaga */
+.abierto {
+  background: var(--bg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}

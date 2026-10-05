@@ -28,10 +28,10 @@ export default function Hero() {
         </div>
 
         <div className={styles.prueba}>
-          <p className={styles.pruebaLabel}>En producción</p>
+          <p className={styles.pruebaLabel}>Lo hicimos para</p>
           <a href="#historia">
             <b>Natural Flooring</b>
-            <small>Visualizador de pisos con IA en su web</small>
+            <small>Web, visualizador con IA y asesor de materiales</small>
           </a>
           <a href="#industria">
             <b>RTS Commissioning</b>

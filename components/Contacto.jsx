@@ -9,9 +9,9 @@ import styles from "./Contacto.module.css";
  * mensaje que va a llegar por WhatsApp. Los huecos crecen con lo que se escribe.
  */
 
-function Hueco({ id, label, placeholder, valor, onChange, tipo = "text", requerido = false, ancho = 12 }) {
+function Hueco({ id, label, placeholder, valor, onChange, tipo = "text", requerido = false, ancho = 12, largo = false }) {
   return (
-    <span className={styles.hueco} style={{ "--ch": Math.max(ancho, (valor || placeholder).length + 1) }}>
+    <span className={`${styles.hueco} ${largo ? styles.largo : ""}`} style={{ "--ch": Math.max(ancho, (valor || placeholder).length + 1) }}>
       <label htmlFor={id} className="sr">
         {label}
       </label>
@@ -42,7 +42,7 @@ export default function Contacto() {
   }
 
   return (
-    <section className={`oscuro ${styles.contacto}`} id="contacto">
+    <section className={`claro ${styles.contacto}`} id="contacto">
       <div className={`wrap ${styles.inner}`}>
         <div className={styles.copy}>
           <p className="kicker">Siguiente paso</p>
@@ -68,6 +68,7 @@ export default function Contacto() {
               onChange={set("objetivo")}
               requerido
               ancho={18}
+              largo
             />
             . Me pueden escribir a{" "}
             <Hueco id="c-contacto" label="Mail o celular" placeholder="mail o celular" valor={d.contacto} onChange={set("contacto")} requerido />.

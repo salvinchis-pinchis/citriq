@@ -39,6 +39,7 @@ Opcionales, en `.env.local`:
 
 | Variable | Para qué |
 |---|---|
+| `NEXT_PUBLIC_SITIO_URL` | Dirección pública del sitio (ej. `https://citriq.com.ar`). La usan los links de la imagen para compartir. |
 | `NEXT_PUBLIC_WHATSAPP` | Número de Citriq con código de país, sin signos (ej. `5491100000000`). Vacío = wa.me deja elegir el contacto. |
 
 ## Sistema de diseño
@@ -72,9 +73,13 @@ El logo está en `components/Marca.jsx` (y `app/icon.svg`); en el hero se dibuja
    notificación de Mail en el celular del negocio → el mail abierto. Los renders salen de
    `pnpm demo`.
 4. **Industria** (claro): RTS Commissioning, árbol del proyecto y curva S (ilustrativa).
-5. **Proceso y para quién** (oscuro).
-6. **Contacto**: una carta para completar ("Hola, soy… de… Me gustaría que…") que se manda
-   por WhatsApp tal cual se lee.
+5. **Proceso** (oscuro): cuatro pasos que suben como una escalera, y a quién le trabajamos.
+6. **Contacto** (claro): una carta para completar ("Hola, soy… de… Me gustaría que…") que se
+   manda por WhatsApp tal cual se lee.
+7. **Footer** (oscuro): links, y el wordmark grande como placa de obra.
+
+En celular el menú se abre con el botón de la barra. `app/opengraph-image.js` genera la imagen
+que aparece al compartir el link (usa `assets/Sora-Bold.ttf`).
 
 ## Estado y pendientes
 

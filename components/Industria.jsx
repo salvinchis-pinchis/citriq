@@ -26,7 +26,7 @@ export default function Industria() {
 
   // La curva se dibuja una vez, cuando entra en pantalla.
   useEffect(() => {
-    const ob = new IntersectionObserver(([e]) => e.isIntersecting && (setVisible(true), ob.disconnect()), { threshold: 0.4 });
+    const ob = new IntersectionObserver(([e]) => e.isIntersecting && (setVisible(true), ob.disconnect()), { threshold: 0.15 });
     ob.observe(curvaRef.current);
     return () => ob.disconnect();
   }, []);

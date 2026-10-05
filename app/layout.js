@@ -5,6 +5,7 @@ const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap"
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITIO_URL || "http://localhost:3000"),
   title: "Citriq | Software para la construcción",
   description:
     "Software a medida para la construcción: visualizadores de materiales con IA, comparadores de obra, cotizadores y plataformas de gestión de obra industrial.",
