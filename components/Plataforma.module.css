@@ -114,7 +114,6 @@
   padding: 0.45em 0.7em;
   border-radius: 0.4em;
   color: #6f7872;
-  transition: all 0.3s ease;
 }
 
 .vistas {
@@ -127,15 +126,12 @@
   padding: 1.1em 1.3em;
   opacity: 0;
   transform: translateY(0.6em);
-  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.3, 0.7, 0.2, 1);
   pointer-events: none;
 }
 /* lo de adentro entra de a uno cuando aparece la vista */
 .vista [style*="--i"] {
   opacity: 0;
   transform: translateY(0.5em);
-  transition: opacity 0.35s ease, transform 0.4s ease;
-  transition-delay: calc(var(--i) * 0.06s + 0.1s);
 }
 
 /* ---------- 0 estructura ---------- */
@@ -753,6 +749,26 @@
 :global([data-etapa="8"]) .vInformes [style*="--i"] {
   opacity: 1;
   transform: none;
+}
+/* solo lo que entra tiene transicion: asi dos vistas nunca se ven a la vez */
+:global([data-etapa="0"]) .vEstructura,
+:global([data-etapa="1"]) .vPlan,
+:global([data-etapa="2"]) .vEquipo,
+:global([data-etapa="3"]) .vQr,
+:global([data-etapa="4"]) .vAvance,
+:global([data-etapa="5"]) .vAvance,
+:global([data-etapa="6"]) .vControl,
+:global([data-etapa="7"]) .vCompartir,
+:global([data-etapa="8"]) .vInformes {
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+:global([data-etapa="0"]) .vEstructura [style*="--i"],
+:global([data-etapa="1"]) .vPlan [style*="--i"],
+:global([data-etapa="2"]) .vEquipo [style*="--i"],
+:global([data-etapa="3"]) .vQr [style*="--i"],
+:global([data-etapa="8"]) .vInformes [style*="--i"] {
+  transition: opacity 0.35s ease, transform 0.4s ease;
+  transition-delay: calc(var(--i) * 0.06s + 0.1s);
 }
 
 /* plan: las barras crecen con el scroll, una detras de otra */
