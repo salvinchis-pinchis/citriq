@@ -1,231 +1,134 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import Plataforma from "./Plataforma";
 import styles from "./Seguimiento.module.css";
 
 /**
- * Seguimiento de obra: el recorrido de un proyecto en cinco etapas, cada una
- * con lo que hace la plataforma y como se ve en una obra de pisos y en una
- * planta industrial. Todo lo que se nombra existe en la plataforma de RTS.
- * Las pantallas de la derecha son esquemas: los nombres y numeros son de ejemplo.
+ * Seguimiento de obra, contado con el scroll como la historia del visualizador.
+ *
+ * Una obra de pisos de punta a punta: entra como un Excel y sale con el
+ * dossier. A la izquierda el recorrido (con lo que significa en una planta
+ * industrial), a la derecha la plataforma en una notebook fija; el celular
+ * aparece cuando la escena pasa a la obra. Todo lo que se muestra existe en
+ * la plataforma que hicimos para RTS; los nombres y numeros son de ejemplo.
+ *
+ * Como en la historia, el scroll escribe data-etapa y variables CSS (--p, el
+ * avance dentro de la etapa) en la escena; React solo marca la etapa activa.
  */
 
 const ETAPAS = [
   {
-    id: "planificar",
-    nombre: "Planificar",
-    titulo: "Todo el proyecto, armado en un árbol.",
-    texto: "Se importa desde el Excel que ya usás y queda la estructura completa, con fechas de plan para cada tarea.",
-    funciones: ["Importación desde Excel", "Fechas de plan por tarea"],
-    pisos: "Ambientes, metros y etapas de colocación",
-    industria: "Sistemas, subsistemas, tags y tareas",
+    cuando: "Día 1",
+    titulo: "La obra entra como un Excel.",
+    texto: "Ambientes, metros y etapas: se importa la planilla que ya tenían y queda armado el árbol de la obra.",
+    industria: "Sistemas, subsistemas y miles de tags, con la misma importación.",
+    peso: 1.2,
   },
   {
-    id: "asignar",
-    nombre: "Asignar",
-    titulo: "Cada uno ve y toca solo lo suyo.",
-    texto: "Permisos por rol: quién administra, quién carga avances y quién solo mira. El cliente puede seguir la obra sin pedir nada.",
-    funciones: ["Roles y permisos", "Acceso para el cliente"],
-    pisos: "El colocador carga avances, el cliente mira",
-    industria: "Líder de proyecto, operarios y control documental",
+    cuando: "Día 1",
+    titulo: "Cada tarea, con su fecha.",
+    texto: "Contrapiso, colocación, pulido, terminaciones. Contra ese plan se va a medir todo lo que viene.",
+    industria: "El plan de cada sistema y de cada etapa del commissioning.",
+    peso: 1.3,
   },
   {
-    id: "ejecutar",
-    nombre: "Ejecutar",
-    titulo: "En campo, con el celular y sin señal.",
-    texto: "Cada ambiente o equipo tiene su QR. Se escanea, se carga el avance con fotos y se sincroniza cuando vuelve la conexión.",
-    funciones: ["QR para imprimir", "Registros con foto", "Funciona sin señal"],
-    pisos: "QR en cada ambiente de la obra",
-    industria: "QR en cada equipo de la planta",
+    cuando: "Día 2",
+    titulo: "Cada uno, con su permiso.",
+    texto: "La líder administra la obra, el colocador carga avances y la clienta solo mira. Nadie toca lo que no le toca.",
+    industria: "Líder de proyecto, operarios, control documental y el cliente.",
+    peso: 1,
   },
   {
-    id: "controlar",
-    nombre: "Controlar",
-    titulo: "El desvío se ve hoy, no en la reunión del mes.",
-    texto: "Plan contra real en una curva S, el estado de cada etapa y los pendientes con responsable. Y avisos por mail a quien corresponde.",
-    funciones: ["Curva S", "Pendientes", "Avisos por mail"],
-    pisos: "Qué ambiente viene atrasado y por qué",
-    industria: "Avance por sistema y punch list",
+    cuando: "Día 3",
+    titulo: "Un QR en cada ambiente.",
+    texto: "Se imprimen desde la plataforma y se pegan en la obra. Escanear es la forma de cargar.",
+    industria: "Un QR en cada equipo de la planta.",
+    peso: 1,
   },
   {
-    id: "entregar",
-    nombre: "Entregar",
-    titulo: "Los informes salen solos.",
-    texto: "Informes en PDF y Excel con fecha de corte, certificados y el dossier final, más un link para compartir con el cliente.",
-    funciones: ["Informes PDF y Excel", "Certificados", "Dossier final"],
-    pisos: "El cierre de obra con fotos, para el cliente",
-    industria: "Dossier de commissioning para el comitente",
+    cuando: "Día 8, 10:40",
+    titulo: "En la obra, sin señal.",
+    texto: "El colocador escanea el living, saca las fotos y carga el avance. Sin señal, todo queda guardado en el celular.",
+    industria: "En una planta en el medio de la nada, igual: se trabaja sin conexión.",
+    peso: 1.3,
+  },
+  {
+    cuando: "Día 8, 18:05",
+    titulo: "Vuelve la señal y la obra se pone al día.",
+    texto: "Lo cargado en el día se sincroniza solo y el avance de la obra se recalcula.",
+    industria: "El avance de cada sistema, al día y sin pasar planillas.",
+    peso: 1.3,
+  },
+  {
+    cuando: "Día 15",
+    titulo: "El desvío se ve antes de que sea tarde.",
+    texto: "En la curva S, plan contra real. La escalera viene atrasada: queda un pendiente con foto y sale el aviso por mail.",
+    industria: "El estado del plan por sistema y el punch list, con fotos.",
+    peso: 1.6,
+  },
+  {
+    cuando: "Día 16",
+    titulo: "La clienta sigue la obra con un link.",
+    texto: "Ve los certificados y los registros de su obra desde el celular, sin tener que llamar a nadie.",
+    industria: "El cliente accede a los certificados emitidos.",
+    peso: 1,
+  },
+  {
+    cuando: "Día 24",
+    titulo: "Y la obra se entrega con todo en orden.",
+    texto: "Informes en PDF y Excel con fecha de corte, certificados y el dossier final, en un clic.",
+    industria: "El dossier final de commissioning, listo para entregar.",
+    peso: 1.3,
   },
 ];
-const ROTACION_MS = 6500;
+const TOTAL = ETAPAS.reduce((s, e) => s + e.peso, 0);
+const INICIOS = ETAPAS.map((_, i) => ETAPAS.slice(0, i).reduce((s, e) => s + e.peso, 0) / TOTAL);
 
-/* ---------- las pantallas, una por etapa ---------- */
-function Planificar() {
-  const filas = ["A", "B", "C", "D", "E"];
-  return (
-    <div className={styles.pPlan}>
-      <div className={styles.excel}>
-        <span className={styles.archivo}>estructura_obra.xlsx</span>
-        {filas.map((f, i) => (
-          <div key={f} className={styles.excelFila} style={{ "--i": i }}>
-            <i />
-            <i />
-            <i />
-          </div>
-        ))}
-      </div>
-      <span className={styles.flechaImport}>→</span>
-      <div className={styles.arbol}>
-        {[
-          ["", "Obra Lomas · 120 m²", true],
-          ["n1", "Planta baja"],
-          ["n2", "Living · 38 m²"],
-          ["n2", "Cocina · 14 m²"],
-          ["n1", "Planta alta"],
-          ["n2", "Escalera · 16 peldaños"],
-        ].map(([n, t, raiz], i) => (
-          <div key={t} className={`${styles[n] ?? ""} ${raiz ? styles.raiz : ""}`} style={{ "--i": i }}>
-            {t}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Asignar() {
-  const roles = [
-    ["Administración", "Todo el proyecto", true, true, true],
-    ["Líder de proyecto", "Su obra y su equipo", true, true, false],
-    ["Colocador", "Carga avances y fotos", true, false, false],
-    ["Cliente", "Solo mira el avance", false, false, false],
-  ];
-  return (
-    <div className={styles.pRoles}>
-      <div className={styles.rolesCabecera}>
-        <span />
-        <span>Cargar</span>
-        <span>Aprobar</span>
-        <span>Usuarios</span>
-      </div>
-      {roles.map(([r, d, ...p], i) => (
-        <div key={r} className={styles.rol} style={{ "--i": i }}>
-          <span>
-            <b>{r}</b>
-            <small>{d}</small>
-          </span>
-          {p.map((v, k) => (
-            <i key={k} className={v ? styles.si : styles.no} />
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function Ejecutar() {
-  return (
-    <div className={styles.pCampo}>
-      <div className={styles.cel}>
-        <div className={styles.celEstado}>
-          <span>Sin señal · se guarda</span>
-        </div>
-        <div className={styles.visor}>
-          <span className={styles.qr} />
-          <span className={styles.laser} />
-        </div>
-        <p className={styles.celTag}>Living · colocación</p>
-        <div className={styles.celFotos}>
-          <i />
-          <i />
-          <i className={styles.celMas}>+</i>
-        </div>
-        <span className={styles.celBoton}>Cargar avance</span>
-      </div>
-    </div>
-  );
-}
-
-const PLAN = [0, 3, 8, 16, 28, 42, 57, 71, 83, 92, 98, 100];
-const REAL = [0, 2, 6, 12, 21, 32, 44];
-const pts = (s) => s.map((v, i) => `${(i / (PLAN.length - 1)) * 320},${150 - (v / 100) * 150}`).join(" ");
-function Controlar() {
-  return (
-    <div className={styles.pControl}>
-      <div className={styles.curva}>
-        <svg viewBox="-6 -6 332 162" aria-hidden="true">
-          {[0, 50, 100].map((v) => (
-            <line key={v} x1="0" x2="320" y1={150 - v * 1.5} y2={150 - v * 1.5} className={styles.guia} />
-          ))}
-          <polyline points={pts(PLAN)} className={styles.plan} />
-          <polyline points={pts(REAL)} className={styles.real} pathLength="1" />
-        </svg>
-        <span className={styles.leyenda}>Plan contra real · ejemplo</span>
-      </div>
-      <ul className={styles.estados}>
-        <li><span>Planta baja</span><b className={styles.enTiempo}>En tiempo</b></li>
-        <li><span>Escalera</span><b className={styles.riesgo}>En riesgo</b></li>
-        <li><span>Planta alta</span><b className={styles.atrasado}>Atrasado 3d</b></li>
-      </ul>
-    </div>
-  );
-}
-
-function Entregar() {
-  const docs = [
-    ["Informe de avance", "PDF · corte 30/09"],
-    ["Pendientes abiertos", "Excel"],
-    ["Certificado de colocación", "PDF"],
-    ["Dossier final", "Carpeta · 48 archivos"],
-  ];
-  return (
-    <div className={styles.pEntrega}>
-      {docs.map(([d, t], i) => (
-        <div key={d} className={styles.doc} style={{ "--i": i }}>
-          <span className={styles.docIcono}>{t.startsWith("Excel") ? "XLS" : t.startsWith("Carpeta") ? "ZIP" : "PDF"}</span>
-          <span>
-            <b>{d}</b>
-            <small>{t}</small>
-          </span>
-          <span className={styles.docBajar}>↓</span>
-        </div>
-      ))}
-      <div className={styles.link}>
-        <span className="mono">link para el cliente</span>
-        <b>Copiar</b>
-      </div>
-    </div>
-  );
-}
-
-const PANTALLAS = { planificar: Planificar, asignar: Asignar, ejecutar: Ejecutar, controlar: Controlar, entregar: Entregar };
+const clamp = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
 
 export default function Seguimiento() {
-  const ref = useRef(null);
+  const recorridoRef = useRef(null);
+  const escenaRef = useRef(null);
   const [activa, setActiva] = useState(0);
-  const [tocado, setTocado] = useState(false);
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const ob = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.3 });
-    ob.observe(ref.current);
-    return () => ob.disconnect();
+    const escena = escenaRef.current;
+    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let pendiente = false;
+    function actualizar() {
+      pendiente = false;
+      const r = recorridoRef.current.getBoundingClientRect();
+      const total = clamp(-r.top / (r.height - window.innerHeight));
+      let e = 0;
+      INICIOS.forEach((ini, i) => total >= ini && (e = i));
+      const dentro = clamp((total - INICIOS[e]) / (ETAPAS[e].peso / TOTAL) / 0.85);
+      escena.style.setProperty("--p", reducido ? 1 : dentro);
+      escena.dataset.etapa = String(e);
+      setActiva(e);
+    }
+    const pedir = () => {
+      if (pendiente) return;
+      pendiente = true;
+      requestAnimationFrame(actualizar);
+    };
+    actualizar();
+    window.addEventListener("scroll", pedir, { passive: true });
+    window.addEventListener("resize", pedir);
+    return () => {
+      window.removeEventListener("scroll", pedir);
+      window.removeEventListener("resize", pedir);
+    };
   }, []);
-  const [reducido, setReducido] = useState(false);
-  useEffect(() => setReducido(window.matchMedia("(prefers-reduced-motion: reduce)").matches), []);
-  const rota = visible && !tocado && !reducido;
-  useEffect(() => {
-    if (!rota) return undefined;
-    const t = setTimeout(() => setActiva((a) => (a + 1) % ETAPAS.length), ROTACION_MS);
-    return () => clearTimeout(t);
-  }, [rota, activa]);
 
-  const e = ETAPAS[activa];
-  const Pantalla = PANTALLAS[e.id];
+  function irA(i) {
+    const r = recorridoRef.current.getBoundingClientRect();
+    const y = window.scrollY + r.top + (INICIOS[i] + 0.01) * (r.height - window.innerHeight);
+    window.scrollTo({ top: y, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }
 
   return (
-    <section ref={ref} className={`claro section ${styles.seguimiento}`} id="obra">
+    <section className={`claro ${styles.seguimiento}`} id="obra">
       <div className="wrap">
         <div className={styles.cabecera}>
           <div className="section-head">
@@ -233,73 +136,51 @@ export default function Seguimiento() {
             <h2 className="h2">Seguimos cada proyecto de punta a punta.</h2>
           </div>
           <p className="lead">
-            Del plan al último certificado, en la oficina y en campo. Lo construimos para RTS Commissioning, que pone en
-            marcha plantas industriales, y la misma lógica ordena una obra de pisos.
+            Una obra de pisos, del Excel al dossier final. Es la plataforma que construimos para RTS Commissioning, que
+            la usa para poner en marcha plantas industriales: a la izquierda, lo que cada paso significa allá.
           </p>
         </div>
+      </div>
 
-        {/* el recorrido: cinco etapas sobre una linea */}
-        <div className={styles.recorrido} role="tablist" aria-label="Etapas del proyecto">
-          {ETAPAS.map((x, i) => (
-            <button
-              key={x.id}
-              type="button"
-              role="tab"
-              id={`etapa-${x.id}`}
-              aria-selected={i === activa}
-              aria-controls="etapa-panel"
-              className={`${styles.etapa} ${i === activa ? styles.activa : ""} ${i < activa ? styles.hecha : ""}`}
-              onClick={() => {
-                setTocado(true);
-                setActiva(i);
-              }}
-            >
-              <span className={styles.nodo} />
-              <span className={styles.num}>{String(i + 1).padStart(2, "0")}</span>
-              <span className={styles.etapaNombre}>{x.nombre}</span>
-              {i === activa && rota && <span key={activa} className={styles.progreso} style={{ animationDuration: `${ROTACION_MS}ms` }} />}
-            </button>
-          ))}
-        </div>
+      <div ref={recorridoRef} className={styles.recorrido} style={{ height: `calc(${TOTAL * 72}vh + 100vh)` }}>
+        <div className={`wrap ${styles.fijo}`}>
+          <ol className={styles.lista}>
+            {ETAPAS.map((e, i) => (
+              <li
+                key={i}
+                className={`${styles.item} ${i === activa ? styles.itemActivo : ""} ${i < activa ? styles.itemHecho : ""}`}
+                aria-current={i === activa ? "step" : undefined}
+              >
+                <button type="button" onClick={() => irA(i)}>
+                  <span className={styles.cuando}>{e.cuando}</span>
+                  <span className={styles.titulo}>{e.titulo}</span>
+                </button>
+                <div className={styles.detalle}>
+                  <div>
+                    <p className={styles.texto}>{e.texto}</p>
+                    <p className={styles.industria}>
+                      <span>En una planta industrial</span>
+                      {e.industria}
+                    </p>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
 
-        <div className={styles.panel} id="etapa-panel" role="tabpanel" aria-labelledby={`etapa-${e.id}`}>
-          <div key={e.id} className={styles.texto}>
-            <h3>{e.titulo}</h3>
-            <p>{e.texto}</p>
-            <ul className={styles.funciones}>
-              {e.funciones.map((f) => (
-                <li key={f}>{f}</li>
-              ))}
-            </ul>
-            <dl className={styles.ejemplos}>
-              <div>
-                <dt>En una obra de pisos</dt>
-                <dd>{e.pisos}</dd>
-              </div>
-              <div>
-                <dt>En una planta industrial</dt>
-                <dd>{e.industria}</dd>
-              </div>
-            </dl>
-          </div>
-          <div key={`${e.id}-p`} className={`oscuro ${styles.pantalla}`} aria-hidden="true">
-            <Pantalla />
+          <div ref={escenaRef} className={styles.escena} data-etapa="0" aria-hidden="true">
+            <Plataforma />
           </div>
         </div>
+      </div>
 
-        {/* la prueba: donde ya funciona */}
-        <div className={styles.caso}>
-          <div className={styles.casoFoto}>
-            <Image src="/images/rts-planta-aerea.jpg" alt="Vista aérea de una planta industrial en obra" fill sizes="(max-width: 900px) 92vw, 420px" />
-          </div>
-          <div className={styles.casoTexto}>
-            <p className="kicker">Funcionando en</p>
-            <h3>RTS Commissioning</h3>
-            <p>
-              Pre-comisionado, comisionado y puesta en marcha de plantas de Oil &amp; Gas, minería y generación en
-              Latinoamérica, desde 2013. Usan la plataforma en oficina y en campo, en español y en inglés.
-            </p>
-          </div>
+      <div className="wrap">
+        <div className={styles.cierre}>
+          <p className={styles.cierreTitulo}>Lo mismo, a escala de una planta industrial.</p>
+          <p className={styles.cierreTexto}>
+            <b>RTS Commissioning</b> pone en marcha plantas de Oil &amp; Gas, minería y generación en Latinoamérica desde
+            2013, y sigue cada proyecto con esta plataforma, en oficina y en campo, en español y en inglés.
+          </p>
         </div>
       </div>
     </section>

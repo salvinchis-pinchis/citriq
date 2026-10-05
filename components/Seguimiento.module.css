@@ -1,648 +1,238 @@
+.seguimiento {
+  padding: 120px 0 96px;
+  /* la base de la notebook y el celular sobresalen un poco; clip no rompe el sticky */
+  overflow-x: clip;
+}
 .cabecera {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 48px;
   align-items: end;
-  margin-bottom: 48px;
 }
 .cabecera :global(.section-head) {
   margin-bottom: 0;
 }
 
-/* ---------- el recorrido ---------- */
+/* ---------- recorrido fijo, como la historia ---------- */
 .recorrido {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
 }
-.recorrido::before {
+.fijo {
+  position: sticky;
+  top: var(--header);
+  height: calc(100vh - var(--header));
+  display: grid;
+  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+  gap: 48px;
+  align-items: center;
+}
+
+/* la lista de momentos: siempre entera, el actual abierto */
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 22px;
+  position: relative;
+  max-width: 460px;
+}
+.lista::before {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 7px;
-  height: 2px;
+  left: 4px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
   background: var(--line-2);
 }
-.etapa {
-  all: unset;
-  box-sizing: border-box;
+.item {
   position: relative;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 0 12px 20px 0;
+  padding: 7px 0;
 }
-.etapa:focus-visible {
-  outline: 2px solid var(--text);
-  outline-offset: 4px;
-}
-.nodo {
-  width: 16px;
-  height: 16px;
+.item::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  top: 14px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: var(--bg);
   border: 2px solid var(--line-2);
-  margin-bottom: 12px;
-  position: relative;
-  z-index: 1;
   transition: all 0.3s ease;
 }
-.hecha .nodo {
+.itemHecho::before {
   background: var(--text);
   border-color: var(--text);
 }
-.activa .nodo {
+.itemActivo::before {
   background: var(--lime);
   border-color: var(--text);
-  transform: scale(1.25);
+  transform: scale(1.3);
 }
-.num {
+/* el salto al lunes: un respiro antes de cambiar de celular */
+.itemCorte {
+  margin-top: 14px;
+}
+.item button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  width: 100%;
+}
+.item button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 4px;
+}
+.cuando {
   font-family: var(--fm);
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: var(--faint);
-}
-.etapaNombre {
-  font-size: clamp(1.05rem, 1.8vw, 1.4rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--faint);
+  min-width: 92px;
+  flex: none;
   transition: color 0.3s;
 }
-.etapa:hover .etapaNombre,
-.hecha .etapaNombre {
+.titulo {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--faint);
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  transition: color 0.3s, font-size 0.3s;
+}
+.itemHecho .titulo {
   color: var(--muted);
 }
-.activa .etapaNombre {
+.item button:hover .titulo {
   color: var(--text);
 }
-.activa .num {
+.itemActivo .cuando {
   color: var(--acento);
 }
-.progreso {
-  position: absolute;
-  left: 0;
-  right: 12px;
-  bottom: 8px;
-  height: 2px;
-  background: var(--text);
-  transform-origin: left;
-  animation: llenar linear forwards;
+.itemActivo .titulo {
+  color: var(--text);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
-@keyframes llenar {
-  from {
-    transform: scaleX(0);
-  }
-}
-
-/* ---------- el panel de la etapa ---------- */
-.panel {
-  margin-top: 20px;
+.detalle {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 20px;
-  /* alto fijo: cambiar de etapa no mueve lo que hay abajo */
-  height: 450px;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s ease;
+  margin-left: 104px;
+}
+.detalle > div {
+  overflow: hidden;
+  min-height: 0;
+}
+.itemActivo .detalle {
+  grid-template-rows: 1fr;
 }
 .texto {
-  padding: 32px;
-  border-radius: 18px;
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  display: flex;
-  flex-direction: column;
-  animation: entrar 0.45s cubic-bezier(0.3, 0.7, 0.2, 1);
-}
-.texto h3 {
-  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
-  letter-spacing: -0.035em;
-}
-.texto > p {
-  margin-top: 12px;
+  margin-top: 8px;
   color: var(--muted);
   font-weight: 300;
+  font-size: 0.98rem;
+  line-height: 1.55;
 }
-.funciones {
-  list-style: none;
-  margin: 18px 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+.industria {
+  margin: 10px 0 6px;
+  padding: 8px 12px;
+  border-left: 2px solid var(--acento);
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
-.funciones li {
-  font-size: 0.8rem;
-  font-weight: 500;
-  padding: 5px 11px;
-  border-radius: 20px;
-  background: var(--bg);
-}
-.ejemplos {
-  margin: auto 0 0;
-  padding-top: 24px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-.ejemplos div {
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
-}
-.ejemplos dt {
-  font-size: 0.74rem;
+.industria span {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
   color: var(--acento);
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-.ejemplos dd {
-  margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.4;
-}
-.pantalla {
-  position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
-  padding: 28px;
-  background:
-    radial-gradient(70% 60% at 80% 10%, rgba(192, 249, 22, 0.08), transparent 70%),
-    var(--bg);
-  animation: entrar 0.5s cubic-bezier(0.3, 0.7, 0.2, 1);
-}
-@keyframes entrar {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-}
-/* lo que esta adentro de cada pantalla entra de a uno */
-.pantalla [style*="--i"] {
-  animation: entrar 0.45s cubic-bezier(0.3, 0.7, 0.2, 1) backwards;
-  animation-delay: calc(var(--i) * 0.08s + 0.15s);
+  margin-bottom: 2px;
 }
 
-/* planificar */
-.pPlan {
+.escena {
+  height: 100%;
   display: flex;
   align-items: center;
-  gap: 18px;
-  width: 100%;
-}
-.excel {
-  flex: 0 0 34%;
-  padding: 12px;
-  border-radius: 10px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-}
-.archivo {
-  display: block;
-  font-family: var(--fm);
-  font-size: 0.68rem;
-  color: var(--muted);
-  margin-bottom: 10px;
-}
-.excelFila {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr 0.6fr;
-  gap: 4px;
-  margin-top: 4px;
-}
-.excelFila i {
-  height: 12px;
-  border-radius: 2px;
-  background: #1f6e43;
-  opacity: 0.55;
-}
-.excelFila i + i {
-  background: var(--line-2);
-  opacity: 1;
-}
-.flechaImport {
-  color: var(--lime);
-  font-size: 1.4rem;
-}
-.arbol {
-  flex: 1;
-  font-family: var(--fm);
-  font-size: 0.78rem;
-  color: var(--muted);
-  line-height: 2.1;
-}
-.raiz {
-  color: var(--text);
-  font-weight: 500;
-}
-.n1 {
-  padding-left: 16px;
-  color: var(--text);
-}
-.n2 {
-  padding-left: 34px;
-}
-.n2::before {
-  content: "└ ";
-  color: var(--faint);
+  padding: 24px 0;
 }
 
-/* asignar */
-.pRoles {
-  width: 100%;
-  max-width: 460px;
-}
-.rolesCabecera,
-.rol {
+/* ---------- cierre ---------- */
+.cierre {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line-2);
   display: grid;
-  grid-template-columns: 1fr 64px 64px 64px;
-  align-items: center;
-  gap: 6px;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 56px;
 }
-.rolesCabecera {
-  font-size: 0.7rem;
-  color: var(--faint);
-  padding: 0 14px 8px;
-  text-align: center;
+.cierreTitulo {
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
 }
-.rol {
-  padding: 12px 14px;
-  border-radius: 10px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  margin-top: 6px;
-}
-.rol span {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-}
-.rol b {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-.rol small {
-  font-size: 0.74rem;
-  color: var(--faint);
-}
-.rol i {
-  justify-self: center;
-  width: 34px;
-  height: 20px;
-  border-radius: 20px;
-  position: relative;
-  background: var(--line-2);
-}
-.rol i::after {
-  content: "";
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--bg);
-}
-.rol i.si {
-  background: var(--lime);
-}
-.rol i.si::after {
-  left: 17px;
-  background: var(--lime-ink);
-}
-
-/* ejecutar */
-.pCampo {
-  display: grid;
-  place-items: center;
-}
-.cel {
-  width: 220px;
-  padding: 14px;
-  border-radius: 28px;
-  background: var(--surface);
-  border: 1px solid var(--line-2);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.celEstado {
-  display: flex;
-  justify-content: center;
-}
-.celEstado span {
-  font-size: 0.68rem;
-  padding: 3px 9px;
-  border-radius: 20px;
-  background: rgba(227, 207, 159, 0.15);
-  color: var(--guatambu);
-}
-.visor {
-  position: relative;
-  aspect-ratio: 1;
-  border-radius: 16px;
-  background: #0a0d0f;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-.qr {
-  width: 52%;
-  aspect-ratio: 1;
-  background:
-    radial-gradient(circle, #eef2ea 32%, transparent 34%) 0 0 / 9px 9px;
-  box-shadow: inset 0 0 0 5px #0a0d0f, inset 0 0 0 9px #eef2ea;
-  border-radius: 4px;
-}
-.visor::before {
-  content: "";
-  position: absolute;
-  inset: 16%;
-  border: 2px solid var(--lime);
-  border-radius: 10px;
-  clip-path: polygon(0 0, 22% 0, 22% 3%, 3% 3%, 3% 22%, 0 22%, 0 78%, 3% 78%, 3% 97%, 22% 97%, 22% 100%, 78% 100%, 78% 97%, 97% 97%, 97% 78%, 100% 78%, 100% 22%, 97% 22%, 97% 3%, 78% 3%, 78% 0, 100% 0, 100% 100%, 0 100%);
-}
-.laser {
-  position: absolute;
-  left: 16%;
-  right: 16%;
-  height: 2px;
-  background: var(--lime);
-  box-shadow: 0 0 12px 2px rgba(192, 249, 22, 0.6);
-  animation: laser 1.8s ease-in-out infinite alternate;
-}
-@keyframes laser {
-  from { top: 18%; }
-  to { top: 82%; }
-}
-.celTag {
-  font-family: var(--fm);
-  font-size: 0.74rem;
-  text-align: center;
-}
-.celFotos {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-}
-.celFotos i {
-  aspect-ratio: 1;
-  border-radius: 8px;
-  background: url("/images/demo/dormitorio-guatambu.jpg") center 75% / 300% auto;
-}
-.celFotos i:nth-child(2) {
-  background-position: 30% 90%;
-}
-.celFotos .celMas {
-  background: var(--bg);
-  display: grid;
-  place-items: center;
-  font-style: normal;
-  color: var(--muted);
-  border: 1px dashed var(--line-2);
-}
-.celBoton {
-  text-align: center;
-  padding: 9px;
-  border-radius: 12px;
-  background: var(--lime);
-  color: var(--lime-ink);
-  font-weight: 600;
-  font-size: 0.82rem;
-}
-
-/* controlar */
-.pControl {
-  width: 100%;
-  display: grid;
-  gap: 14px;
-}
-.curva {
-  padding: 16px;
-  border-radius: 12px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-}
-.curva svg {
-  width: 100%;
-  height: auto;
-  max-height: 200px;
-  overflow: visible;
-}
-.guia {
-  stroke: var(--line);
-}
-.plan {
-  fill: none;
-  stroke: var(--line-2);
-  stroke-width: 2;
-  stroke-dasharray: 6 6;
-}
-.real {
-  fill: none;
-  stroke: var(--lime);
-  stroke-width: 3.5;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: dibujar 1.6s ease 0.3s forwards;
-}
-@keyframes dibujar {
-  to { stroke-dashoffset: 0; }
-}
-.leyenda {
-  display: block;
-  margin-top: 6px;
-  font-size: 0.72rem;
-  color: var(--faint);
-}
-.estados {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-.estados li {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 12px;
-  border-radius: 10px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  font-size: 0.82rem;
-}
-.estados b {
-  align-self: flex-start;
-  font-size: 0.72rem;
-  padding: 2px 9px;
-  border-radius: 20px;
-}
-.enTiempo {
-  background: var(--lime);
-  color: var(--lime-ink);
-}
-.riesgo {
-  background: rgba(227, 207, 159, 0.18);
-  color: var(--guatambu);
-}
-.atrasado {
-  background: rgba(194, 65, 12, 0.22);
-  color: #ff9b7a;
-}
-
-/* entregar */
-.pEntrega {
-  width: 100%;
-  max-width: 440px;
-  display: grid;
-  gap: 8px;
-}
-.doc {
-  display: grid;
-  grid-template-columns: 42px 1fr auto;
-  gap: 12px;
-  align-items: center;
-  padding: 10px 14px 10px 10px;
-  border-radius: 10px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-}
-.doc span:nth-child(2) {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-}
-.doc b {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-.doc small {
-  font-size: 0.74rem;
-  color: var(--faint);
-}
-.docIcono {
-  height: 42px;
-  border-radius: 6px;
-  display: grid;
-  place-items: center;
-  font-family: var(--fm);
-  font-size: 0.66rem;
-  font-weight: 500;
-  background: var(--bg);
-  border: 1px solid var(--line-2);
-  color: var(--guatambu);
-}
-.docBajar {
-  color: var(--lime);
-}
-.link {
-  margin-top: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1px dashed var(--line-2);
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-.link b {
-  color: var(--lime);
-}
-
-/* ---------- el caso ---------- */
-.caso {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: 0.55fr 1.45fr;
-  border-radius: 18px;
-  overflow: hidden;
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-}
-.casoFoto {
-  position: relative;
-  min-height: 200px;
-}
-.casoFoto img {
-  object-fit: cover;
-}
-.casoTexto {
-  padding: 28px 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-}
-.casoTexto h3 {
-  font-size: 1.5rem;
-  letter-spacing: -0.035em;
-}
-.casoTexto > p:not(:global(.kicker)) {
+.cierreTexto {
   color: var(--muted);
   font-weight: 300;
-  max-width: 62ch;
+}
+.cierreTexto b {
+  color: var(--text);
+  font-weight: 600;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .texto,
-  .pantalla,
-  .pantalla [style*="--i"],
-  .laser {
-    animation: none;
-  }
-  .real {
-    animation: none;
-    stroke-dashoffset: 0;
+  .detalle,
+  .titulo {
+    transition: none;
   }
 }
 
-@media (max-width: 920px) {
+/* angosto: la notebook arriba y solo el momento actual abajo */
+@media (max-width: 900px) {
   .cabecera {
     grid-template-columns: 1fr;
     gap: 16px;
-    margin-bottom: 32px;
   }
-  .recorrido {
-    overflow-x: auto;
-    grid-template-columns: repeat(5, minmax(110px, 1fr));
-    scrollbar-width: none;
-  }
-  .panel {
+  .fijo {
     grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 8px;
+    align-items: start;
+    padding-top: 16px;
+  }
+  .escena {
+    order: -1;
     height: auto;
+    padding: 0 0 12px;
   }
-  .pantalla {
-    min-height: 340px;
-    padding: 20px;
+  .lista {
+    padding: 0;
+    max-width: none;
   }
-  .texto {
-    padding: 24px;
+  .lista::before,
+  .item::before {
+    display: none;
   }
-  .ejemplos {
-    grid-template-columns: 1fr;
-    gap: 10px;
+  .item {
+    display: none;
   }
-  .caso {
-    grid-template-columns: 1fr;
+  .itemActivo {
+    display: block;
   }
-  .casoTexto {
-    padding: 22px;
+  .itemActivo .titulo {
+    font-size: 1.2rem;
   }
-  .pPlan {
+  .item button {
     flex-direction: column;
-    align-items: stretch;
+    gap: 4px;
   }
-  .flechaImport {
-    transform: rotate(90deg);
-    align-self: center;
+  .detalle {
+    margin-left: 0;
   }
-  .rolesCabecera,
-  .rol {
-    grid-template-columns: 1fr 48px 48px 48px;
+  .cierre {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }

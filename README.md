@@ -24,7 +24,7 @@ pnpm demo     # regenera las imágenes del ejemplo de la historia
 | Ruta | Qué es |
 |---|---|
 | `app/` | `layout.js` (fuentes, metadata), `page.js` (arma la home), `globals.css` (tokens y átomos: `.btn`, `.field`, `.section`…), `icon.svg` (favicon = el logo). |
-| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` es el scrollytelling (pantallas en `Telefono.jsx`); `QueHacemos.jsx` el índice de servicios. |
+| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` y `Seguimiento.jsx` son los scrollytelling (pantallas en `Telefono.jsx` y `Plataforma.jsx`); `QueHacemos.jsx` la grilla de servicios. |
 | `lib/asesor/` | Copia del motor del asesor de Natural Flooring y el recorrido del ejemplo, con pruebas. |
 | `lib/visualizador/` | El motor del visualizador, sin DOM: geometría, máscara, texturas, render y sus pruebas. |
 | `scripts/renderizar-demo.mjs` | Usa ese motor (con sharp) para generar `public/images/demo/`. |
@@ -41,7 +41,7 @@ Opcionales, en `.env.local`:
 |---|---|
 | `NEXT_PUBLIC_SITIO_URL` | Dirección pública del sitio (ej. `https://citriq.com.ar`). La usan los links de la imagen para compartir. |
 | `NEXT_PUBLIC_CALENDLY` | Link de la agenda. Por defecto, el de 30 minutos de la versión anterior del sitio. |
-| `NEXT_PUBLIC_WHATSAPP` | Número de Citriq con código de país, sin signos (ej. `5491100000000`). Vacío = wa.me deja elegir el contacto. |
+| `NEXT_PUBLIC_WHATSAPP` | Número de Citriq con código de país, sin signos. Por defecto `5493484366295` (+54 9 3484 36-6295). |
 
 ## Sistema de diseño
 
@@ -72,10 +72,12 @@ El logo está en `components/Marca.jsx` (y `app/icon.svg`); en el hero se dibuja
    visualizador sin foto → foto → piso → guatambú → antes/después → estimado → el lunes, la
    notificación de Mail en el celular del negocio → el mail abierto. Los renders salen de
    `pnpm demo`.
-4. **Seguimiento de obra** (claro): el recorrido de un proyecto en cinco etapas (planificar,
-   asignar, ejecutar, controlar, entregar). Cada una dice qué hace la plataforma, cómo se ve en
-   una obra de pisos y en una planta industrial, y muestra una pantalla esquemática. Todo lo
-   que se nombra existe en la plataforma de RTS; los datos de las pantallas son de ejemplo.
+4. **Seguimiento de obra** (claro): scrollytelling como la historia. Una obra de pisos de
+   punta a punta (Excel → plan → permisos → QR → carga en obra sin señal → sincronización →
+   curva S y pendientes → link para la clienta → informes y dossier), en una notebook fija
+   (`Plataforma.jsx`); el celular aparece en obra y en manos de la clienta. A la izquierda,
+   cada paso con lo que significa en una planta industrial. Todo lo que se muestra existe en la
+   plataforma de RTS; los nombres y números son de ejemplo.
 5. **Proceso** (oscuro): cuatro pasos que suben como una escalera, y a quién le trabajamos.
 6. **Contacto** (claro): un bloque con los caminos directos (Calendly y WhatsApp), el
    testimonio de Natural Flooring y un formulario corto que arma el mensaje para WhatsApp.
@@ -86,7 +88,6 @@ que aparece al compartir el link (usa `assets/Sora-Bold.ttf`).
 
 ## Estado y pendientes
 
-- [ ] El contacto abre WhatsApp: falta cargar `NEXT_PUBLIC_WHATSAPP`.
 - [ ] `naturalflooring.com.ar` no resuelve (oct 2026): confirmar en qué dominio está online antes de linkearlo.
 - [ ] Dos casos (Natural Flooring y RTS) pero sin métricas: conseguir números concretos
       de cada cliente (consultas por mes del visualizador, proyectos en la plataforma).
