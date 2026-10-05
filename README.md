@@ -15,7 +15,7 @@ Natural Flooring, P&R y Parqueplast. Todas las páginas son estáticas: no hay b
 pnpm install
 pnpm dev      # http://localhost:3000
 pnpm build
-pnpm test     # pruebas del visualizador y del asesor (node --test)
+pnpm test     # pruebas del motor del visualizador (node --test)
 pnpm demo     # regenera las imágenes del ejemplo de la historia
 ```
 
@@ -24,8 +24,7 @@ pnpm demo     # regenera las imágenes del ejemplo de la historia
 | Ruta | Qué es |
 |---|---|
 | `app/` | `layout.js` (fuentes, metadata), `page.js` (arma la home), `globals.css` (tokens y átomos: `.btn`, `.field`, `.section`…), `icon.svg` (favicon = el logo). |
-| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` y `Seguimiento.jsx` son los scrollytelling (pantallas en `Telefono.jsx` y `Plataforma.jsx`); `QueHacemos.jsx` la grilla de servicios. |
-| `lib/asesor/` | Copia del motor del asesor de Natural Flooring y el recorrido del ejemplo, con pruebas. |
+| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` y `Seguimiento.jsx` son los scrollytelling (pantallas en `Telefono.jsx` y `Plataforma.jsx`); `QueHacemos.jsx` el mapa de servicios. |
 | `lib/visualizador/` | El motor del visualizador, sin DOM: geometría, máscara, texturas, render y sus pruebas. |
 | `scripts/renderizar-demo.mjs` | Usa ese motor (con sharp) para generar `public/images/demo/`. |
 | `data/site.js` | WhatsApp y links del nav. |
@@ -63,10 +62,10 @@ El logo está en `components/Marca.jsx` (y `app/icon.svg`); en el hero se dibuja
 ## Capítulos
 
 1. **Hero** (oscuro): el logo se dibuja y dos casos en producción.
-2. **Qué hacemos** (claro): una grilla de piezas de distinto tamaño, cada una con el producto
-   funcionando: visualizador barriendo la foto, cotizador, asesor con el motor real
-   (`lib/asesor`), la web de Natural Flooring bajando sola (captura de su repo corriendo en
-   local) y seguimiento de obra, que lleva a su sección.
+2. **Qué hacemos** (claro): un mapa de estaciones, como una línea de subte de dos tramos.
+   "Para vender" (sitio web, visualizador, asesor, cotizador) gira en "se firma la obra" y
+   sigue en "para la obra" (plan, equipo y QR, control, entrega). Cada estación dice dónde
+   está en uso. Sin demos: el único movimiento es la línea, que se dibuja una vez.
 3. **Historia** (oscuro): scrollytelling de una consulta de sábado a la noche. A la izquierda
    el recorrido completo, a la derecha un celular de tamaño fijo (`Telefono.jsx`): WhatsApp →
    visualizador sin foto → foto → piso → guatambú → antes/después → estimado → el lunes, la

@@ -1,499 +1,363 @@
+/* ============================================================
+   Un mapa de estaciones, como una linea de subte de dos tramos:
+   "para vender" (lapacho) va de izquierda a derecha, gira en
+   "se firma la obra" y "para la obra" (carbon) vuelve de derecha
+   a izquierda. Los numeros 01-08 marcan el orden del recorrido.
+   Medidas fijas de cabecera y parada para que el giro empalme.
+   ============================================================ */
+.seccion {
+  --cab: 44px; /* alto de la cabecera de cada tramo */
+  --cab-m: 22px; /* separacion entre cabecera y paradas */
+  --parada: 48px;
+  --via-y: calc(var(--cab) + var(--cab-m) + var(--parada) / 2);
+  --entre: 64px; /* espacio entre tramos */
+  --giro: 44px;
+  --grosor: 3px;
+}
 .cabecera {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1fr 1fr;
   gap: 48px;
   align-items: end;
-  margin-bottom: 48px;
+  margin-bottom: 64px;
 }
 .cabecera :global(.section-head) {
   margin-bottom: 0;
 }
 
-/* ---------- la grilla ----------
-   6 columnas. Visualizador grande arriba a la izquierda, cotizador y asesor
-   a la derecha, la web abajo, y seguimiento de obra como banda ancha. */
-.grilla {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-auto-rows: 142px;
+.mapa {
+  display: flex;
+  flex-direction: column;
+  gap: var(--entre);
+  padding-right: calc(var(--giro) + 12px);
+}
+.tramo {
+  position: relative;
+}
+.vender {
+  --linea: var(--lapacho);
+}
+.hacer {
+  --linea: #15191b;
+}
+
+.tramoCabecera {
+  height: var(--cab);
+  margin-bottom: var(--cab-m);
+  display: flex;
+  align-items: baseline;
   gap: 14px;
 }
-.pieza {
+.tramoCabecera h3 {
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  letter-spacing: -0.035em;
+  color: var(--linea);
+}
+.tramoCabecera span {
+  font-size: 0.9rem;
+  color: var(--faint);
+}
+/* el segundo tramo corre de derecha a izquierda: su cabecera tambien */
+.hacer .tramoCabecera {
+  justify-content: flex-end;
+}
+
+/* ---------- estaciones ---------- */
+.estaciones {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+.hacer .estaciones {
+  direction: rtl;
+}
+.estacion {
+  direction: ltr;
   position: relative;
   display: flex;
   flex-direction: column;
-  border-radius: 18px;
-  overflow: hidden;
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  color: var(--text);
-  text-decoration: none;
-  transition: transform 0.35s cubic-bezier(0.3, 0.7, 0.2, 1), box-shadow 0.35s ease;
-}
-.pieza:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 24px 50px -30px rgba(21, 25, 27, 0.45);
-}
-.pVisualizador {
-  grid-column: span 4;
-  grid-row: span 4;
-}
-.pCotizador {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-.pAsesor {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-.pWeb {
-  grid-column: span 6;
-  grid-row: span 3;
-  flex-direction: row;
-}
-.pObra {
-  grid-column: span 6;
-  grid-row: span 2;
-  flex-direction: row;
-  align-items: center;
-  border-color: transparent;
-}
-
-.info {
-  padding: 22px 22px 10px;
-  display: flex;
-  flex-direction: column;
   gap: 6px;
+  padding-right: 8px;
 }
-.info h3,
-.sobre h3 {
-  font-size: 1.35rem;
+/* la via va de la primera parada hasta el giro, a la derecha */
+.via {
+  position: absolute;
+  top: calc(var(--parada) / 2 - var(--grosor) / 2);
+  height: var(--grosor);
+  left: calc(var(--parada) / 2);
+  right: calc(-1 * var(--giro) / 2 - 12px);
+  background: var(--linea);
+}
+.vender .via {
+  transform-origin: left;
+}
+.hacer .via {
+  transform-origin: right;
+}
+.parada {
+  position: relative;
+  z-index: 1;
+  width: var(--parada);
+  height: var(--parada);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  border: var(--grosor) solid var(--linea);
+  color: var(--linea);
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+.parada svg {
+  width: 22px;
+  height: 22px;
+}
+.estacion:hover .parada {
+  background: var(--lime);
+  color: var(--lime-ink);
+  transform: scale(1.08);
+}
+.num {
+  margin-top: 10px;
+  font-family: var(--fm);
+  font-size: 0.72rem;
+  color: var(--faint);
+}
+.estacion h4 {
+  margin: 0;
+  font-size: 1.12rem;
   font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.1;
-  margin-top: 6px;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
 }
-.info p,
-.sobre p {
+.estacion p {
   font-size: 0.9rem;
   color: var(--muted);
   font-weight: 300;
-  line-height: 1.45;
-  max-width: 40ch;
+  line-height: 1.5;
+  max-width: 30ch;
 }
-.estado {
+.uso {
   align-self: flex-start;
+  margin-top: 4px;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 4px 10px 4px 8px;
-  border-radius: 20px;
-  background: var(--bg);
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 500;
   color: var(--text);
 }
-.estado::before {
+.uso::before {
   content: "";
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--lime);
-  box-shadow: 0 0 0 1px rgba(14, 18, 21, 0.4);
+  box-shadow: 0 0 0 1px var(--text);
+}
+.prototipo {
+  color: var(--faint);
 }
 .prototipo::before {
   background: transparent;
-  box-shadow: inset 0 0 0 1.5px var(--muted);
+  box-shadow: inset 0 0 0 1.5px var(--faint);
 }
-.mas {
-  margin-top: 10px;
+
+.link {
+  display: inline-flex;
+  gap: 8px;
+  margin-top: 22px;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--lime);
+  color: var(--linea);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
 }
-
-/* ---------- visualizador ---------- */
-.vizFoto {
-  position: absolute;
-  inset: 0;
-}
-.vizFoto img {
-  object-fit: cover;
-  object-position: center 72%;
-}
-.vizNuevo {
-  animation: barrer 5s cubic-bezier(0.6, 0, 0.3, 1) infinite;
-}
-@keyframes barrer {
-  0%, 10% { clip-path: inset(0 100% 0 0); }
-  45%, 85% { clip-path: inset(0 0 0 0); }
-  100% { clip-path: inset(0 0 0 100%); }
-}
-.vizLinea {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--lime);
-  box-shadow: 0 0 18px 3px rgba(192, 249, 22, 0.6);
-  animation: linea 5s cubic-bezier(0.6, 0, 0.3, 1) infinite;
-}
-@keyframes linea {
-  0%, 10% { left: 0; opacity: 0; }
-  12% { opacity: 1; }
-  45% { left: 100%; opacity: 1; }
-  47%, 100% { left: 100%; opacity: 0; }
-}
-.vizEtiqueta {
-  position: absolute;
-  top: 18px;
-  font-size: 0.76rem;
-  font-weight: 600;
-  padding: 5px 11px;
-  border-radius: 20px;
-  background: rgba(14, 18, 21, 0.6);
-  color: #eef2ea;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-.vizAntes {
-  left: 18px;
-}
-.vizDespues {
-  right: 18px;
-  color: var(--lime);
-}
-.sobre {
-  position: relative;
-  margin-top: auto;
-  padding: 80px 26px 24px;
+.hacer {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  background: linear-gradient(transparent, rgba(14, 18, 21, 0.85) 55%);
-  color: #eef2ea;
 }
-.sobre h3 {
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
-}
-.sobre p {
-  color: rgba(238, 242, 234, 0.8);
-}
-.sobre .estado {
-  background: rgba(238, 242, 234, 0.14);
-  color: #eef2ea;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+.hacer .link {
+  align-self: flex-end;
 }
 
-/* ---------- cotizador ---------- */
-.coti {
-  margin: auto 22px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.cotiFila {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.82rem;
-  color: var(--muted);
-}
-.cotiFila b {
-  color: var(--text);
-  font-weight: 500;
-}
-.cotiRegla {
-  height: 4px;
-  border-radius: 2px;
-  background: var(--line);
-  overflow: hidden;
-}
-.cotiRegla i {
-  display: block;
-  height: 100%;
-  background: var(--text);
-  transition: width 0.11s linear;
-}
-.cotiMonto {
-  font-size: 1.7rem;
-  font-weight: 500;
-  color: var(--lapacho);
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin-top: 6px;
-  font-variant-numeric: tabular-nums;
-}
-.cotiHasta {
-  font-size: 0.86rem;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-.cotiNota {
-  font-size: 0.68rem;
-  color: var(--faint);
-}
-
-/* ---------- asesor ---------- */
-.ase {
-  margin: auto 22px 22px;
-  min-height: 118px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 8px;
-}
-.aseSub {
-  font-family: var(--fm);
-  font-size: 0.7rem;
-  color: var(--faint);
-}
-.asePregunta {
-  font-weight: 600;
-  font-size: 0.98rem;
-  letter-spacing: -0.02em;
-}
-.aseOpciones {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-.aseOpciones li {
-  font-size: 0.74rem;
-  padding: 4px 9px;
-  border-radius: 20px;
-  border: 1px solid var(--line-2);
-  color: var(--muted);
-  transition: all 0.25s ease;
-}
-.aseOpciones li.aseElegida {
-  background: var(--text);
-  border-color: var(--text);
-  color: var(--bg);
-  font-weight: 600;
-}
-.aseResultado {
-  font-size: 1.7rem;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  animation: asomar 0.4s ease;
-}
-.aseMotivo {
-  font-size: 0.84rem;
-  color: var(--muted);
-}
-@keyframes asomar {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-}
-
-/* ---------- web ---------- */
-.pWeb .info {
-  flex: 0 0 34%;
-  justify-content: center;
-  padding: 28px;
-}
-.web {
-  flex: 1;
-  margin: 22px 22px -2px 0;
-  border-radius: 12px 12px 0 0;
-  overflow: hidden;
-  border: 1px solid var(--line);
+/* ---------- el giro entre tramos ----------
+   Dos mitades que se tocan en el medio del espacio entre tramos:
+   la de arriba en lapacho y la de abajo en carbon. */
+.giro {
+  position: absolute;
+  right: calc(-1 * var(--giro) - 12px);
+  width: var(--giro);
+  top: calc(var(--via-y) - var(--grosor) / 2);
+  bottom: calc(-1 * var(--entre) / 2);
+  border: var(--grosor) solid var(--lapacho);
+  border-left: none;
   border-bottom: none;
-  display: flex;
-  flex-direction: column;
-  background: #fff;
+  border-top-right-radius: 22px;
 }
-.webBarra {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 12px;
-  background: var(--bg-2);
-  font-size: 0.7rem;
-  color: var(--muted);
-  flex: none;
+.giro::after {
+  content: "";
+  position: absolute;
+  right: calc(-1 * var(--grosor));
+  top: 100%;
+  width: var(--giro);
+  /* baja hasta la via del segundo tramo y dobla hacia la izquierda */
+  height: calc(var(--entre) / 2 + var(--via-y) + var(--grosor) / 2);
+  box-sizing: border-box;
+  border: var(--grosor) solid #15191b;
+  border-left: none;
+  border-top: none;
+  border-bottom-right-radius: 22px;
 }
-.webBarra span:first-child {
-  display: flex;
-  gap: 5px;
-}
-.webBarra i {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--line-2);
-}
-.webPagina {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
-.webCaptura {
-  width: 100%;
-  height: auto;
-  animation: bajar 26s ease-in-out infinite alternate;
-}
-@keyframes bajar {
-  0%, 6% { transform: translateY(0); }
-  100% { transform: translateY(calc(-100% + 340px)); }
-}
-
-/* ---------- seguimiento de obra ---------- */
-.pObra .info {
-  flex: 0 0 38%;
-  padding: 28px;
-}
-.obraLista {
-  flex: 1;
-  list-style: none;
-  margin: 0 22px 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 8px;
-}
-.obraLista li {
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 10px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-}
-.obraQr {
-  width: 30px;
-  height: 30px;
-  flex: none;
-  border-radius: 4px;
-  /* un QR esquematico: tres marcas de posicion sobre una trama */
-  background:
-    radial-gradient(circle, var(--text) 30%, transparent 32%) 0 0 / 6px 6px,
-    linear-gradient(var(--bg), var(--bg));
-  box-shadow: inset 0 0 0 3px var(--bg), inset 0 0 0 5px var(--text);
-  opacity: 0.85;
-}
-.obraTag {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-}
-.obraTag b {
-  font-family: var(--fm);
-  font-size: 0.74rem;
-  font-weight: 500;
+.giro span {
+  position: absolute;
+  top: 100%;
+  right: 14px;
+  transform: translateY(-50%);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.obraTag small {
-  font-size: 0.72rem;
-  color: var(--faint);
-}
-.obraEstado {
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  padding: 3px 9px;
+  padding: 5px 12px;
   border-radius: 20px;
-  border: 1px solid var(--line-2);
-  color: var(--muted);
-  white-space: nowrap;
-  transition: all 0.3s ease;
-}
-.curso {
-  border-color: var(--guatambu);
-  color: var(--guatambu);
-}
-.firmado {
-  border-color: var(--lime);
   background: var(--lime);
   color: var(--lime-ink);
 }
 
+/* ---------- el unico movimiento: la linea se dibuja una vez ---------- */
+.via {
+  transform: scaleX(0);
+}
+.giro {
+  clip-path: inset(0 0 100% 0);
+}
+.giro::after {
+  clip-path: inset(0 0 100% 0);
+}
+.giro span,
+.estacion {
+  opacity: 0;
+}
+.estacion {
+  transform: translateY(8px);
+}
+.visto .vender .via {
+  transform: scaleX(1);
+  transition: transform 1s cubic-bezier(0.6, 0, 0.3, 1);
+}
+.visto .giro {
+  clip-path: inset(-40px -200px -400px -400px);
+  transition: clip-path 0.5s ease 0.9s;
+}
+.visto .giro::after {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 0.4s ease 1.25s;
+}
+.visto .giro span {
+  opacity: 1;
+  transition: opacity 0.3s ease 1.2s;
+}
+.visto .hacer .via {
+  transform: scaleX(1);
+  transition: transform 1s cubic-bezier(0.6, 0, 0.3, 1) 1.55s;
+}
+.visto .estacion {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.4s ease, transform 0.5s ease;
+  /* cada estacion aparece cuando la linea pasa por ella */
+  transition-delay: calc(var(--n) * 0.22s);
+}
+.visto .hacer .estacion {
+  transition-delay: calc(0.75s + var(--n) * 0.22s);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .vizNuevo,
-  .vizLinea,
-  .webCaptura,
-  .aseResultado {
-    animation: none;
+  .via,
+  .giro,
+  .giro::after,
+  .estacion,
+  .giro span {
+    transform: none !important;
+    clip-path: none !important;
+    opacity: 1 !important;
+    transition: none !important;
   }
-  .pieza {
-    transition: none;
+  .giro span {
+    transform: translateY(-50%) !important;
   }
 }
 
+/* ---------- angosto: una sola linea vertical ---------- */
 @media (max-width: 980px) {
   .cabecera {
     grid-template-columns: 1fr;
     gap: 16px;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
   }
-  .grilla {
-    grid-template-columns: 1fr 1fr;
-    grid-auto-rows: auto;
+  .mapa {
+    padding-right: 0;
+    gap: 28px;
   }
-  .pVisualizador {
-    grid-column: span 2;
-    min-height: 460px;
+  .tramoCabecera,
+  .hacer .tramoCabecera {
+    height: auto;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
-  .pCotizador,
-  .pAsesor {
-    grid-column: span 1;
-    min-height: 300px;
-  }
-  .pWeb,
-  .pObra {
-    grid-column: span 2;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .pWeb .info,
-  .pObra .info {
-    flex: none;
-  }
-  .web {
-    flex: none;
-    margin: 0 18px;
-    height: 320px;
-  }
-  .obraLista {
-    margin: 0 18px 18px;
-  }
-}
-@media (max-width: 600px) {
-  .grilla {
+  .estaciones,
+  .hacer .estaciones {
+    direction: ltr;
     grid-template-columns: 1fr;
+    gap: 22px;
   }
-  .pVisualizador,
-  .pCotizador,
-  .pAsesor,
-  .pWeb,
-  .pObra {
-    grid-column: span 1;
+  .estacion {
+    padding-left: calc(var(--parada) + 18px);
+    min-height: var(--parada);
   }
-  .pVisualizador {
-    min-height: 420px;
+  .parada {
+    position: absolute;
+    left: 0;
+    top: 0;
   }
-  .pCotizador,
-  .pAsesor {
-    min-height: 0;
+  .num {
+    margin-top: 0;
   }
-  .coti,
-  .ase {
-    margin-top: 8px;
+  .via {
+    left: calc(var(--parada) / 2 - var(--grosor) / 2);
+    right: auto;
+    top: calc(var(--parada) / 2);
+    bottom: 24px;
+    width: var(--grosor);
+    height: auto;
+    transform: scaleY(0);
+    transform-origin: top !important;
   }
-  .obraLista {
-    grid-template-columns: 1fr;
+  .visto .vender .via,
+  .visto .hacer .via {
+    transform: scaleY(1);
+  }
+  .giro,
+  .visto .giro {
+    position: static;
+    display: block;
+    border: none;
+    width: auto;
+    clip-path: none;
+    margin-top: 28px;
+  }
+  .giro::after {
+    display: none;
+  }
+  .giro span {
+    position: static;
+    display: inline-block;
+    transform: none;
+  }
+  .hacer .link {
+    align-self: flex-start;
   }
 }
