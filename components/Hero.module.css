@@ -1,10 +1,23 @@
+/* ============================================================
+   Hero: ocupa la pantalla justa. Lo que se mueve solo es una
+   secuencia al cargar: el logo se dibuja (0-2.2s), aparecen las
+   piezas con sus hilos (1.6-2.6s) y se tacha "a mano" (2.4s).
+   Despues solo responde al mouse.
+   ============================================================ */
 .hero {
-  padding: 132px 0 0;
+  --mx: 0;
+  --my: 0;
+  --cx: 70%;
+  --cy: 35%;
   position: relative;
   overflow: hidden;
+  min-height: 100svh;
+  display: flex;
+  padding-top: var(--header);
 }
-/* grilla de plano: solo detras del hero, se desvanece hacia abajo */
-.hero::before {
+/* grilla de plano, con una luz que sigue al cursor */
+.hero::before,
+.luz {
   content: "";
   position: absolute;
   inset: 0;
@@ -13,40 +26,118 @@
     linear-gradient(to bottom, rgba(192, 249, 22, 0.05) 1px, transparent 1px);
   background-size: 64px 64px;
   background-position: center top;
-  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 70% 30%, #000 30%, transparent 75%);
-  mask-image: radial-gradient(ellipse 80% 70% at 70% 30%, #000 30%, transparent 75%);
+}
+.hero::before {
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 70% 35%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 70% at 70% 35%, #000 30%, transparent 75%);
+}
+.luz {
+  background-image: linear-gradient(to right, rgba(192, 249, 22, 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(192, 249, 22, 0.35) 1px, transparent 1px);
+  -webkit-mask-image: radial-gradient(circle 220px at var(--cx) var(--cy), #000, transparent 70%);
+  mask-image: radial-gradient(circle 220px at var(--cx) var(--cy), #000, transparent 70%);
+  opacity: 0.6;
+}
+.contenido {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 .grid {
-  position: relative;
+  flex: 1;
   display: grid;
-  grid-template-columns: 1.25fr 0.75fr;
-  gap: 48px;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
   align-items: center;
-  min-height: min(620px, 78vh);
+  padding: 40px 0;
 }
 .titulo {
-  font-size: clamp(2.6rem, 6.4vw, 5.1rem);
+  font-size: clamp(2.6rem, 6vw, 5rem);
   letter-spacing: -0.045em;
   line-height: 1;
 }
+
+/* "a mano", tachado con marcador lima y corregido arriba */
+.tachado {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+.trazoMarcador {
+  position: absolute;
+  left: -4%;
+  top: 22%;
+  width: 108%;
+  height: 60%;
+  overflow: visible;
+}
+.trazoMarcador path {
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 7;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: tachar 0.55s cubic-bezier(0.6, 0, 0.3, 1) 2.4s forwards;
+  opacity: 0.95;
+}
+@keyframes tachar {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.nota {
+  position: absolute;
+  left: calc(100% + 0.45em);
+  top: -0.05em;
+  font-family: var(--fm);
+  font-size: 0.26em;
+  font-weight: 500;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--lime);
+  padding: 0.25em 0.6em;
+  border: 1.5px solid var(--lime);
+  border-radius: 0.4em;
+  transform: rotate(-4deg) translateY(6px);
+  opacity: 0;
+  animation: anotar 0.4s ease 2.85s forwards;
+}
+@keyframes anotar {
+  to {
+    opacity: 1;
+    transform: rotate(-4deg);
+  }
+}
+
 .bajada {
   margin-top: 28px;
-  font-size: 1.15rem;
-  max-width: 54ch;
+  font-size: 1.12rem;
+  max-width: 52ch;
 }
 .ctas {
-  margin-top: 36px;
+  margin-top: 34px;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-.marca {
+/* ---------- el logo y sus piezas ---------- */
+.escena {
   position: relative;
   justify-self: center;
-  width: min(100%, 420px);
+  width: min(100%, 470px);
   aspect-ratio: 1;
+}
+.marca {
+  position: absolute;
+  inset: 17%;
   color: var(--lime);
+  transform: translate(calc(var(--mx) * 6px), calc(var(--my) * 6px));
+  transition: transform 0.4s ease-out;
 }
 .marca svg {
   width: 100%;
@@ -56,10 +147,10 @@
 .marca::after {
   content: "";
   position: absolute;
-  inset: 12%;
+  inset: 0;
   border-radius: 50%;
   z-index: -1;
-  background: radial-gradient(circle, rgba(192, 249, 22, 0.16), transparent 68%);
+  background: radial-gradient(circle, rgba(192, 249, 22, 0.18), transparent 68%);
 }
 .trazo {
   stroke-dasharray: 1;
@@ -75,28 +166,134 @@
     stroke-dashoffset: 0;
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .trazo {
-    animation: none;
-    stroke-dashoffset: 0;
+
+.hilos {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.hilos line {
+  stroke: rgba(192, 249, 22, 0.35);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: dibujar 0.7s ease forwards;
+  animation-delay: calc(1.6s + var(--i) * 0.15s);
+}
+
+.pieza {
+  position: absolute;
+  transform: translateY(-50%) translate(calc(var(--mx) * var(--z) * 1px), calc(var(--my) * var(--z) * 1px));
+  transition: transform 0.5s ease-out;
+}
+.izq {
+  left: 0;
+}
+.der {
+  right: 0;
+}
+.flota {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px 10px 10px;
+  border-radius: 14px;
+  background: rgba(22, 28, 32, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--line-2);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+  opacity: 0;
+  animation: aparecer 0.5s cubic-bezier(0.3, 0.7, 0.2, 1) forwards, flotar 6s ease-in-out infinite;
+  animation-delay: calc(1.8s + var(--i) * 0.15s), calc(var(--i) * -1.4s);
+}
+.flota > span:last-child {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  padding-left: 4px;
+}
+.flota small {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.flota b {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.miniFoto {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex: none;
+}
+.miniFoto img {
+  object-fit: cover;
+  object-position: 40% 85%;
+}
+.vivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--lime) !important;
+  font-weight: 600;
+}
+.vivo::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 0 3px rgba(192, 249, 22, 0.25);
+}
+.ok {
+  color: var(--lime);
+}
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+@keyframes flotar {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -7px;
   }
 }
 
-/* lo que esta en produccion, como prueba y no como slogan */
-.prueba {
-  position: relative;
-  margin-top: 72px;
-  display: grid;
-  grid-template-columns: auto 1fr 1fr;
+/* ---------- pie del hero ---------- */
+.pie {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
   border-top: 1px solid var(--line);
 }
+.prueba {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+}
 .prueba > * {
-  padding: 22px 0;
+  padding: 20px 0;
 }
 .pruebaLabel {
   font-size: 0.85rem;
   color: var(--faint);
-  padding-right: 36px;
+  padding-right: 32px;
 }
 .prueba a {
   display: flex;
@@ -118,27 +315,114 @@
   color: var(--muted);
   font-weight: 300;
 }
+.bajar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-left: 28px;
+  border-left: 1px solid var(--line);
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.bajar:hover {
+  color: var(--text);
+}
+/* una via chica que baja, con el tren adentro */
+.bajar i {
+  position: relative;
+  width: 2px;
+  height: 34px;
+  background: var(--line-2);
+  overflow: hidden;
+}
+.bajar i::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  width: 6px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--lime);
+  animation: bajar 1.8s ease-in-out infinite;
+}
+@keyframes bajar {
+  from {
+    top: -10px;
+  }
+  to {
+    top: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trazo,
+  .hilos line,
+  .trazoMarcador path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .flota,
+  .nota {
+    animation: none;
+    opacity: 1;
+  }
+  .nota {
+    transform: rotate(-4deg);
+  }
+  .bajar i::after {
+    animation: none;
+    top: 12px;
+  }
+  .marca,
+  .pieza {
+    transition: none;
+  }
+}
+
+/* las piezas necesitan aire a los costados del logo */
+@media (max-width: 1180px) {
+  .flota small {
+    display: none;
+  }
+  .flota b {
+    font-size: 0.82rem;
+  }
+  .flota {
+    padding: 8px 12px 8px 8px;
+  }
+}
 
 @media (max-width: 880px) {
   .hero {
-    padding-top: 108px;
+    min-height: 0;
   }
   .grid {
     grid-template-columns: 1fr;
-    min-height: 0;
     gap: 8px;
+    padding: 28px 0 40px;
   }
-  .marca {
+  /* en celular el logo va arriba, chico, sin las piezas */
+  .escena {
     order: -1;
     justify-self: start;
     width: 96px;
   }
-  .marca::after {
+  .marca {
+    inset: 0;
+  }
+  .marca::after,
+  .hilos,
+  .pieza {
     display: none;
+  }
+  .pie {
+    flex-direction: column;
+    gap: 0;
   }
   .prueba {
     grid-template-columns: 1fr;
-    margin-top: 48px;
   }
   .pruebaLabel {
     padding-bottom: 0;
@@ -147,5 +431,8 @@
     border-left: none;
     border-top: 1px solid var(--line);
     padding-left: 0;
+  }
+  .bajar {
+    display: none;
   }
 }

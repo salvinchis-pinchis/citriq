@@ -74,7 +74,10 @@ Toda la página es un mismo recorrido, con la metáfora de la vía de "Qué hace
 
 ## Capítulos
 
-1. **Hero** (oscuro): el logo se dibuja y dos casos en producción.
+1. **Hero** (oscuro, ocupa la pantalla): el logo se dibuja y alrededor aparecen piezas reales
+   de las historias (el guatambú puesto, la consulta, el estimado, un tag firmado), unidas al
+   logo. "A mano" se tacha con marcador y se corrige "en segundos". La grilla se ilumina donde
+   está el cursor y las piezas lo siguen un poco. Abajo, para quién lo hicimos.
 2. **Qué hacemos** (claro, con un panel oscuro): el recorrido en una sola vía de 8 estaciones,
    tramo 1 "para vender" y tramo 2 "para la obra", con la parada "se firma la obra" en el
    medio. Un tren recorre las estaciones de a una, deja pintado lo recorrido y abajo se lee la
