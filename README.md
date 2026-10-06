@@ -74,8 +74,8 @@ Toda la página es un mismo recorrido, con la metáfora de la vía de "Qué hace
 
 ## Capítulos
 
-1. **Hero** (oscuro, ocupa la pantalla): el titular con "a mano" tachado y corregido, un solo
-   botón ("Agendá una demo", al Calendly) y para quién lo hicimos. El logo se dibuja parado
+1. **Hero** (oscuro, ocupa la pantalla): el titular ("Software a medida para la construcción."), un
+   solo botón ("Agendá una demo", al Calendly) y para quién lo hicimos. El logo se dibuja parado
    sobre un piso de lapacho en perspectiva; la textura sale del motor del visualizador
    (`pnpm demo` genera `public/images/hero-piso.jpg`).
 2. **Qué hacemos** (claro, con un panel oscuro): el recorrido en una sola vía de 8 estaciones,

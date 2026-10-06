@@ -1,7 +1,7 @@
 /* ============================================================
    Hero: titular, un boton y el logo, parados sobre un piso de
    lapacho en perspectiva que se pierde en el carbon. La unica
-   secuencia: el logo se dibuja y despues se tacha "a mano".
+   secuencia: el logo se dibuja y despues llega su reflejo.
    ============================================================ */
 .hero {
   position: relative;
@@ -44,19 +44,19 @@
 .contenido {
   flex: 1;
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 40px;
+  grid-template-columns: 1.45fr 0.55fr;
+  gap: 32px;
   align-items: center;
   padding-top: 48px;
   padding-bottom: 18vh;
 }
 .titulo {
-  font-size: clamp(2.8rem, 6.6vw, 5.6rem);
+  font-size: clamp(2.6rem, 5.6vw, 4.9rem);
   letter-spacing: -0.05em;
   line-height: 0.98;
 }
 .cta {
-  margin-top: 56px;
+  margin-top: 44px;
   padding: 15px 26px;
   font-size: 1rem;
 }
@@ -70,64 +70,11 @@
   font-weight: 500;
 }
 
-/* "a mano", tachado con marcador lima y corregido al costado */
-.tachado {
-  position: relative;
-  display: inline-block;
-  white-space: nowrap;
-}
-.trazoMarcador {
-  position: absolute;
-  left: -4%;
-  top: 22%;
-  width: 108%;
-  height: 60%;
-  overflow: visible;
-}
-.trazoMarcador path {
-  fill: none;
-  stroke: var(--lime);
-  stroke-width: 7;
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: tachar 0.55s cubic-bezier(0.6, 0, 0.3, 1) 2.2s forwards;
-}
-@keyframes tachar {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-.nota {
-  position: absolute;
-  left: 18%;
-  top: 98%;
-  font-family: var(--fm);
-  font-size: 0.24em;
-  font-weight: 500;
-  letter-spacing: 0;
-  white-space: nowrap;
-  color: var(--lime);
-  padding: 0.25em 0.6em;
-  border: 1.5px solid var(--lime);
-  border-radius: 0.4em;
-  transform: rotate(-3deg) translateY(6px);
-  opacity: 0;
-  animation: anotar 0.4s ease 2.65s forwards;
-}
-@keyframes anotar {
-  to {
-    opacity: 1;
-    transform: rotate(-3deg);
-  }
-}
-
 /* ---------- el logo, parado sobre el piso ---------- */
 .marca {
   position: relative;
   justify-self: center;
-  width: min(100%, 400px);
+  width: min(100%, 360px);
   aspect-ratio: 1;
   color: var(--lime);
 }
@@ -180,15 +127,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .trazo,
-  .trazoMarcador path {
+  .trazo {
     animation: none;
     stroke-dashoffset: 0;
-  }
-  .nota {
-    animation: none;
-    opacity: 1;
-    transform: rotate(-3deg);
   }
   .marca svg,
   .marca::after {
@@ -219,5 +160,15 @@
   }
   .cta {
     margin-top: 28px;
+  }
+}
+/* dos renglones con sentido: "Software a medida / para la construccion." */
+.titulo span {
+  display: block;
+  text-wrap: nowrap;
+}
+@media (max-width: 560px) {
+  .titulo span {
+    text-wrap: wrap;
   }
 }
