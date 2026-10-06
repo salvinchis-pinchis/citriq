@@ -10,7 +10,7 @@
 .puente {
   --p: 0;
   position: relative;
-  height: 170vh;
+  height: 145vh;
 }
 .fijo {
   position: sticky;

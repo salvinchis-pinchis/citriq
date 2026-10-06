@@ -171,7 +171,7 @@ export default function Seguimiento() {
         </div>
       </div>
 
-      <div ref={recorridoRef} className={styles.recorrido} style={{ height: `calc(${TOTAL * 72}vh + 100vh)` }}>
+      <div ref={recorridoRef} className={styles.recorrido} style={{ height: `calc(${TOTAL * 48}vh + 100vh)` }}>
         <div ref={escenaRef} className={`wrap ${styles.fijo}`} data-etapa="0">
           {/* la cinta metrica: los dias de la obra, con un hito por momento */}
           <div className={styles.cinta}>

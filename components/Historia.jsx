@@ -25,7 +25,7 @@ const FOTO = `/images/vis-${EJEMPLO_DEMO}.jpg`;
 const RENDER = `/images/demo/${EJEMPLO_DEMO}-${MATERIAL_DEMO}.jpg`;
 const MASCARA = `/images/demo/${EJEMPLO_DEMO}-piso.png`;
 
-// peso: cuanto scroll dura cada momento (1 = 70% de la pantalla)
+// peso: cuanto scroll dura cada momento (1 = 46% de la pantalla)
 const PASOS = [
   { hora: "Sábado 21:47", titulo: "La consulta llega con el local cerrado.", texto: `Una clienta escribe que quiere cambiar el piso de su dormitorio por ${NOMBRE}. La respuesta automática le manda el visualizador.`, peso: 1.2 },
   { hora: "21:48", titulo: "Toca el link y entra al visualizador.", texto: "Lo primero que le pide es una foto del lugar, sacada desde el mismo celular.", peso: 1 },
@@ -114,7 +114,7 @@ export default function Historia() {
         </div>
       </div>
 
-      <div ref={recorridoRef} className={styles.recorrido} style={{ height: `calc(${PESO_TOTAL * 70}vh + 100vh)` }}>
+      <div ref={recorridoRef} className={styles.recorrido} style={{ height: `calc(${PESO_TOTAL * 46}vh + 100vh)` }}>
         <div className={`wrap ${styles.fijo}`}>
           <ol className={styles.lista}>
             {PASOS.map((p, i) => (
