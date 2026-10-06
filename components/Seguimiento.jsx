@@ -97,8 +97,19 @@ const TOTAL = ETAPAS.reduce((s, e) => s + e.peso, 0);
 const INICIOS = ETAPAS.map((_, i) => ETAPAS.slice(0, i).reduce((s, e) => s + e.peso, 0) / TOTAL);
 
 const clamp = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
-const DIAS = 25; // largo de la cinta
-const MARCAS = Array.from({ length: DIAS + 1 }, (_, d) => d);
+// La cinta no es lineal: cada momento ocupa el mismo ancho y los dias entre
+// dos momentos se comprimen. Asi los hitos de la primera semana no se amontonan.
+const DIAS_HITO = ETAPAS.map((e) => e.dia);
+function posDe(d) {
+  const n = DIAS_HITO.length - 1;
+  let i = 0;
+  while (i < n - 1 && d > DIAS_HITO[i + 1]) i++;
+  const tramo = DIAS_HITO[i + 1] - DIAS_HITO[i] || 1;
+  const k = Math.min(1, Math.max(0, (d - DIAS_HITO[i]) / tramo));
+  return 0.04 + 0.92 * ((i + k) / n);
+}
+// una marca por dia de obra; las de los dias con hito llevan numero
+const MARCAS = Array.from({ length: 24 }, (_, d) => d + 1).map((d) => ({ d, x: posDe(d), hito: DIAS_HITO.includes(d) }));
 
 export default function Seguimiento() {
   const recorridoRef = useRef(null);
@@ -121,7 +132,7 @@ export default function Seguimiento() {
       const crudo = clamp((total - INICIOS[e]) / (ETAPAS[e].peso / TOTAL));
       const siguiente = ETAPAS[e + 1]?.dia ?? ETAPAS[e].dia;
       const dia = reducido ? ETAPAS[e].dia : ETAPAS[e].dia + (siguiente - ETAPAS[e].dia) * crudo;
-      escena.style.setProperty("--dia", dia / DIAS);
+      escena.style.setProperty("--dia", posDe(dia));
       escena.dataset.etapa = String(e);
       setActiva(e);
     }
@@ -165,9 +176,9 @@ export default function Seguimiento() {
           {/* la cinta metrica: los dias de la obra, con un hito por momento */}
           <div className={styles.cinta}>
             <div className={styles.regla} aria-hidden="true">
-              {MARCAS.map((d) => (
-                <span key={d} className={d % 5 === 0 ? styles.marcaLarga : styles.marca} style={{ left: `${(d / DIAS) * 100}%` }}>
-                  {d % 5 === 0 && <small>{d}</small>}
+              {MARCAS.map((m) => (
+                <span key={m.d} className={m.hito ? styles.marcaLarga : styles.marca} data-ultima={m.d === 24 || undefined} style={{ left: `${m.x * 100}%` }}>
+                  {m.hito && <small>{m.d === 1 ? "Día 1" : m.d}</small>}
                 </span>
               ))}
               <span className={styles.recorridoHecho} />
@@ -175,7 +186,7 @@ export default function Seguimiento() {
             </div>
             <ol className={styles.hitos}>
               {ETAPAS.map((e, i) => (
-                <li key={i} style={{ left: `${(e.dia / DIAS) * 100}%` }}>
+                <li key={i} style={{ left: `${posDe(e.dia) * 100}%` }}>
                   <button
                     type="button"
                     onClick={() => irA(i)}

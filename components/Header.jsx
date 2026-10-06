@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { nav } from "../data/site";
+import { CALENDLY, nav } from "../data/site";
 import { Logo } from "./Marca";
 import styles from "./Header.module.css";
 
@@ -72,8 +72,9 @@ export default function Header() {
               ))}
             </ul>
           </nav>
-          <a className={`btn btn-solid ${styles.cta}`} href="#contacto" onClick={cerrar}>
-            Hablemos
+          {/* la misma accion que el hero: una sola llamada a la accion en toda la pagina */}
+          <a className={`btn btn-solid ${styles.cta}`} href={CALENDLY} target="_blank" rel="noopener noreferrer" onClick={cerrar}>
+            Agendá una demo
           </a>
           <button
             type="button"

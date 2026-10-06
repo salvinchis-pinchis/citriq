@@ -68,6 +68,7 @@
 @media (prefers-reduced-motion: reduce) {
   .puente {
     height: auto;
+    background: var(--carbon);
   }
   .fijo {
     position: static;

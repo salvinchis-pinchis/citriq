@@ -59,15 +59,13 @@
 }
 .marcaLarga small {
   position: absolute;
+  white-space: nowrap;
   top: 14px;
   left: 4px;
   font-family: var(--fm);
   font-size: 0.68rem;
   font-weight: 500;
   color: #15191b;
-}
-.marcaLarga:first-child small::before {
-  content: "Día ";
 }
 /* lo recorrido de la obra se oscurece y el marcador corre con el scroll */
 .recorridoHecho {
@@ -260,4 +258,10 @@
     grid-template-columns: 1fr;
     gap: 12px;
   }
+}
+
+/* el ultimo numero va a la izquierda de su marca, asi no se sale de la cinta */
+.marcaLarga[data-ultima] small {
+  left: auto;
+  right: 4px;
 }
