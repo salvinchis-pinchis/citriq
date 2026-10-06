@@ -16,7 +16,7 @@ pnpm install
 pnpm dev      # http://localhost:3000
 pnpm build
 pnpm test     # pruebas del motor del visualizador (node --test)
-pnpm demo     # regenera las imágenes del ejemplo de la historia
+pnpm demo     # regenera las imágenes del ejemplo de la historia y el piso del hero
 ```
 
 ## Dónde está cada cosa
@@ -74,10 +74,10 @@ Toda la página es un mismo recorrido, con la metáfora de la vía de "Qué hace
 
 ## Capítulos
 
-1. **Hero** (oscuro, ocupa la pantalla): el logo se dibuja y alrededor aparecen piezas reales
-   de las historias (el guatambú puesto, la consulta, el estimado, un tag firmado), unidas al
-   logo. "A mano" se tacha con marcador y se corrige "en segundos". La grilla se ilumina donde
-   está el cursor y las piezas lo siguen un poco. Abajo, para quién lo hicimos.
+1. **Hero** (oscuro, ocupa la pantalla): el titular con "a mano" tachado y corregido, un solo
+   botón ("Agendá una demo", al Calendly) y para quién lo hicimos. El logo se dibuja parado
+   sobre un piso de lapacho en perspectiva; la textura sale del motor del visualizador
+   (`pnpm demo` genera `public/images/hero-piso.jpg`).
 2. **Qué hacemos** (claro, con un panel oscuro): el recorrido en una sola vía de 8 estaciones,
    tramo 1 "para vender" y tramo 2 "para la obra", con la parada "se firma la obra" en el
    medio. Un tren recorre las estaciones de a una, deja pintado lo recorrido y abajo se lee la

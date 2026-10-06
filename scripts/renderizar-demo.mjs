@@ -57,3 +57,31 @@ for (const ej of EJEMPLOS.filter((e) => e.id === EJEMPLO_DEMO)) {
     console.log(`✓ ${ej.id}-${id}.jpg`);
   }
 }
+
+// El fondo del hero: un piso de lapacho visto desde arriba, hecho con la misma
+// textura del visualizador. En la pagina se inclina en perspectiva y se oscurece.
+{
+  const mat = MATERIALES.find((m) => m.id === "lapacho");
+  const { niveles } = obtenerTextura(mat);
+  const T = niveles[0];
+  const tile = await sharp(Buffer.from(T.d.buffer, T.d.byteOffset, T.d.length), { raw: { width: T.w, height: T.h, channels: 4 } })
+    .png()
+    .toBuffer();
+  const W = 2160;
+  const H = 1320;
+  // cada columna de mosaicos va corrida unas filas de tabla: asi no se ve la repeticion
+  const fila = Math.round(T.h / Math.max(6, Math.round(1.1 / mat.ancho)));
+  const corrimientos = [0, 3, 1, 4, 2, 5];
+  const piezas = [];
+  for (let c = 0, x = 0; x < W; x += T.w, c++) {
+    const dy = -(corrimientos[c % corrimientos.length] * fila);
+    for (let y = dy; y < H; y += T.h) piezas.push({ input: tile, left: x, top: y });
+  }
+  await sharp({ create: { width: W, height: H, channels: 4, background: "#000" } })
+    .composite(piezas)
+    .removeAlpha()
+    .modulate({ brightness: 0.55, saturation: 0.8 })
+    .jpeg({ quality: 78, mozjpeg: true })
+    .toFile(path.join(PUBLIC, "images", "hero-piso.jpg"));
+  console.log("✓ hero-piso.jpg");
+}
