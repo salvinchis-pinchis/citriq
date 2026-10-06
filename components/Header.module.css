@@ -4,9 +4,16 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(14, 18, 21, 0.94);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* transparente siempre: el texto cambia de color segun lo que tenga debajo */
+  background: transparent;
+  --texto-barra: #eef2ea;
+  --texto-barra-2: #a0a89f;
+  color: var(--texto-barra);
+  transition: color 0.2s ease;
+}
+.header[data-tema="claro"] {
+  --texto-barra: #15191b;
+  --texto-barra-2: #4e5551;
 }
 .nav {
   display: flex;
@@ -42,12 +49,12 @@
 }
 .links a {
   font-size: 0.88rem;
-  color: var(--muted);
+  color: var(--texto-barra-2);
   text-decoration: none;
   transition: color 0.15s;
 }
 .links a:hover {
-  color: var(--text);
+  color: var(--texto-barra);
 }
 .cta {
   padding: 9px 16px;
@@ -70,16 +77,17 @@
     gap: 6px;
     width: 42px;
     height: 42px;
-    border: 1px solid var(--line-2);
+    border: 1px solid currentColor;
     border-radius: var(--r);
     background: transparent;
+    color: var(--texto-barra-2);
     cursor: pointer;
   }
   .hamburguesa i {
     display: block;
     width: 18px;
     height: 2px;
-    background: var(--text);
+    background: var(--texto-barra);
     transition: transform 0.25s ease;
   }
   .abierto .hamburguesa i:first-child {
@@ -132,22 +140,16 @@
     transition: none;
   }
 }
-/* backdrop-filter haria que el menu fijo se mida contra la barra: con el menu abierto se apaga */
+/* con el menu de celular abierto, la barra toma el fondo del menu */
 .abierto {
   background: var(--bg);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  --texto-barra: var(--text);
+  --texto-barra-2: var(--muted);
 }
 
 /* Reserve the logo's space while the hero symbol travels to it. */
 :global(html[data-brand-motion="active"][data-brand-docked="false"]) .marca {
   visibility: hidden;
-}
-:global(html[data-brand-motion="active"][data-brand-docked="false"]) .header {
-  background: transparent;
-  border-bottom-color: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 :global(html[data-brand-motion="active"][data-brand-docked="false"]) .abierto {
   background: var(--bg);

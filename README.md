@@ -59,6 +59,11 @@ que funcionan en cualquiera de los dos capítulos.
 Tipografías: **Sora** para todo, **JetBrains Mono** solo para datos (horas, m², precios, tags).
 El logo está en `components/Marca.jsx` (y `app/icon.svg`); en el hero se dibuja al cargar.
 
+## La barra
+
+Es transparente. Mira el color de fondo real que tiene debajo y cambia el color del texto
+(claro sobre carbón, oscuro sobre hormigón), así se lee igual en cualquier capítulo o puente.
+
 ## Cómo se conecta la página
 
 Toda la página es un mismo recorrido, con la metáfora de la vía de "Qué hacemos":
@@ -78,11 +83,11 @@ Toda la página es un mismo recorrido, con la metáfora de la vía de "Qué hace
    solo botón ("Agendá una demo", al Calendly) y para quién lo hicimos. El logo se dibuja parado
    sobre un piso de lapacho en perspectiva; la textura sale del motor del visualizador
    (`pnpm demo` genera `public/images/hero-piso.jpg`).
-2. **Qué hacemos** (claro, con un panel oscuro): el recorrido en una sola vía de 8 estaciones,
-   tramo 1 "para vender" y tramo 2 "para la obra", con la parada "se firma la obra" en el
-   medio. Un tren recorre las estaciones de a una, deja pintado lo recorrido y abajo se lee la
-   estación en la que está (qué es y dónde está en uso). Pasar el mouse o el foco por una
-   estación la detiene ahí. En celular la vía es vertical.
+2. **Qué hacemos** (claro): una línea de 8 estaciones, tramo 1 "para vender" (lapacho) y tramo 2
+   "para la obra" (carbón), con la marca de "se firma la obra" entre la 4 y la 5. Nada se mueve
+   solo: se elige la estación con el mouse, un toque o las flechas, y abajo se lee su ficha (qué
+   es, dónde está en uso y a qué historia lleva). La línea se dibuja una vez al aparecer. En
+   celular es una lista vertical con el detalle en cada fila.
 3. **Historia** (oscuro): scrollytelling de una consulta de sábado a la noche. A la izquierda
    el recorrido completo, a la derecha un celular de tamaño fijo (`Telefono.jsx`): WhatsApp →
    visualizador sin foto → foto → piso → guatambú → antes/después → estimado → el lunes, la

@@ -6,6 +6,8 @@
    0.82-1.00 queda la frase nueva, quieta
    ============================================================ */
 .puente {
+  /* la ultima pantalla del puente ya es clara: no queda costura con la seccion siguiente */
+  background: linear-gradient(var(--carbon) 0 calc(100% - 100vh), var(--hormigon) calc(100% - 100vh));
   --p: 0;
   --l: clamp(0, calc((var(--p) - 0.48) / 0.34), 1); /* donde va el laser, 0 arriba y 1 abajo */
   position: relative;
