@@ -24,7 +24,7 @@ pnpm demo     # regenera las imágenes del ejemplo de la historia y el piso del 
 | Ruta | Qué es |
 |---|---|
 | `app/` | `layout.js` (fuentes, metadata), `page.js` (arma la home), `globals.css` (tokens y átomos: `.btn`, `.field`, `.section`…), `icon.svg` (favicon = el logo). |
-| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` y `Seguimiento.jsx` son los scrollytelling (pantallas en `Telefono.jsx` y `Plataforma.jsx`); `QueHacemos.jsx` el mapa de servicios. |
+| `components/` | Un capítulo por archivo, cada uno con su `.module.css`. `Historia.jsx` y `Seguimiento.jsx` son los scrollytelling (pantallas en `Telefono.jsx` y `Plataforma.jsx`); |
 | `lib/visualizador/` | El motor del visualizador, sin DOM: geometría, máscara, texturas, render y sus pruebas. |
 | `scripts/renderizar-demo.mjs` | Usa ese motor (con sharp) para generar `public/images/demo/`. |
 | `data/site.js` | WhatsApp y links del nav. |
@@ -66,7 +66,7 @@ Es transparente. Mira el color de fondo real que tiene debajo y cambia el color 
 
 ## Cómo se conecta la página
 
-Toda la página es un mismo recorrido, con la metáfora de la vía de "Qué hacemos":
+Toda la página es un mismo recorrido:
 
 - **Puentes** (`Puente.jsx`): entre capítulo y capítulo no hay un corte de fondo. La vía baja
   hasta una parada, aparece una frase que cierra lo anterior y desde la parada se abre un
@@ -75,7 +75,7 @@ Toda la página es un mismo recorrido, con la metáfora de la vía de "Qué hace
 - **Mapa** (`Mapa.jsx`): una vía chica fija al costado con una parada por capítulo; marca en
   cuál estás y lleva a cualquiera. Solo aparece en pantallas anchas (más de 1380 px).
 - Historia y Seguimiento se presentan como "Tramo 1 · Para vender" y "Tramo 2 · Para la obra",
-  los mismos tramos del mapa de "Qué hacemos".
+  los mismos tramos del mapa lateral.
 
 ## Capítulos
 
@@ -83,16 +83,12 @@ Toda la página es un mismo recorrido, con la metáfora de la vía de "Qué hace
    solo botón ("Agendá una demo", al Calendly) y para quién lo hicimos. El logo se dibuja parado
    sobre un piso de lapacho en perspectiva; la textura sale del motor del visualizador
    (`pnpm demo` genera `public/images/hero-piso.jpg`).
-2. **Qué hacemos** (claro): los dos tramos lado a lado, cada uno con su producto a la vista
-   (el teléfono de la historia en el antes y después, la plataforma de la obra en el control),
-   las cuatro herramientas que incluye, dónde está en uso y un link a su historia. "Se firma
-   la obra" va entre los dos. Usa las mismas pantallas que las historias.
-3. **Historia** (oscuro): scrollytelling de una consulta de sábado a la noche. A la izquierda
+2. **Historia** (oscuro): scrollytelling de una consulta de sábado a la noche. A la izquierda
    el recorrido completo, a la derecha un celular de tamaño fijo (`Telefono.jsx`): WhatsApp →
    visualizador sin foto → foto → piso → guatambú → antes/después → estimado → el lunes, la
    notificación de Mail en el celular del negocio → el mail abierto. Los renders salen de
    `pnpm demo`.
-4. **Seguimiento de obra** (claro): scrollytelling, pero con otra forma que la historia para
+3. **Seguimiento de obra** (claro): scrollytelling, pero con otra forma que la historia para
    no repetirla: el tiempo corre en horizontal. Arriba una cinta métrica de los días de la obra
    con un hito por momento (se pueden tocar), al centro la plataforma grande en una notebook
    (`Plataforma.jsx`) y abajo el momento como subtítulo, con lo que significa en una planta
@@ -100,10 +96,10 @@ Toda la página es un mismo recorrido, con la metáfora de la vía de "Qué hace
    sin señal → sincronización → curva S y pendientes → link para la clienta → informes y
    dossier. El celular aparece en obra y en manos de la clienta. Todo lo que se muestra existe en la
    plataforma de RTS; los nombres y números son de ejemplo.
-5. **Proceso** (oscuro): cuatro pasos que suben como una escalera, y a quién le trabajamos.
-6. **Contacto** (claro): un bloque con los caminos directos (Calendly y WhatsApp), el
+4. **Proceso** (oscuro): cuatro pasos que suben como una escalera, y a quién le trabajamos.
+5. **Contacto** (claro): un bloque con los caminos directos (Calendly y WhatsApp), el
    testimonio de Natural Flooring y un formulario corto que arma el mensaje para WhatsApp.
-7. **Footer** (oscuro): una línea con la marca, los links y el copyright.
+6. **Footer** (oscuro): una línea con la marca, los links y el copyright.
 
 En celular el menú se abre con el botón de la barra. `app/opengraph-image.js` genera la imagen
 que aparece al compartir el link (usa `assets/Sora-Bold.ttf`).

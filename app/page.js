@@ -9,7 +9,6 @@ import Estacion from "../components/puentes/Estacion";
 import Laser from "../components/puentes/Laser";
 import Reloj from "../components/puentes/Reloj";
 import Tablones from "../components/puentes/Tablones";
-import QueHacemos from "../components/QueHacemos";
 import Seguimiento from "../components/Seguimiento";
 
 // Los capitulos alternan carbon (oscuro) y hormigon (claro). Entre uno y otro, un
@@ -23,8 +22,8 @@ export default function Home() {
       <main id="contenido">
         <Hero />
         <Laser cierra="Una obra no empieza en la obra." abre="Empieza cuando alguien busca un piso." />
-        <QueHacemos />
-        <Reloj etiqueta="Tramo 1 · Para vender" cierra="Empecemos por el primer tramo." abre="Un sábado a la noche." />
+        {/* el reloj arranca con la misma frase: el laser y el reloj se leen como una sola escena */}
+        <Reloj etiqueta="Tramo 1 · Para vender" cierra="Empieza cuando alguien busca un piso." abre="Un sábado a la noche." />
         <Historia />
         <Estacion
           desde="oscuro"

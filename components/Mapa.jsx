@@ -9,7 +9,6 @@ import styles from "./Mapa.module.css";
  */
 const PARADAS = [
   ["inicio", "Inicio"],
-  ["que-hacemos", "Qué hacemos"],
   ["historia", "Tramo 1 · Vender"],
   ["obra", "Tramo 2 · La obra"],
   ["proceso", "Cómo trabajamos"],
