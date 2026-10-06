@@ -4,14 +4,30 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  /* transparente siempre: el texto cambia de color segun lo que tenga debajo */
+  /* sin caja ni linea: un velo del color del fondo que se desvanece hacia abajo,
+     para que lo que pasa por debajo no se cruce con los links */
   background: transparent;
+  --velo: 14, 18, 21;
   --texto-barra: #eef2ea;
   --texto-barra-2: #a0a89f;
   color: var(--texto-barra);
   transition: color 0.2s ease;
 }
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -28px 0;
+  z-index: -1;
+  background: linear-gradient(rgba(var(--velo), 0.88) 0%, rgba(var(--velo), 0.7) 55%, rgba(var(--velo), 0) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  -webkit-mask-image: linear-gradient(#000 55%, transparent);
+  mask-image: linear-gradient(#000 55%, transparent);
+  transition: background 0.2s ease;
+  pointer-events: none;
+}
 .header[data-tema="claro"] {
+  --velo: 233, 231, 225;
   --texto-barra: #15191b;
   --texto-barra-2: #4e5551;
 }

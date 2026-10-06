@@ -83,11 +83,10 @@ Toda la página es un mismo recorrido, con la metáfora de la vía de "Qué hace
    solo botón ("Agendá una demo", al Calendly) y para quién lo hicimos. El logo se dibuja parado
    sobre un piso de lapacho en perspectiva; la textura sale del motor del visualizador
    (`pnpm demo` genera `public/images/hero-piso.jpg`).
-2. **Qué hacemos** (claro): una línea de 8 estaciones, tramo 1 "para vender" (lapacho) y tramo 2
-   "para la obra" (carbón), con la marca de "se firma la obra" entre la 4 y la 5. Nada se mueve
-   solo: se elige la estación con el mouse, un toque o las flechas, y abajo se lee su ficha (qué
-   es, dónde está en uso y a qué historia lleva). La línea se dibuja una vez al aparecer. En
-   celular es una lista vertical con el detalle en cada fila.
+2. **Qué hacemos** (claro): los dos tramos lado a lado, cada uno con su producto a la vista
+   (el teléfono de la historia en el antes y después, la plataforma de la obra en el control),
+   las cuatro herramientas que incluye, dónde está en uso y un link a su historia. "Se firma
+   la obra" va entre los dos. Usa las mismas pantallas que las historias.
 3. **Historia** (oscuro): scrollytelling de una consulta de sábado a la noche. A la izquierda
    el recorrido completo, a la derecha un celular de tamaño fijo (`Telefono.jsx`): WhatsApp →
    visualizador sin foto → foto → piso → guatambú → antes/después → estimado → el lunes, la

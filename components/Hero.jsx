@@ -21,22 +21,17 @@ export default function Hero() {
     if (!target || !flight.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
-    let source;
-    let destination;
-    let height;
     const root = document.documentElement;
 
-    function measure() {
-      const a = anchor.current.getBoundingClientRect();
-      const b = target.getBoundingClientRect();
-      source = { x: a.left, y: a.top + window.scrollY, width: a.width };
-      destination = { x: b.left, y: b.top, width: b.width };
-      height = hero.current.offsetHeight;
-      update();
-    }
+    // Origen y destino se miden en cada cuadro: si el layout cambia (fuentes,
+    // ancho, zoom), el vuelo nunca apunta a una posicion vieja.
     function update() {
       frame = 0;
-      const value = logoFrame(source, destination, height, window.scrollY);
+      const a = anchor.current.getBoundingClientRect();
+      const b = target.getBoundingClientRect();
+      const source = { x: a.left, y: a.top + window.scrollY, width: a.width };
+      const destination = { x: b.left, y: b.top, width: b.width };
+      const value = logoFrame(source, destination, hero.current.offsetHeight, window.scrollY);
       const docked = value.progress === 1;
       root.dataset.brandDocked = String(docked);
       root.dataset.brandMotion = "active";
@@ -50,6 +45,7 @@ export default function Hero() {
       hero.current.style.setProperty("--travel", Math.min(window.scrollY * 0.12, 48) + "px");
       hero.current.style.setProperty("--reflection", 1 - value.progress);
     }
+    const measure = update;
     function request() {
       if (!frame) frame = requestAnimationFrame(update);
     }
