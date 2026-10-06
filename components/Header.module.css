@@ -139,3 +139,17 @@
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
+
+/* Reserve the logo's space while the hero symbol travels to it. */
+:global(html[data-brand-motion="active"][data-brand-docked="false"]) .marca {
+  visibility: hidden;
+}
+:global(html[data-brand-motion="active"][data-brand-docked="false"]) .header {
+  background: transparent;
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+:global(html[data-brand-motion="active"][data-brand-docked="false"]) .abierto {
+  background: var(--bg);
+}
