@@ -52,7 +52,7 @@
 .claro {
   position: absolute;
   inset: 0;
-  clip-path: inset(0 0 calc(100% - var(--l) * 100%) 0);
+  clip-path: inset(0 0 calc(100% - var(--l) * 100% - 2px) 0);
 }
 .laser {
   position: absolute;
