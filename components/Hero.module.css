@@ -74,7 +74,11 @@
   border-radius: 50%;
   background: radial-gradient(ellipse, rgba(192, 249, 22, .24), transparent 70%);
   filter: blur(8px);
-  opacity: var(--reflection);
+  /* cuando el logo se levanta, su reflejo se achica y se apaga rapido,
+     como la sombra de algo que se aleja del piso */
+  --lift: calc(1 - var(--reflection));
+  opacity: clamp(0, calc(1 - var(--lift) * 3.5), 1);
+  scale: calc(1 - min(var(--lift) * 2, 0.7));
   animation: sombra 6s ease-in-out infinite;
 }
 .vuelo {

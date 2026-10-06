@@ -7,7 +7,6 @@
   background: rgba(14, 18, 21, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
 }
 .nav {
   display: flex;
